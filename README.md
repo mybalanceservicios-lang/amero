@@ -25,6 +25,14 @@ Cada producto tiene:
 
 En `negocio` falta completar `whatsapp` (con código de país, ej. `5491112345678`), `horario` y `youtube` (link completo al canal; si está vacío no se muestra el botón). En `retiro` van el horario desde/hasta para los turnos de retiro que se ofrecen en el carrito.
 
+## Videos de YouTube e Instagram (`videos` en `catalogo.json`)
+
+Se pegan los links tal cual se copian del celular o la compu:
+
+- `destacado`: link de un video de YouTube. Aparece en "Nuestra historia" y se reproduce ahí mismo. `destacadoTitulo` es el texto que va encima (opcional).
+- `instagram`: lista de hasta 3 links de reels o publicaciones de Instagram. Se muestran en la sección de Instagram. Si está vacía, se ven fotos de muestra que llevan al perfil.
+- En cada producto se puede agregar `video` con un link de YouTube o Instagram: en la ficha aparece el botón "Ver video".
+
 ## Pendiente
 
 - Fotos del local y de los productos que todavía usan dibujo provisorio (pipas, tabacos, licor de café y accesorios). El logo y 13 fotos de productos se tomaron de ameroshop.com.ar y están en `fotos/`.

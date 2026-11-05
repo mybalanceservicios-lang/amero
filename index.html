@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="fotos/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0d0a08; --bg-2:#14100c; --card:#1a1410; --card-2:#221a14;
@@ -19,8 +19,8 @@
     --am:#d39a4a; --am-2:#e8b469; --am-soft:rgba(211,154,74,.14);
     --ember:#ff7a2f;
     /* tipografías: para probar otras, cambiar estas dos líneas y el link de Google Fonts */
-    --serif:"Cormorant Garamond",Georgia,serif;
-    --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --serif:"Bebas Neue","Arial Narrow",Impact,sans-serif;
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
     --head:108px; --wrap:1180px;
     color-scheme:dark;
   }
@@ -83,8 +83,8 @@
   .pipa canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
   .pipa .copy{position:absolute;z-index:4;left:max(20px,calc((100vw - var(--wrap)) / 2 + 20px));top:50%;transform:translateY(-50%);max-width:440px}
   .eyebrow{font-size:12px;font-weight:800;letter-spacing:.32em;color:var(--am);text-transform:uppercase}
-  .pipa h1{font:600 clamp(44px,5.4vw,76px)/.98 var(--serif);margin:18px 0 0;letter-spacing:-.01em}
-  .pipa h1 em{font-style:italic;font-weight:500;color:var(--am-2);display:block}
+  .pipa h1{font:400 clamp(52px,6vw,88px)/.92 var(--serif);margin:16px 0 0;letter-spacing:.005em}
+  .pipa h1 em{font-style:normal;color:var(--am-2);display:block}
   .pipa .copy p{color:var(--ink-2);font-size:17px;margin:20px 0 0;max-width:40ch}
   .ctas{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font-weight:800;font-size:15px;text-decoration:none;border:1px solid transparent}
@@ -130,8 +130,8 @@
   /* ---------- secciones ---------- */
   section{scroll-margin-top:var(--head)}
   .block{padding:88px 0}
-  .block h2{font:600 clamp(36px,4.4vw,56px)/1 var(--serif);margin:12px 0 0}
-  .block h2 em{font-style:italic;color:var(--am-2);font-weight:500}
+  .block h2{font:400 clamp(42px,5vw,64px)/.95 var(--serif);letter-spacing:.005em;margin:12px 0 0}
+  .block h2 em{font-style:normal;color:var(--am-2)}
   .lead{color:var(--ink-2);max-width:56ch;margin:14px 0 0}
   .alt{background:var(--bg-2);border-block:1px solid var(--line)}
 
@@ -142,7 +142,7 @@
   .cat-t .art{aspect-ratio:1;border-radius:10px;background:radial-gradient(70% 70% at 50% 40%,#2a1f17,#15100c);display:grid;place-items:center;overflow:hidden}
   .cat-t .art svg{width:66%}
   .cat-t .art img{width:100%;height:100%;object-fit:contain;padding:8%;background:#fff}
-  .cat-t b{font:600 20px/1.05 var(--serif)}
+  .cat-t b{font:400 24px/1 var(--serif)}
   .cat-t span{font-size:12px;color:var(--ink-3);font-weight:700}
 
   /* catálogo */
@@ -168,7 +168,7 @@
   .badge.low{color:#ffa66f;border-color:rgba(255,122,47,.45)}
   .card .bd{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
   .card .nm{border:0;background:none;padding:0;text-align:left}
-  .card h3{font:600 20px/1.12 var(--serif);margin:0}
+  .card h3{font:400 23px/1.02 var(--serif);margin:0;letter-spacing:.01em}
   .card .nm:hover h3{color:var(--am-2)}
   .card .det{font-size:12.5px;color:var(--ink-3);margin-top:4px}
   .price{font-weight:800;font-size:22px;margin-top:auto;padding-top:12px;letter-spacing:-.01em}
@@ -187,9 +187,31 @@
   .hist p{color:var(--ink-2);margin:16px 0 0;max-width:52ch}
   .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   .fact{border:1px solid var(--line);border-radius:16px;padding:20px 16px;background:var(--card)}
-  .fact b{display:block;font:600 30px/1 var(--serif);color:var(--am-2)}
+  .fact b{display:block;font:400 34px/1 var(--serif);color:var(--am-2)}
   .fact span{display:block;font-size:13px;color:var(--ink-2);margin-top:8px}
   .hist-foto{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:14px}
+
+  /* videos de youtube e instagram */
+  .vid{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#000;padding:0;margin-bottom:14px}
+  .vid img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s,transform .5s}
+  .vid:hover img{opacity:1;transform:scale(1.03)}
+  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vid .yplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:52px;border-radius:14px;background:#ff0033;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .vid .yplay svg{width:24px;height:24px;margin-left:3px}
+  .vid .vcap{position:absolute;left:0;right:0;bottom:0;padding:30px 16px 12px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;font-weight:700;font-size:14px;text-align:left}
+  .ytcard{display:flex;align-items:center;gap:14px;margin-top:14px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);text-decoration:none}
+  .ytcard:hover{border-color:#ff0033}
+  .ytcard .yi{width:46px;height:46px;flex:none;border-radius:12px;background:#ff0033;display:grid;place-items:center;color:#fff}
+  .ytcard .yi svg{width:24px;height:24px}
+  .ytcard b{display:block;font-size:15px}
+  .ytcard span{display:block;font-size:13px;color:var(--ink-3)}
+  .ytcard i{margin-left:auto;font-style:normal;font-weight:800;color:var(--am-2);font-size:14px;white-space:nowrap}
+  .reel.emb{background:#fff}
+  .reel.emb::after{display:none}
+  .reel.emb iframe{width:100%;height:100%;border:0}
+  .ficha .foto .vbtn{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;align-items:center;gap:8px;border:0;border-radius:99px;background:#170f08;color:var(--ink);font-weight:800;font-size:13.5px;padding:9px 14px}
+  .ficha .foto .vbtn svg{width:14px;height:14px}
+  .ficha .foto iframe{width:100%;height:100%;min-height:380px;border:0;border-radius:21px 0 0 21px;background:#000}
 
   /* instagram */
   .ig-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
@@ -253,14 +275,14 @@
     transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
   body.cart-open .drawer{transform:none}
   .drawer header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
-  .drawer header b{font:600 28px/1 var(--serif)}
+  .drawer header b{font:400 32px/1 var(--serif)}
   .x{background:none;border:1px solid var(--line-2);border-radius:10px;width:38px;height:38px;display:grid;place-items:center;flex:none}
   .dbody{flex:1;overflow:auto;padding:4px 20px 20px}
   .it{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
   .it .mini{width:56px;height:56px;border-radius:12px;background:var(--card);display:grid;place-items:center;overflow:hidden}
   .it .mini svg{width:70%}
   .it .mini img{width:100%;height:100%;object-fit:contain;padding:6%;background:#fff}
-  .it b{font:600 18px/1.1 var(--serif);display:block}
+  .it b{font:400 20px/1.05 var(--serif);display:block}
   .it small{color:var(--ink-3);font-size:12px;display:block}
   .it .sub{font-weight:800;font-size:14px;margin-top:2px}
   .qty{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:10px}
@@ -268,7 +290,7 @@
   .qty span{min-width:20px;text-align:center;font-weight:800;font-size:14px}
   .form{display:flex;flex-direction:column;gap:14px;margin-top:20px}
   .form[hidden]{display:none}
-  .form h4{margin:6px 0 0;font:600 22px/1 var(--serif)}
+  .form h4{margin:6px 0 0;font:400 26px/1 var(--serif)}
   .fl{font-size:12.5px;font-weight:700;color:var(--ink-3);display:flex;flex-direction:column;gap:6px}
   .fl input,.fl select{background:var(--card);border:1px solid var(--line-2);border-radius:10px;padding:11px 12px;font-size:15px;width:100%}
   .fl input:focus,.fl select:focus{outline:none;border-color:var(--am)}
@@ -299,7 +321,7 @@
   .ficha .foto.dib{background:radial-gradient(65% 65% at 50% 42%,#2b2018,#15100c 80%)}
   .ficha .foto svg{width:60%}
   .ficha .inf{padding:34px 30px 28px;display:flex;flex-direction:column}
-  .ficha h3{font:600 36px/1.02 var(--serif);margin:10px 0 0}
+  .ficha h3{font:400 46px/.95 var(--serif);margin:10px 0 0}
   .ficha .det{color:var(--ink-3);font-size:14px;margin-top:6px}
   .ficha .price{font-size:30px;padding-top:14px;margin-top:0}
   .ficha p{color:var(--ink-2);margin:14px 0 0;font-size:15px}
@@ -318,7 +340,7 @@
   .gate .btn{flex:none}
   .gate .brand{align-items:center;margin-bottom:30px}
   .gate .brand img{height:84px}
-  .gate h2{font:600 34px/1.05 var(--serif);margin:0}
+  .gate h2{font:400 40px/1 var(--serif);margin:0}
   .gate p{color:var(--ink-2);margin:12px 0 26px}
   .gate .ctas{justify-content:center}
   .gate .no{color:var(--ink-3);font-size:14px;margin-top:20px}
@@ -346,7 +368,7 @@
     .pipa{height:auto;padding-top:var(--head)}
     .pipa .stage{position:relative;top:0;height:max(740px,calc(100svh - var(--head)));background:radial-gradient(90% 50% at 50% 72%,#1d140d 0%,var(--bg) 75%)}
     .pipa .copy{top:24px;transform:none;left:20px;right:20px;max-width:none}
-    .pipa h1{font-size:clamp(38px,10.5vw,54px)}
+    .pipa h1{font-size:clamp(46px,12.5vw,62px)}
     .pipa .copy p{font-size:15px;margin-top:10px}
     .ctas{margin-top:16px}
     .btn{padding:11px 16px;font-size:14px}
@@ -365,7 +387,7 @@
     .block{padding:64px 0}
     .tools{margin-top:24px}
     .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .card h3{font-size:17px}
+    .card h3{font-size:20px}
     .card .bd{padding:11px 11px 12px}
     .price{font-size:18px;padding-top:8px}
     .add{font-size:13px;padding:10px 6px}
@@ -383,7 +405,7 @@
     .ficha{grid-template-columns:1fr;border-radius:22px 22px 0 0;max-height:92svh;width:100%;transform:translateY(40px)}
     .ficha .foto{min-height:0;height:min(42svh,340px);border-radius:21px 21px 0 0}
     .ficha .inf{padding:20px 20px calc(22px + env(safe-area-inset-bottom))}
-    .ficha h3{font-size:30px}
+    .ficha h3{font-size:38px}
     .ficha .price{font-size:26px}
     .bar{gap:10px;padding:9px 9px 9px 10px}
     .bar .thumbs i{width:36px;height:36px}
@@ -542,12 +564,13 @@
         <p>Vení a conocernos en Martínez o armá tu pedido online.</p>
       </div>
       <div>
-        <img class="hist-foto" src="fotos/portada-habanos.jpg" alt="Habanos" loading="lazy">
+        <div id="histMedia"><img class="hist-foto" src="fotos/portada-habanos.jpg" alt="Habanos" loading="lazy"></div>
         <div class="facts">
           <div class="fact"><b>Habanos</b><span>y tabacos para pipa y para armar</span></div>
           <div class="fact"><b>Whisky</b><span>licores y destilados</span></div>
           <div class="fact"><b>1 a 1</b><span>asesoramiento en el local</span></div>
         </div>
+        <div id="histYt"></div>
       </div>
     </div>
   </section>
@@ -746,7 +769,25 @@
   }
 
   /* ---------- instagram y youtube ---------- */
+  // sacan el código del video de un link pegado tal cual desde YouTube o Instagram
+  const ytId = u => { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? m[1] : ''; };
+  const igPath = u => { const m = String(u || '').match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|reels|tv)\/([\w-]+)/); return m ? (m[1] === 'reels' ? 'reel' : m[1]) + '/' + m[2] : ''; };
+  const ytThumb = id => `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">`;
+  const ytFrame = id => `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Video de YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  const igFrame = path => `<iframe src="https://www.instagram.com/${path}/embed" title="Video de Instagram" loading="lazy" scrolling="no" allowtransparency="true"></iframe>`;
+  // el video de YouTube se carga recién cuando lo tocan (más liviano)
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-yt]'); if (!b) return;
+    b.outerHTML = `<div class="vid">${ytFrame(b.dataset.yt)}</div>`;
+  });
+  function renderHistMedia(){
+    const n = D.negocio, v = D.videos || {}, id = ytId(v.destacado);
+    if (id) $('#histMedia').innerHTML = `<button class="vid" data-yt="${id}" aria-label="Reproducir video">${ytThumb(id)}<span class="yplay">${ICON.play}</span>${v.destacadoTitulo ? `<span class="vcap">${esc(v.destacadoTitulo)}</span>` : ''}</button>`;
+    $('#histYt').innerHTML = n.youtube ? `<a class="ytcard" href="${esc(n.youtube)}" target="_blank" rel="noopener"><span class="yi">${ICON.yt}</span>
+      <span><b>Amero en YouTube</b><span>Recorridos, catas y novedades del local</span></span><i>Ver canal →</i></a>` : '';
+  }
   function renderSocial(){
+    renderHistMedia();
     const n = D.negocio, ig = n.instagram ? 'https://instagram.com/' + n.instagram : '';
     $('#socialBtns').innerHTML =
       (ig ? `<a class="btn igb" href="${esc(ig)}" target="_blank" rel="noopener">${ICON.ig}Seguinos @${esc(n.instagram)}</a>` : '') +
@@ -757,6 +798,12 @@
       ['fotos/portada-whisky.jpg', 'center', 'Whiskies para conocer'],
       ['fotos/portada-habanos.jpg', '85% 50%', 'Lo nuevo del local']
     ];
+    const reels = ((D.videos || {}).instagram || []).map(igPath).filter(Boolean).slice(0, 3);
+    if (reels.length) {
+      $('#reels').innerHTML = reels.map(r => `<div class="reel emb">${igFrame(r)}</div>`).join('') +
+        `<a class="reel more" href="${esc(ig || '#')}" target="_blank" rel="noopener"><div>${ICON.ig}Ver todos los videos<small>@${esc(n.instagram || 'amero')}</small></div></a>`;
+      return;
+    }
     $('#reels').innerHTML = tiles.map(([src, pos, txt]) => `<a class="reel" href="${esc(ig || '#')}" target="_blank" rel="noopener">
         <img src="${src}" alt="" loading="lazy" style="object-position:${pos}"><div class="play">${ICON.play}</div><span>${txt}</span></a>`).join('') +
       `<a class="reel more" href="${esc(ig || '#')}" target="_blank" rel="noopener"><div>${ICON.ig}Ver todos los videos<small>@${esc(n.instagram || 'amero')}</small></div></a>`;
@@ -859,7 +906,8 @@
     const p = byId(fichaId); if (!p) return;
     const rows = (p.ficha || []).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
     $('#ficha').innerHTML = `<button class="x" id="closeFicha" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-      <div class="foto${p.foto ? '' : ' dib'}">${p.foto ? `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}">` : art(p)}${badge(p)}</div>
+      <div class="foto${p.foto ? '' : ' dib'}" id="fFoto">${p.foto ? `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}">` : art(p)}${badge(p)}
+        ${ytId(p.video) || igPath(p.video) ? `<button class="vbtn" id="fVid">${ICON.play}Ver video</button>` : ''}</div>
       <div class="inf"><div class="eyebrow">${esc(catName(p.categoria))}</div><h3 id="fNom">${esc(p.nombre)}</h3>
         ${p.detalle ? `<div class="det">${esc(p.detalle)}</div>` : ''}
         <div class="price">${precio(p)}</div>
@@ -867,6 +915,11 @@
         ${rows ? `<dl>${rows}</dl>` : ''}
         <div class="act" data-act="${p.id}">${actHtml(p)}</div></div>`;
     $('#closeFicha').onclick = closeFicha;
+    if ($('#fVid')) $('#fVid').onclick = () => {
+      const y = ytId(p.video);
+      $('#fFoto').classList.remove('dib');
+      $('#fFoto').innerHTML = y ? ytFrame(y) : igFrame(igPath(p.video));
+    };
   }
   function openFicha(id){
     if (!byId(id)) return;

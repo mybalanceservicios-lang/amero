@@ -1,5 +1,6 @@
 {
   "negocio": {"nombre": "Amero", "bajada": "Tabaquería", "direccion": "Rawson 2015, Martínez", "mapa": "https://goo.gl/maps/tmrPE3364oyp4G8f6", "telefono": "4792-9634", "email": "info@ameroshop.com.ar", "whatsapp": "", "instagram": "tabaqueria.amero", "horario": "", "aviso": "", "youtube": "https://www.youtube.com/@amerotabaqueria", "retiro": {"desde": "10:00", "hasta": "20:00"}},
+  "videos": {"destacado": "", "destacadoTitulo": "", "instagram": []},
   "categorias": [
     {"id": "habanos", "nombre": "Habanos", "tipo": "habano"},
     {"id": "whisky", "nombre": "Whisky", "tipo": "botella"},
