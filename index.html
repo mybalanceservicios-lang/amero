@@ -63,7 +63,7 @@
   .btn.sec{border-color:var(--line-2);color:var(--ink);background:none}
   .btn.sec:hover{border-color:var(--am)}
   .visual{position:absolute;z-index:3;right:max(0px,calc((100vw - var(--wrap)) / 2));width:min(58vw,700px);top:0;bottom:0}
-  .pipe{position:absolute;left:8%;width:86%;bottom:4%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
+  .pipe{position:absolute;left:0;right:0;margin:0 auto;width:min(86%,64vh);width:min(86%,64svh);bottom:4%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
   .pipe .ember{transition:opacity .3s}
   .shadow{position:absolute;left:14%;right:10%;bottom:3%;height:30px;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,.65),transparent);z-index:-1}
   .hint{position:absolute;z-index:4;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--ink-3);transition:opacity .4s}
@@ -217,7 +217,7 @@
     .btn{padding:11px 16px;font-size:14px}
     .visual{left:0;right:0;width:auto;top:345px}
     .pipa .stage{--m:80px}
-    .pipe{left:10%;width:80%;bottom:5%}
+    .pipe{width:80%;bottom:5%}
     .estrella .lbl{font-size:13px;margin-top:6px;max-width:15ch;padding:2px 8px 3px}
     .estrella .cat{display:none}
     .hint{display:none}
@@ -601,7 +601,7 @@
   const stage = $('#stage'), visual = $('#visual'), pipeEl = $('#pipe'), ember = $('#ember');
   // lugar final de cada producto dentro de la zona de la pipa (0 a 1). Aparecen en este orden.
   const SPOTS = [
-    {x:.24, y:.56}, {x:.88, y:.56}, {x:.12, y:.31}, {x:.92, y:.30}, {x:.36, y:.12}, {x:.68, y:.16}
+    {x:.22, y:.57}, {x:.88, y:.60}, {x:.12, y:.31}, {x:.90, y:.28}, {x:.36, y:.11}, {x:.66, y:.15}
   ];
   // en celular: dos filas de tres
   const SPOTS_CEL = [
