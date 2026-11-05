@@ -1,0 +1,43 @@
+# Amero · Tabaquería (web)
+
+Web pública de Tabaquería Amero (Rawson 2015, Martínez). El cliente arma el pedido y lo manda por WhatsApp, igual que en Aramé.
+
+## Archivos
+
+- `index.html`: la web. Portada con la pipa: al bajar, sale humo y aparecen los productos estrella.
+- `catalogo.json`: datos del local, categorías y productos. Es lo que se edita para cambiar la web.
+
+## Cómo cargar productos (`catalogo.json`)
+
+Cada producto tiene:
+
+| Campo | Qué es |
+|---|---|
+| `nombre`, `detalle` | Nombre y presentación (ej. `700 ml`, `Caja x 10`). |
+| `categoria` | Uno de los `id` de `categorias`. |
+| `precio` | En pesos. Si es `0` se muestra "Precio a confirmar". |
+| `stock` | Opcional. Con 5 o menos muestra "Quedan N"; con 0, "Sin stock". |
+| `estrella` | `true` para que salga en el humo de la portada (se usan los primeros 6). |
+| `soloConsulta` | `true` para que no se pueda agregar al pedido: solo botón "Consultar" por WhatsApp. Está puesto en habanos y tabacos hasta confirmar qué permite la ley 26.687. |
+| `foto` | Ruta de la foto (ej. `fotos/macallan-12.jpg`). Si está vacío se usa un dibujo provisorio. |
+
+En `negocio` falta completar `whatsapp` (con código de país, ej. `5491112345678`) y `horario`.
+
+## Pendiente
+
+- Logo, fotos de productos y del local (hoy hay dibujos provisorios).
+- Precios reales y lista final de productos estrella.
+- Texto de "Nuestra historia" (el actual es provisorio).
+- Conexión con el sistema de stock que arma el socio: la idea es que la web lea productos y stock de la misma base y que cada pedido descuente stock.
+
+## Probar en la compu
+
+```
+python -m http.server 5173
+```
+
+y abrir http://localhost:5173 (abrir el `index.html` con doble clic no carga el catálogo).
+
+## Publicar
+
+GitHub → Settings → Pages → Deploy from a branch → `main` / root. Queda en `https://mybalanceservicios-lang.github.io/amero/`.
