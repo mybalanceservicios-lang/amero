@@ -16,13 +16,14 @@ Cada producto tiene:
 |---|---|
 | `nombre`, `detalle` | Nombre y presentación (ej. `700 ml`, `Caja x 10`). |
 | `categoria` | Uno de los `id` de `categorias`. |
-| `precio` | En pesos. Si es `0` se muestra "Precio a confirmar". |
+| `precio` | En pesos. Si es `0` se muestra "Precio a confirmar". **Los precios cargados hoy son inventados, para ver cómo queda.** |
 | `stock` | Opcional. Con 5 o menos muestra "Quedan N"; con 0, "Sin stock". |
 | `estrella` | `true` para que salga en el humo de la portada (se usan los primeros 6). |
-| `soloConsulta` | `true` para que no se pueda agregar al pedido: solo botón "Consultar" por WhatsApp. Está puesto en habanos y tabacos hasta confirmar qué permite la ley 26.687. |
+| `descripcion` | Texto que aparece en la ficha cuando tocan la foto. |
+| `ficha` | Características de la ficha, como lista de pares: `[["Origen","Cuba"],["Medidas","150 mm · cepo 52"]]`. |
 | `foto` | Ruta de la foto (ej. `fotos/macallan-12.jpg`). Si está vacío se usa un dibujo provisorio. |
 
-En `negocio` falta completar `whatsapp` (con código de país, ej. `5491112345678`) y `horario`.
+En `negocio` falta completar `whatsapp` (con código de país, ej. `5491112345678`), `horario` y `youtube` (link completo al canal; si está vacío no se muestra el botón). En `retiro` van el horario desde/hasta para los turnos de retiro que se ofrecen en el carrito.
 
 ## Pendiente
 

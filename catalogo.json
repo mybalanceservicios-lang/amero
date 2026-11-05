@@ -1,50 +1,39 @@
 {
-  "negocio": {
-    "nombre": "Amero",
-    "bajada": "Tabaquería",
-    "direccion": "Rawson 2015, Martínez",
-    "mapa": "https://goo.gl/maps/tmrPE3364oyp4G8f6",
-    "telefono": "4792-9634",
-    "email": "info@ameroshop.com.ar",
-    "whatsapp": "",
-    "instagram": "tabaqueria.amero",
-    "horario": "",
-    "aviso": ""
-  },
+  "negocio": {"nombre": "Amero", "bajada": "Tabaquería", "direccion": "Rawson 2015, Martínez", "mapa": "https://goo.gl/maps/tmrPE3364oyp4G8f6", "telefono": "4792-9634", "email": "info@ameroshop.com.ar", "whatsapp": "", "instagram": "tabaqueria.amero", "horario": "", "aviso": "", "youtube": "", "retiro": {"desde": "10:00", "hasta": "20:00"}},
   "categorias": [
-    { "id": "habanos", "nombre": "Habanos", "tipo": "habano" },
-    { "id": "whisky", "nombre": "Whisky", "tipo": "botella" },
-    { "id": "pipas", "nombre": "Pipas", "tipo": "pipa" },
-    { "id": "tabacos", "nombre": "Tabacos", "tipo": "lata" },
-    { "id": "licores", "nombre": "Licores y destilados", "tipo": "botella" },
-    { "id": "accesorios", "nombre": "Accesorios", "tipo": "encendedor" }
+    {"id": "habanos", "nombre": "Habanos", "tipo": "habano"},
+    {"id": "whisky", "nombre": "Whisky", "tipo": "botella"},
+    {"id": "pipas", "nombre": "Pipas", "tipo": "pipa"},
+    {"id": "tabacos", "nombre": "Tabacos", "tipo": "lata"},
+    {"id": "licores", "nombre": "Licores y destilados", "tipo": "botella"},
+    {"id": "accesorios", "nombre": "Accesorios", "tipo": "encendedor"}
   ],
   "productos": [
-    { "id": "cohiba-siglo-vi", "nombre": "Cohiba Siglo VI", "categoria": "habanos", "detalle": "Caja x 10", "precio": 0, "estrella": true, "soloConsulta": true, "foto": "fotos/cohiba-siglo-vi.jpg" },
-    { "id": "cohiba-robustos", "nombre": "Cohiba Robustos", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "fotos/cohiba-robustos.jpg" },
-    { "id": "montecristo-club", "nombre": "Montecristo Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "fotos/montecristo-club.jpg" },
-    { "id": "partagas-serie-club", "nombre": "Partagás Serie Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "fotos/partagas-serie-club.jpg" },
-    { "id": "trinidad-coloniales", "nombre": "Trinidad Coloniales", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "fotos/trinidad-coloniales.jpg" },
-    { "id": "romeo-julieta-mini", "nombre": "Romeo y Julieta Mini", "categoria": "habanos", "detalle": "Lata x 20", "precio": 0, "soloConsulta": true, "foto": "fotos/romeo-julieta-mini.jpg" },
+    {"id": "cohiba-siglo-vi", "nombre": "Cohiba Siglo VI", "categoria": "habanos", "detalle": "Caja x 25", "precio": 2150000, "estrella": true, "foto": "fotos/cohiba-siglo-vi.jpg", "descripcion": "Siglo VI de Cohiba es un habano elaborado con las más selectas hojas de tabaco cosechado en Vuelta Abajo. Para su confección se destinan los mejores torcedores. Delicado aroma y sabor exquisito.", "ficha": [["Origen", "Cuba · Vuelta Abajo"], ["Vitola", "Cañonazo"], ["Medidas", "150 mm · cepo 52"], ["Fortaleza", "Media a fuerte"], ["Fumada", "Unos 50 minutos"]]},
+    {"id": "cohiba-robustos", "nombre": "Cohiba Robustos", "categoria": "habanos", "detalle": "Caja x 3", "precio": 195000, "foto": "fotos/cohiba-robustos.jpg", "descripcion": "Robustos de Cohiba es un habano elaborado con las más selectas hojas del tabaco cosechado en Vuelta Abajo, por los torcedores más experimentados. Delicado aroma y sabor exquisito.", "ficha": [["Origen", "Cuba · Vuelta Abajo"], ["Vitola", "Robusto"], ["Medidas", "124 mm · cepo 50"], ["Fortaleza", "Media a fuerte"]]},
+    {"id": "montecristo-club", "nombre": "Montecristo Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 52000, "foto": "fotos/montecristo-club.jpg", "descripcion": "Cigarritos Montecristo en formato Club, ideales para una fumada corta con el sabor de la casa.", "ficha": [["Origen", "Cuba"], ["Formato", "Club (cigarrito)"], ["Tabaco", "100% tabaco de Cuba"], ["Presentación", "Lata x 10"]]},
+    {"id": "partagas-serie-club", "nombre": "Partagás Serie Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 48000, "foto": "fotos/partagas-serie-club.jpg", "descripcion": "Cigarritos Partagás en formato Club: carácter intenso y terroso en una fumada corta.", "ficha": [["Origen", "Cuba"], ["Formato", "Club (cigarrito)"], ["Medidas", "96 mm · cepo 22"], ["Tabaco", "100% tabaco de Cuba"]]},
+    {"id": "trinidad-coloniales", "nombre": "Trinidad Coloniales", "categoria": "habanos", "detalle": "Unidad", "precio": 39000, "foto": "fotos/trinidad-coloniales.jpg", "descripcion": "Un cubano bien presentado, carnoso y agradable para fumar. Notas de madera picante y café, con pizcas de miel y tierra húmeda.", "ficha": [["Origen", "Cuba"], ["Vitola", "Coloniales"], ["Medidas", "132 mm · cepo 44"], ["Fortaleza", "Media"]]},
+    {"id": "romeo-julieta-mini", "nombre": "Romeo y Julieta Mini", "categoria": "habanos", "detalle": "Lata x 10", "precio": 31000, "foto": "fotos/romeo-julieta-mini.jpg", "descripcion": "Cigarritos Romeo y Julieta en formato Mini: suaves y aromáticos, para un momento corto.", "ficha": [["Origen", "Cuba"], ["Formato", "Mini (cigarrito)"], ["Tabaco", "100% tabaco de Cuba"], ["Presentación", "Lata x 10"]]},
 
-    { "id": "macallan-12-double-cask", "nombre": "The Macallan 12 Double Cask", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "estrella": true, "foto": "fotos/macallan-12-double-cask.jpg" },
-    { "id": "talisker-10", "nombre": "Talisker 10 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "estrella": true, "foto": "fotos/talisker-10.jpg" },
-    { "id": "caol-ila-12", "nombre": "Caol Ila 12 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 4, "foto": "fotos/caol-ila-12.jpg" },
-    { "id": "jw-platinum", "nombre": "Johnnie Walker Platinum Label", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "foto": "fotos/jw-platinum.jpg" },
-    { "id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 3, "foto": "fotos/jameson-black-barrel.jpg" },
-    { "id": "monkey-shoulder", "nombre": "Monkey Shoulder", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "foto": "fotos/monkey-shoulder.jpg" },
+    {"id": "macallan-12-double-cask", "nombre": "The Macallan 12 Double Cask", "categoria": "whisky", "detalle": "700 ml", "precio": 165000, "estrella": true, "foto": "fotos/macallan-12-double-cask.jpg", "descripcion": "Single malt de Speyside madurado en barricas de roble americano y europeo que tuvieron jerez. Equilibrio entre miel, cítricos y especias suaves.", "ficha": [["Origen", "Escocia · Speyside"], ["Tipo", "Single malt"], ["Edad", "12 años"], ["Graduación", "40%"]]},
+    {"id": "talisker-10", "nombre": "Talisker 10 años", "categoria": "whisky", "detalle": "750 ml", "precio": 98000, "estrella": true, "foto": "fotos/talisker-10.jpg", "descripcion": "Talisker 10 es un whisky completo y rico en matices: una gran elección para empezar en el mundo de los ahumados y de los whiskies más salinos.", "ficha": [["Origen", "Escocia · Isla de Skye"], ["Tipo", "Single malt"], ["Edad", "10 años"], ["Graduación", "45,8%"]]},
+    {"id": "caol-ila-12", "nombre": "Caol Ila 12 años", "categoria": "whisky", "detalle": "750 ml", "precio": 112000, "stock": 4, "foto": "fotos/caol-ila-12.jpg", "descripcion": "De aroma turboso con notas florales. Suave a yodo y algas, ligeramente medicinal, salado y dulce, con un final seco de pimienta. Con cuerpo y bien equilibrado.", "ficha": [["Origen", "Escocia · Islay"], ["Tipo", "Single malt"], ["Edad", "12 años"], ["Graduación", "43%"]]},
+    {"id": "jw-platinum", "nombre": "Johnnie Walker Platinum Label", "categoria": "whisky", "detalle": "750 ml", "precio": 189000, "foto": "fotos/jw-platinum.jpg", "descripcion": "Mezcla de barriles elegidos uno por uno y madurados al menos 18 años. Intensa, suave y sutilmente ahumada, con compota de frutas, vainilla cremosa, almendras y mandarina.", "ficha": [["Origen", "Escocia"], ["Tipo", "Blended"], ["Edad", "18 años"], ["Graduación", "40%"]]},
+    {"id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 62000, "stock": 3, "foto": "fotos/jameson-black-barrel.jpg", "descripcion": "Whiskey irlandés madurado en barricas de bourbon con doble tostado intenso, que le dan más color y un sabor más suave. Caramelo, miel, vainilla y frutos secos.", "ficha": [["Origen", "Irlanda"], ["Tipo", "Blended · triple destilado"], ["Graduación", "40%"]]},
+    {"id": "monkey-shoulder", "nombre": "Monkey Shoulder", "categoria": "whisky", "detalle": "700 ml", "precio": 74000, "foto": "fotos/monkey-shoulder.jpg", "descripcion": "Mezcla de tres single malts de Speyside. Notas de mermelada, crema catalana, malta, vainilla y especias, con un toque de cacao. Cremoso en boca.", "ficha": [["Origen", "Escocia · Speyside"], ["Tipo", "Blended malt"], ["Graduación", "40%"]]},
 
-    { "id": "pipa-billiard-brezo", "nombre": "Pipa Billiard de brezo", "categoria": "pipas", "detalle": "Curva, filtro 9 mm", "precio": 0, "estrella": true, "foto": "" },
-    { "id": "pipa-dublin", "nombre": "Pipa Dublin", "categoria": "pipas", "detalle": "Recta, terminación arenada", "precio": 0, "foto": "" },
+    {"id": "pipa-billiard-brezo", "nombre": "Pipa Billiard de brezo", "categoria": "pipas", "detalle": "Curva, filtro 9 mm", "precio": 85000, "estrella": true, "foto": "", "descripcion": "Pipa clásica de forma Billiard en raíz de brezo, curva, cómoda para fumar sin sostenerla con la mano.", "ficha": [["Material", "Brezo"], ["Forma", "Billiard curva"], ["Filtro", "9 mm"]]},
+    {"id": "pipa-dublin", "nombre": "Pipa Dublin", "categoria": "pipas", "detalle": "Recta, terminación arenada", "precio": 72000, "foto": "", "descripcion": "Pipa Dublin recta con terminación arenada: cazoleta cónica que concentra el aroma del tabaco.", "ficha": [["Material", "Brezo"], ["Forma", "Dublin recta"], ["Terminación", "Arenada"]]},
 
-    { "id": "tabaco-pipa-aromatico", "nombre": "Tabaco para pipa aromático", "categoria": "tabacos", "detalle": "Lata 50 g", "precio": 0, "estrella": true, "soloConsulta": true, "foto": "" },
-    { "id": "tabaco-armar-virginia", "nombre": "Tabaco para armar Virginia", "categoria": "tabacos", "detalle": "Pouch 30 g", "precio": 0, "soloConsulta": true, "foto": "" },
+    {"id": "tabaco-pipa-aromatico", "nombre": "Tabaco para pipa aromático", "categoria": "tabacos", "detalle": "Lata 50 g", "precio": 28000, "estrella": true, "foto": "", "descripcion": "Mezcla aromática para pipa, suave y dulce, ideal para empezar.", "ficha": [["Uso", "Pipa"], ["Presentación", "Lata 50 g"]]},
+    {"id": "tabaco-armar-virginia", "nombre": "Tabaco para armar Virginia", "categoria": "tabacos", "detalle": "Pouch 30 g", "precio": 9500, "foto": "", "descripcion": "Tabaco Virginia para armar, de corte fino y sabor natural.", "ficha": [["Uso", "Para armar"], ["Presentación", "Pouch 30 g"]]},
 
-    { "id": "jagermeister-cold", "nombre": "Jägermeister Cold Macerated", "categoria": "licores", "detalle": "100 ml", "precio": 0, "stock": 8, "foto": "fotos/jagermeister-cold.jpg" },
-    { "id": "licor-cafe", "nombre": "Licor de café", "categoria": "licores", "detalle": "700 ml", "precio": 0, "foto": "" },
+    {"id": "jagermeister-cold", "nombre": "Jägermeister Cold Macerated", "categoria": "licores", "detalle": "100 ml", "precio": 9800, "stock": 8, "foto": "fotos/jagermeister-cold.jpg", "descripcion": "Licor de hierbas alemán con 56 hierbas y especias. Se toma bien frío.", "ficha": [["Origen", "Alemania"], ["Tipo", "Licor de hierbas"], ["Graduación", "35%"]]},
+    {"id": "licor-cafe", "nombre": "Licor de café", "categoria": "licores", "detalle": "700 ml", "precio": 21000, "foto": "", "descripcion": "Licor de café para después de comer, solo o con hielo.", "ficha": [["Tipo", "Licor"], ["Presentación", "700 ml"]]},
 
-    { "id": "encendedor-jet", "nombre": "Encendedor jet para habanos", "categoria": "accesorios", "detalle": "Llama doble", "precio": 0, "estrella": true, "foto": "" },
-    { "id": "cortapuros", "nombre": "Cortapuros doble hoja", "categoria": "accesorios", "detalle": "Acero inoxidable", "precio": 0, "foto": "" },
-    { "id": "humidor-25", "nombre": "Humidor de cedro", "categoria": "accesorios", "detalle": "Para 25 habanos", "precio": 0, "foto": "" }
+    {"id": "encendedor-jet", "nombre": "Encendedor jet para habanos", "categoria": "accesorios", "detalle": "Llama doble", "precio": 34000, "estrella": true, "foto": "", "descripcion": "Encendedor de llama doble tipo jet, resistente al viento, ideal para habanos.", "ficha": [["Llama", "Doble jet"], ["Carga", "Gas butano"]]},
+    {"id": "cortapuros", "nombre": "Cortapuros doble hoja", "categoria": "accesorios", "detalle": "Acero inoxidable", "precio": 19500, "foto": "", "descripcion": "Cortapuros de doble hoja en acero inoxidable para un corte limpio.", "ficha": [["Material", "Acero inoxidable"], ["Hojas", "Doble"]]},
+    {"id": "humidor-25", "nombre": "Humidor de cedro", "categoria": "accesorios", "detalle": "Para 25 habanos", "precio": 145000, "foto": "", "descripcion": "Humidor de cedro con humidificador para conservar tus habanos en su punto.", "ficha": [["Material", "Cedro"], ["Capacidad", "25 habanos"]]}
   ]
 }
