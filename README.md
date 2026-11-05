@@ -5,6 +5,7 @@ Web pública de Tabaquería Amero (Rawson 2015, Martínez). El cliente arma el p
 ## Archivos
 
 - `index.html`: la web. Portada con la pipa: al bajar, sale humo y aparecen los productos estrella.
+- `fotos/`: logo (`logo-amero.png` en crema para fondo oscuro, `logo-amero-negro.png` original), íconos de la pestaña, fotos de productos (`<id>.jpg`) y de portada.
 - `catalogo.json`: datos del local, categorías y productos. Es lo que se edita para cambiar la web.
 
 ## Cómo cargar productos (`catalogo.json`)
@@ -25,7 +26,7 @@ En `negocio` falta completar `whatsapp` (con código de país, ej. `549111234567
 
 ## Pendiente
 
-- Logo, fotos de productos y del local (hoy hay dibujos provisorios).
+- Fotos del local y de los productos que todavía usan dibujo provisorio (pipas, tabacos, licor de café y accesorios). El logo y 13 fotos de productos se tomaron de ameroshop.com.ar y están en `fotos/`.
 - Precios reales y lista final de productos estrella.
 - Texto de "Nuestra historia" (el actual es provisorio).
 - Conexión con el sistema de stock que arma el socio: la idea es que la web lea productos y stock de la misma base y que cada pedido descuente stock.

@@ -20,19 +20,19 @@
     { "id": "accesorios", "nombre": "Accesorios", "tipo": "encendedor" }
   ],
   "productos": [
-    { "id": "cohiba-siglo-vi", "nombre": "Cohiba Siglo VI", "categoria": "habanos", "detalle": "Caja x 10", "precio": 0, "estrella": true, "soloConsulta": true, "foto": "" },
-    { "id": "cohiba-robustos", "nombre": "Cohiba Robustos", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "" },
-    { "id": "montecristo-club", "nombre": "Montecristo Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "" },
-    { "id": "partagas-serie-club", "nombre": "Partagás Serie Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "" },
-    { "id": "trinidad-coloniales", "nombre": "Trinidad Coloniales", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "" },
-    { "id": "romeo-julieta-mini", "nombre": "Romeo y Julieta Mini", "categoria": "habanos", "detalle": "Lata x 20", "precio": 0, "soloConsulta": true, "foto": "" },
+    { "id": "cohiba-siglo-vi", "nombre": "Cohiba Siglo VI", "categoria": "habanos", "detalle": "Caja x 10", "precio": 0, "estrella": true, "soloConsulta": true, "foto": "fotos/cohiba-siglo-vi.jpg" },
+    { "id": "cohiba-robustos", "nombre": "Cohiba Robustos", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "fotos/cohiba-robustos.jpg" },
+    { "id": "montecristo-club", "nombre": "Montecristo Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "fotos/montecristo-club.jpg" },
+    { "id": "partagas-serie-club", "nombre": "Partagás Serie Club", "categoria": "habanos", "detalle": "Lata x 10", "precio": 0, "soloConsulta": true, "foto": "fotos/partagas-serie-club.jpg" },
+    { "id": "trinidad-coloniales", "nombre": "Trinidad Coloniales", "categoria": "habanos", "detalle": "Unidad", "precio": 0, "soloConsulta": true, "foto": "fotos/trinidad-coloniales.jpg" },
+    { "id": "romeo-julieta-mini", "nombre": "Romeo y Julieta Mini", "categoria": "habanos", "detalle": "Lata x 20", "precio": 0, "soloConsulta": true, "foto": "fotos/romeo-julieta-mini.jpg" },
 
-    { "id": "macallan-12-double-cask", "nombre": "The Macallan 12 Double Cask", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "estrella": true, "foto": "" },
-    { "id": "talisker-10", "nombre": "Talisker 10 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "estrella": true, "foto": "" },
-    { "id": "caol-ila-12", "nombre": "Caol Ila 12 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 4, "foto": "" },
-    { "id": "jw-platinum", "nombre": "Johnnie Walker Platinum Label", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "foto": "" },
-    { "id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 3, "foto": "" },
-    { "id": "monkey-shoulder", "nombre": "Monkey Shoulder", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "foto": "" },
+    { "id": "macallan-12-double-cask", "nombre": "The Macallan 12 Double Cask", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "estrella": true, "foto": "fotos/macallan-12-double-cask.jpg" },
+    { "id": "talisker-10", "nombre": "Talisker 10 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "estrella": true, "foto": "fotos/talisker-10.jpg" },
+    { "id": "caol-ila-12", "nombre": "Caol Ila 12 años", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 4, "foto": "fotos/caol-ila-12.jpg" },
+    { "id": "jw-platinum", "nombre": "Johnnie Walker Platinum Label", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "foto": "fotos/jw-platinum.jpg" },
+    { "id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 0, "stock": 3, "foto": "fotos/jameson-black-barrel.jpg" },
+    { "id": "monkey-shoulder", "nombre": "Monkey Shoulder", "categoria": "whisky", "detalle": "700 ml", "precio": 0, "foto": "fotos/monkey-shoulder.jpg" },
 
     { "id": "pipa-billiard-brezo", "nombre": "Pipa Billiard de brezo", "categoria": "pipas", "detalle": "Curva, filtro 9 mm", "precio": 0, "estrella": true, "foto": "" },
     { "id": "pipa-dublin", "nombre": "Pipa Dublin", "categoria": "pipas", "detalle": "Recta, terminación arenada", "precio": 0, "foto": "" },
@@ -40,7 +40,7 @@
     { "id": "tabaco-pipa-aromatico", "nombre": "Tabaco para pipa aromático", "categoria": "tabacos", "detalle": "Lata 50 g", "precio": 0, "estrella": true, "soloConsulta": true, "foto": "" },
     { "id": "tabaco-armar-virginia", "nombre": "Tabaco para armar Virginia", "categoria": "tabacos", "detalle": "Pouch 30 g", "precio": 0, "soloConsulta": true, "foto": "" },
 
-    { "id": "jagermeister-cold", "nombre": "Jägermeister Cold Macerated", "categoria": "licores", "detalle": "100 ml", "precio": 0, "stock": 8, "foto": "" },
+    { "id": "jagermeister-cold", "nombre": "Jägermeister Cold Macerated", "categoria": "licores", "detalle": "100 ml", "precio": 0, "stock": 8, "foto": "fotos/jagermeister-cold.jpg" },
     { "id": "licor-cafe", "nombre": "Licor de café", "categoria": "licores", "detalle": "700 ml", "precio": 0, "foto": "" },
 
     { "id": "encendedor-jet", "nombre": "Encendedor jet para habanos", "categoria": "accesorios", "detalle": "Llama doble", "precio": 0, "estrella": true, "foto": "" },

@@ -6,6 +6,8 @@
 <title>Amero · Tabaquería en Martínez</title>
 <meta name="description" content="Tabaquería Amero en Martínez: habanos, whiskies, pipas, tabacos y accesorios. Armá tu pedido y lo coordinamos por WhatsApp.">
 <meta name="theme-color" content="#0d0a08">
+<link rel="icon" type="image/png" sizes="32x32" href="fotos/icono-32.png">
+<link rel="apple-touch-icon" href="fotos/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,6 +41,8 @@
   .brand{display:flex;flex-direction:column;line-height:1;text-decoration:none}
   .brand b{font:700 28px/0.9 var(--serif);letter-spacing:.14em}
   .brand small{font-size:9.5px;font-weight:700;letter-spacing:.42em;color:var(--am);margin-top:4px;padding-left:2px}
+  .brand img{display:block;height:42px;width:auto}
+  footer .brand img{height:52px}
   .top nav{display:flex;gap:22px;margin-left:auto}
   .top nav a{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink-2)}
   .top nav a:hover{color:var(--ink)}
@@ -81,7 +85,8 @@
     background:radial-gradient(60% 60% at 40% 35%,rgba(239,228,208,.16),rgba(239,228,208,.04) 70%);
     border:1px solid rgba(239,228,208,.16);box-shadow:0 0 0 6px rgba(239,228,208,.03),0 20px 40px rgba(0,0,0,.35);
     backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);transition:border-color .2s,transform .2s}
-  .estrella .disc svg,.estrella .disc img{width:70%;height:70%;object-fit:contain}
+  .estrella .disc svg{width:70%;height:70%;object-fit:contain}
+  .estrella .disc img{width:100%;height:100%;object-fit:cover;border-radius:50%;background:#fff}
   .estrella .lbl{display:inline-block;margin-top:9px;font:600 15px/1.15 var(--serif);color:var(--ink);background:rgba(13,10,8,.62);padding:3px 10px 4px;border-radius:99px;width:max-content;max-width:19ch;position:relative;left:50%;transform:translateX(-50%)}
   .estrella .cat{display:block;font-size:10px;font-weight:800;letter-spacing:.22em;color:var(--am);text-transform:uppercase;margin-top:3px}
   .estrella:hover .disc{border-color:var(--am);transform:scale(1.05)}
@@ -99,6 +104,7 @@
   .cat-t:hover{border-color:var(--am);transform:translateY(-3px)}
   .cat-t .art{aspect-ratio:1;border-radius:12px;background:radial-gradient(70% 70% at 50% 40%,#2a1f17,#15100c);display:grid;place-items:center}
   .cat-t .art svg{width:66%}
+  .cat-t .art img{width:100%;height:100%;object-fit:contain;border-radius:12px;background:#fff}
   .cat-t b{font:600 21px/1.05 var(--serif)}
   .cat-t span{font-size:12px;color:var(--ink-3);font-weight:700}
 
@@ -116,7 +122,8 @@
   .card.flash{border-color:var(--am);box-shadow:0 0 0 4px var(--am-soft)}
   .card .art{aspect-ratio:1/0.9;display:grid;place-items:center;background:radial-gradient(65% 65% at 50% 42%,#2b2018,#15100c 80%);position:relative}
   .card .art svg{width:52%}
-  .card .art img{width:100%;height:100%;object-fit:cover}
+  .card .art:has(> img){background:#fff}
+  .card .art img{width:100%;height:100%;object-fit:contain;padding:6%}
   .badge{position:absolute;left:12px;top:12px;font-size:11px;font-weight:800;letter-spacing:.06em;border-radius:99px;padding:4px 9px;background:var(--am-soft);color:var(--am-2);border:1px solid rgba(211,154,74,.3)}
   .badge.low{background:rgba(255,122,47,.12);color:#ffa66f;border-color:rgba(255,122,47,.3)}
   .card .bd{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
@@ -140,6 +147,7 @@
   .fact{border:1px solid var(--line);border-radius:16px;padding:20px 16px;background:var(--card)}
   .fact b{display:block;font:600 30px/1 var(--serif);color:var(--am-2)}
   .fact span{display:block;font-size:13px;color:var(--ink-2);margin-top:8px}
+  .hist-foto{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:14px}
 
   /* visitanos */
   .visit{display:grid;grid-template-columns:1fr 1.25fr;gap:40px;align-items:stretch}
@@ -171,6 +179,7 @@
   .it{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
   .it .mini{width:56px;height:56px;border-radius:12px;background:var(--card);display:grid;place-items:center}
   .it .mini svg{width:70%}
+  .it .mini img{width:100%;height:100%;object-fit:contain;border-radius:12px;background:#fff}
   .it b{font:600 18px/1.1 var(--serif);display:block}
   .it small{color:var(--ink-3);font-size:12px}
   .qty{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:10px}
@@ -191,6 +200,7 @@
   .gate .btn{flex:none}
   .gate .brand{align-items:center;margin-bottom:30px}
   .gate .brand b{font-size:44px}
+  .gate .brand img{height:84px}
   .gate h2{font:600 34px/1.05 var(--serif);margin:0}
   .gate p{color:var(--ink-2);margin:12px 0 26px}
   .gate .ctas{justify-content:center}
@@ -248,7 +258,7 @@
 <!-- mayores de 18 -->
 <div class="gate" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateT">
   <div class="box">
-    <div class="brand"><b>AMERO</b><small>TABAQUERÍA</small></div>
+    <div class="brand"><img src="fotos/logo-amero.png" alt="Tabaquería Amero" width="400" height="128"></div>
     <h2 id="gateT">¿Sos mayor de 18 años?</h2>
     <p>Esta web muestra tabaco y bebidas alcohólicas. Es solo para mayores de edad.</p>
     <div class="ctas">
@@ -261,7 +271,7 @@
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="Amero, inicio"><b>AMERO</b><small>TABAQUERÍA</small></a>
+    <a class="brand" href="#inicio" aria-label="Amero, inicio"><img src="fotos/logo-amero.png" alt="Tabaquería Amero" width="400" height="128"></a>
     <nav aria-label="Secciones">
       <a href="#productos">Productos</a>
       <a href="#historia">Nuestra historia</a>
@@ -362,10 +372,13 @@
         <p>En Amero elegimos cada habano, cada whisky y cada pipa como si fuera para nosotros. Te asesoramos para encontrar el tabaco justo, el regalo indicado o la botella para una ocasión especial.</p>
         <p>Vení a conocernos en Martínez o armá tu pedido online.</p>
       </div>
-      <div class="facts">
-        <div class="fact"><b>Habanos</b><span>y tabacos para pipa y para armar</span></div>
-        <div class="fact"><b>Whisky</b><span>licores y destilados</span></div>
-        <div class="fact"><b>1 a 1</b><span>asesoramiento en el local</span></div>
+      <div>
+        <img class="hist-foto" src="fotos/portada-habanos.jpg" alt="Habanos" loading="lazy">
+        <div class="facts">
+          <div class="fact"><b>Habanos</b><span>y tabacos para pipa y para armar</span></div>
+          <div class="fact"><b>Whisky</b><span>licores y destilados</span></div>
+          <div class="fact"><b>1 a 1</b><span>asesoramiento en el local</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -386,7 +399,7 @@
 <footer>
   <div class="wrap">
     <div>
-      <a class="brand" href="#inicio"><b>AMERO</b><small>TABAQUERÍA</small></a>
+      <a class="brand" href="#inicio"><img src="fotos/logo-amero.png" alt="Tabaquería Amero" width="400" height="128"></a>
       <p style="margin:14px 0 0">© <span id="yr"></span> Tabaquería Amero · Rawson 2015, Martínez</p>
     </div>
     <div class="warn">Fumar es perjudicial para la salud. Prohibida la venta de tabaco y de bebidas alcohólicas a menores de 18 años. Beber con moderación.</div>
