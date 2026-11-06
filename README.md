@@ -32,6 +32,8 @@ Se pegan los links tal cual se copian del celular o la compu:
 - `destacado`: link de un video de YouTube. Aparece en "Nuestra historia" y se reproduce ahí mismo. `destacadoTitulo` es el texto que va encima (opcional).
 - `instagram`: lista de hasta 3 links de reels o publicaciones de Instagram. Se muestran en la sección de Instagram. Si está vacía, se ven fotos de muestra que llevan al perfil.
 - En cada producto se puede agregar `video` con un link de YouTube o Instagram: en la ficha aparece el botón "Ver video".
+- `youtube`: lista de videos del canal (`id` y `titulo`). Se muestran en la sección de videos.
+- En cada categoría, `videos` lista los videos del canal sobre ese tema: aparecen en la ficha de cada producto de la categoría, bajo "Videos de Amero".
 
 ## Pendiente
 

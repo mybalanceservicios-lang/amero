@@ -43,6 +43,8 @@
     grid-template-areas:"brand search cart" "links links links";column-gap:28px;align-items:center}
   .brand{grid-area:brand;display:flex;flex-direction:column;line-height:1;text-decoration:none}
   .brand img{display:block;height:42px;width:auto}
+  .top .brand{transition:opacity .35s}
+  body:not(.past) .top .brand{opacity:0;pointer-events:none}
   footer .brand img{height:52px}
   .cartbtn{grid-area:cart;display:flex;align-items:center;gap:8px;background:var(--am);color:#170f08;border:0;border-radius:12px;padding:10px 15px;font-weight:800;font-size:14px}
   .cartbtn svg{width:19px;height:19px}
@@ -76,16 +78,8 @@
   .links .sep{flex:1}
   .links .ig{color:var(--am-2)}
 
-  /* ---------- portada: la pipa ---------- */
-  .pipa{position:relative;height:250vh;height:250svh}
-  .pipa .stage{position:sticky;top:var(--head);height:calc(100vh - var(--head));height:calc(100svh - var(--head));overflow:hidden;
-    background:radial-gradient(45% 60% at 72% 50%,#1d140d 0%,var(--bg) 70%)}
-  .pipa canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
-  .pipa .copy{position:absolute;z-index:4;left:max(20px,calc((100vw - var(--wrap)) / 2 + 20px));top:50%;transform:translateY(-50%);max-width:440px}
+  /* botones y etiquetas generales */
   .eyebrow{font-size:12px;font-weight:800;letter-spacing:.32em;color:var(--am);text-transform:uppercase}
-  .pipa h1{font:400 clamp(52px,6vw,88px)/.92 var(--serif);margin:16px 0 0;letter-spacing:.005em}
-  .pipa h1 em{font-style:normal;color:var(--am-2);display:block}
-  .pipa .copy p{color:var(--ink-2);font-size:17px;margin:20px 0 0;max-width:40ch}
   .ctas{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font-weight:800;font-size:15px;text-decoration:none;border:1px solid transparent}
   .btn.pri{background:var(--am);color:#170f08}
@@ -93,39 +87,42 @@
   .btn.sec{border-color:var(--line-2);color:var(--ink);background:none}
   .btn.sec:hover{border-color:var(--am)}
   .btn svg{width:18px;height:18px}
-  .visual{position:absolute;z-index:3;right:max(0px,calc((100vw - var(--wrap)) / 2));width:min(56vw,680px);top:0;bottom:0}
-  .pipe{position:absolute;left:0;right:0;margin:0 auto;top:calc(50% - 22px);transform:translateY(-50%);width:min(52%,40vh);width:min(52%,40svh);filter:drop-shadow(0 26px 34px rgba(0,0,0,.65))}
-  .pipe .ember{transition:opacity .3s}
-  .ring{position:absolute;z-index:1;border:1px dashed rgba(239,228,208,.08);border-radius:50%;pointer-events:none;opacity:0;transition:opacity .6s}
-  .hint{position:absolute;z-index:4;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--ink-3);transition:opacity .4s}
-  .hint i{width:16px;height:24px;border:2px solid var(--ink-3);border-radius:9px;position:relative}
-  .hint i::after{content:"";position:absolute;left:50%;top:4px;width:2px;height:5px;background:var(--am);transform:translateX(-50%);animation:dot 1.4s infinite}
-  @keyframes dot{to{transform:translate(-50%,8px);opacity:0}}
-  .pipa .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(transparent,var(--bg));z-index:3;pointer-events:none}
 
-  /* productos que salen del humo */
-  .estrella{position:absolute;left:0;top:0;z-index:3;width:var(--m);text-align:center;border:0;background:none;padding:0;
-    opacity:0;will-change:transform,opacity}
-  .stage{--m:108px}
-  .estrella .flo{animation:flo 6s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
-  @keyframes flo{0%{transform:translate(0,0)}100%{transform:translate(0,-8px)}}
-  .estrella .disc{width:var(--m);height:var(--m);border-radius:50%;display:grid;place-items:center;overflow:hidden;
-    background:radial-gradient(60% 60% at 40% 35%,rgba(239,228,208,.16),rgba(239,228,208,.04) 70%);
-    border:2px solid rgba(239,228,208,.22);box-shadow:0 0 0 6px rgba(239,228,208,.04),0 20px 40px rgba(0,0,0,.4);transition:border-color .2s,transform .2s}
-  .estrella .disc svg{width:70%;height:70%}
-  .estrella .disc img{width:100%;height:100%;object-fit:contain;padding:9%;background:#fff}
-  .estrella .lbl{display:inline-block;margin-top:8px;font:700 13px/1.15 var(--sans);color:var(--ink);background:rgba(13,10,8,.72);padding:4px 10px 5px;border-radius:99px;width:max-content;max-width:17ch;position:relative;left:50%;transform:translateX(-50%)}
-  .estrella .lbl i{display:block;font-style:normal;color:var(--am-2);font-weight:800;margin-top:1px}
-  .estrella:hover .disc{border-color:var(--am);transform:scale(1.06)}
+  /* ---------- portada brasa: logo al centro, habano abajo, textos chicos a los costados ---------- */
+  .hero{position:relative;height:240vh;height:240svh}
+  .hero .stage{position:sticky;top:var(--head);height:calc(100vh - var(--head));height:calc(100svh - var(--head));overflow:hidden;
+    background:radial-gradient(60% 55% at 50% 42%,#2a1a0e 0%,var(--bg) 72%);--m:104px}
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+  .hero .orbit{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+  .hero .orbit ellipse{fill:none;stroke:var(--am);stroke-opacity:.35;stroke-width:1}
+  .hlogo{position:absolute;left:50%;top:40%;z-index:3;width:380px;transform:translate(-50%,-50%);margin:0;font-size:inherit}
+  .hlogo img{width:100%;height:auto;display:block}
+  .hlogo span{display:block;text-align:center;margin-top:10px;font:800 11px/1 var(--sans);letter-spacing:.42em;padding-left:.42em;color:var(--am-2);text-transform:uppercase;white-space:nowrap}
+  .cigar{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);width:min(520px,74vw);z-index:3;filter:drop-shadow(0 18px 22px rgba(0,0,0,.55))}
+  .side{position:absolute;z-index:4;top:50%;transform:translateY(-50%);width:210px;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+  .side.l{left:max(28px,calc((100vw - 1400px) / 2))}
+  .side.r{right:max(28px,calc((100vw - 1400px) / 2));text-align:right}
+  .side small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--am-2);margin-bottom:8px}
+  .side b{display:block;font:400 30px/1 var(--serif);letter-spacing:.02em;color:var(--ink);margin-bottom:8px}
+  .side p{margin:0 0 14px}
+  .side .btn{padding:10px 16px;font-size:14px}
+  .side .rule{width:36px;height:1px;background:var(--am);margin:0 0 14px auto}
+  /* pantallas medianas: los textos bajan a los lados del habano */
+  .hero .stage.low .side{top:auto;transform:none;bottom:6%;width:min(210px,calc(50% - 280px))}
+  .hero .stage.tight .side p{display:none}
+  .hero .stage.mini .side{display:none}
+  .hint{position:absolute;left:50%;bottom:calc(6% + 70px);transform:translateX(-50%);z-index:4;font-size:11px;font-weight:800;letter-spacing:.24em;color:var(--ink-3);text-transform:uppercase;white-space:nowrap;transition:opacity .3s}
 
-  /* franja que separa la portada del resto */
-  .franja{position:relative;z-index:5;background:var(--bg-2);border-block:1px solid var(--line-2)}
-  .franja .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-  .fr{display:flex;gap:14px;align-items:center;padding:26px 22px}
-  .fr + .fr{border-left:1px solid var(--line)}
-  .fr svg{width:34px;height:34px;flex:none;color:var(--am)}
-  .fr b{display:block;font-size:15px}
-  .fr span{display:block;font-size:13px;color:var(--ink-3);line-height:1.35}
+  /* productos destacados que salen del humo y quedan alrededor del logo */
+  .estrella{position:absolute;left:0;top:0;z-index:5;width:var(--m);text-align:center;border:0;background:none;padding:0;opacity:0;will-change:transform,opacity}
+  .estrella .disc{width:var(--m);height:var(--m);border-radius:50%;overflow:hidden;background:#fff;
+    border:2px solid rgba(211,154,74,.75);box-shadow:0 0 0 6px rgba(211,154,74,.1),0 18px 34px rgba(0,0,0,.45);transition:transform .2s}
+  .estrella .disc svg{width:70%;height:70%;margin:15%}
+  .estrella .disc:has(svg){background:radial-gradient(60% 60% at 40% 35%,#2b2018,#15100c)}
+  .estrella .disc img{width:100%;height:100%;object-fit:contain;padding:10%}
+  .estrella .lbl{display:block;position:relative;left:50%;transform:translateX(-50%);margin:7px 0 0;width:max-content;max-width:22ch;font:700 12.5px/1.2 var(--sans);color:var(--ink);background:rgba(13,10,8,.78);padding:3px 10px 4px;border-radius:99px}
+  .estrella .lbl i{display:block;font-style:normal;color:var(--am-2);font-weight:800}
+  .estrella:hover .disc{transform:scale(1.07)}
 
   /* ---------- secciones ---------- */
   section{scroll-margin-top:var(--head)}
@@ -212,6 +209,20 @@
   .ficha .foto .vbtn{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;align-items:center;gap:8px;border:0;border-radius:99px;background:#170f08;color:var(--ink);font-weight:800;font-size:13.5px;padding:9px 14px}
   .ficha .foto .vbtn svg{width:14px;height:14px}
   .ficha .foto iframe{width:100%;height:100%;min-height:380px;border:0;border-radius:21px 0 0 21px;background:#000}
+
+  .ytgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px}
+  .ytgrid .vid{margin:0;aspect-ratio:16/10}
+  .ytgrid .vid .yplay{width:58px;height:40px;border-radius:11px}
+  .vid{background:radial-gradient(70% 70% at 50% 40%,#2a1f17,#0d0a08)}
+  .fvids{margin-top:20px}
+  .fvids h4{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+  .fvid{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:6px 10px 6px 6px;margin-top:8px}
+  .fvid:hover{border-color:#ff0033}
+  .fvid .th{position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
+  .fvid .th img{width:100%;height:100%;object-fit:cover}
+  .fvid .th svg{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+  .fvid b{font-size:13.5px;line-height:1.3;font-weight:700}
+  .fvid small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:2px}
 
   /* instagram */
   .ig-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
@@ -353,9 +364,6 @@
   @media (max-width:1000px){
     .cats{grid-template-columns:repeat(3,minmax(0,1fr))}
     .hist,.visit{grid-template-columns:1fr;gap:36px}
-    .franja .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .fr:nth-child(3){border-left:0}
-    .fr:nth-child(n+3){border-top:1px solid var(--line)}
     .reels{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:820px){
@@ -365,25 +373,20 @@
     .cartbtn{justify-self:end}
     .links{display:none}
     .sbox{max-width:none;align-self:start}
-    .pipa{height:auto;padding-top:var(--head)}
-    .pipa .stage{position:relative;top:0;height:max(740px,calc(100svh - var(--head)));background:radial-gradient(90% 50% at 50% 72%,#1d140d 0%,var(--bg) 75%)}
-    .pipa .copy{top:24px;transform:none;left:20px;right:20px;max-width:none}
-    .pipa h1{font-size:clamp(46px,12.5vw,62px)}
-    .pipa .copy p{font-size:15px;margin-top:10px}
+    .hero .stage{--m:64px}
+    .hero .side,.hero .stage.low .side{top:auto;transform:none;bottom:calc(5% + 58px);width:calc(50% - 22px);font-size:12px;line-height:1.4}
+    .side.l{left:16px}
+    .side.r{right:16px}
+    .side small,.side .rule,.side .ig{display:none}
+    .side b{font-size:21px;margin-bottom:4px}
+    .side p{margin:0 0 8px}
+    .side .btn{padding:8px 12px;font-size:12.5px}
+    .cigar{width:min(320px,72vw);bottom:5%}
+    .hint{display:none}
+    .hlogo span{font-size:9px;margin-top:7px;letter-spacing:.3em;padding-left:.3em}
+    .estrella .lbl{font-size:10.5px;margin-top:4px;max-width:14ch;padding:2px 7px 3px}
     .ctas{margin-top:16px}
     .btn{padding:11px 16px;font-size:14px}
-    .visual{left:0;right:0;width:auto;top:300px}
-    .pipa .stage{--m:76px}
-    .pipe{width:46%}
-    .estrella .lbl{font-size:11.5px;margin-top:5px;max-width:13ch;padding:3px 7px 4px}
-    .hint{display:none}
-    .pipa .stage::after{height:36px}
-    .fr{padding:18px 8px;gap:10px}
-    .fr + .fr{border-left:0}
-    .fr:nth-child(2n){border-left:1px solid var(--line);padding-left:14px}
-    .fr svg{width:26px;height:26px}
-    .fr b{font-size:13.5px}
-    .fr span{font-size:12px}
     .block{padding:64px 0}
     .tools{margin-top:24px}
     .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -401,6 +404,9 @@
     .reels{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-20px;padding-inline:20px;scrollbar-width:none}
     .reels::-webkit-scrollbar{display:none}
     .reel{flex:0 0 58%;scroll-snap-align:start}
+    .ytgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-20px;padding-inline:20px;scrollbar-width:none}
+    .ytgrid::-webkit-scrollbar{display:none}
+    .ytgrid .vid{flex:0 0 78%;scroll-snap-align:start}
     .fwrap{padding:0;place-items:end stretch}
     .ficha{grid-template-columns:1fr;border-radius:22px 22px 0 0;max-height:92svh;width:100%;transform:translateY(40px)}
     .ficha .foto{min-height:0;height:min(42svh,340px);border-radius:21px 21px 0 0}
@@ -412,13 +418,15 @@
     .bar .t b{font-size:17px}
     .bar .go{padding:10px 12px;font-size:13.5px}
   }
+  @media (max-width:340px){
+    .estrella .lbl i{display:none}
+  }
   @media (max-width:420px){
     .cats{grid-template-columns:repeat(2,minmax(0,1fr))}
     .bar .thumbs i:nth-child(n+3){display:none}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .estrella .flo,.hint i::after{animation:none}
   }
 </style>
 </head>
@@ -459,86 +467,54 @@
       <span id="hcats" style="display:contents"></span>
       <span class="sep"></span>
       <a href="#historia">Nuestra historia</a>
-      <a href="#instagram" class="ig">Videos en Instagram</a>
+      <a href="#instagram" class="ig">Videos</a>
       <a href="#visitanos">Visitanos</a>
     </nav>
   </div>
 </header>
 
 <main id="inicio">
-  <section class="pipa" id="pipa" aria-label="Amero, tabaquería">
+  <section class="hero" id="pipa" aria-label="Tabaquería Amero">
     <div class="stage" id="stage">
+      <svg class="orbit" id="orbit" aria-hidden="true"><ellipse id="oe" cx="0" cy="0" rx="0" ry="0"/></svg>
       <canvas id="smoke" aria-hidden="true"></canvas>
-      <div class="copy">
-        <div class="eyebrow">Tabaquería · Martínez</div>
-        <h1>Lo mejor de la casa, <em>entre el humo.</em></h1>
-        <p>Habanos, whiskies, pipas, tabacos y accesorios elegidos uno por uno. Armá tu carrito acá y lo coordinamos por WhatsApp.</p>
-        <div class="ctas">
-          <a class="btn pri" href="#productos">Ver productos</a>
-          <a class="btn sec" href="#visitanos">Cómo llegar</a>
-        </div>
+      <h1 class="hlogo" id="hlogo"><img src="fotos/logo-amero.png" alt="Tabaquería Amero" width="400" height="128"><span>Martínez · desde 1963</span></h1>
+      <div class="side l" id="sideL">
+        <small>La casa</small>
+        <b>Habanos, whiskies y pipas</b>
+        <p>Elegidos uno por uno. Armá tu carrito y lo coordinamos por WhatsApp.</p>
+        <a class="btn pri" href="#productos">Ver productos</a>
       </div>
-      <div class="visual" id="visual">
-        <div class="ring" id="ring"></div>
-        <svg class="pipe" id="pipe" viewBox="0 0 420 250" aria-hidden="true">
-          <defs>
-            <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#8a4b25"/><stop offset=".45" stop-color="#5b2f15"/><stop offset="1" stop-color="#2a1408"/>
-            </linearGradient>
-            <linearGradient id="woodS" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#7a4120"/><stop offset="1" stop-color="#341909"/>
-            </linearGradient>
-            <linearGradient id="stem" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#3b3530"/><stop offset=".35" stop-color="#16120f"/><stop offset="1" stop-color="#050404"/>
-            </linearGradient>
-            <linearGradient id="ring" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#f3e6c8"/><stop offset=".5" stop-color="#b59a63"/><stop offset="1" stop-color="#6d5a35"/>
-            </linearGradient>
-            <radialGradient id="emberG" cx=".5" cy=".5" r=".5">
-              <stop offset="0" stop-color="#ffd27a"/><stop offset=".45" stop-color="#ff7a2f"/><stop offset="1" stop-color="#7a1c05"/>
-            </radialGradient>
-            <radialGradient id="glow" cx=".5" cy=".5" r=".5">
-              <stop offset="0" stop-color="#ff8a3d" stop-opacity=".55"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <!-- boquilla -->
-          <path d="M150 170 L34 178 Q20 179 16 182 Q14 184 16 186 Q20 189 34 190 L150 196 Z" fill="url(#stem)"/>
-          <path d="M150 172 L40 179" stroke="#fff" stroke-opacity=".14" stroke-width="2" stroke-linecap="round"/>
-          <!-- caña -->
-          <path d="M262 160 L158 166 Q148 168 148 183 Q148 198 158 200 L268 204 Z" fill="url(#woodS)"/>
-          <rect x="148" y="166" width="11" height="34" rx="3" fill="url(#ring)"/>
-          <!-- cazoleta -->
-          <path d="M250 52 C248 110 252 176 268 206 C282 232 340 232 354 206 C370 176 374 110 372 52 Z" fill="url(#wood)"/>
-          <path d="M262 70 C262 120 266 170 278 196" stroke="#fff" stroke-opacity=".12" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <g stroke="#1c0c04" stroke-opacity=".35" fill="none" stroke-width="1.2">
-            <path d="M290 60 C286 110 292 170 300 214"/><path d="M316 58 C318 110 320 170 316 222"/><path d="M340 60 C346 110 346 160 336 214"/><path d="M200 172 C220 170 240 172 258 170"/>
-          </g>
-          <!-- boca -->
-          <ellipse cx="311" cy="52" rx="61" ry="13" fill="#3a1d0b"/>
-          <ellipse cx="311" cy="53" rx="48" ry="9" fill="#120804"/>
-          <g class="ember" id="ember">
-            <ellipse cx="311" cy="50" rx="60" ry="28" fill="url(#glow)"/>
-            <ellipse cx="311" cy="54" rx="40" ry="6.5" fill="url(#emberG)"/>
-          </g>
-        </svg>
+      <div class="side r" id="sideR">
+        <small>Visitanos</small>
+        <b>Rawson 2015</b>
+        <p>Martínez, Buenos Aires.<br>Retiro en el local o envío.</p>
+        <div class="rule"></div>
+        <p class="ig">@tabaqueria.amero</p>
       </div>
       <div id="stars"></div>
-      <div class="hint" id="hint"><i></i>Deslizá para encender la pipa</div>
+      <svg class="cigar" id="cigar" viewBox="0 0 520 70" aria-hidden="true">
+        <defs>
+          <linearGradient id="cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a6438"/><stop offset=".45" stop-color="#6b3f1f"/><stop offset="1" stop-color="#2f1a0b"/></linearGradient>
+          <linearGradient id="ca" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d4cc"/><stop offset=".5" stop-color="#9c968d"/><stop offset="1" stop-color="#5d5852"/></linearGradient>
+          <linearGradient id="cb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1d58a"/><stop offset=".5" stop-color="#b58a3c"/><stop offset="1" stop-color="#6e5222"/></linearGradient>
+          <radialGradient id="ce" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd27a"/><stop offset=".5" stop-color="#ff7a2f"/><stop offset="1" stop-color="#7a1c05"/></radialGradient>
+          <radialGradient id="cg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff8a3d" stop-opacity=".6"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/></radialGradient>
+        </defs>
+        <ellipse cx="478" cy="35" rx="40" ry="34" fill="url(#cg)" id="glow"/>
+        <path d="M30 14 H428 V56 H30 Q8 56 8 35 Q8 14 30 14 Z" fill="url(#cw)"/>
+        <path d="M40 19 H420" stroke="#fff" stroke-opacity=".12" stroke-width="3" stroke-linecap="round"/>
+        <g stroke="#2a1608" stroke-opacity=".35" stroke-width="1"><path d="M150 14 l30 42"/><path d="M230 14 l30 42"/><path d="M310 14 l30 42"/><path d="M390 14 l26 42"/></g>
+        <rect x="70" y="12" width="54" height="46" rx="3" fill="url(#cb)"/>
+        <rect x="84" y="20" width="26" height="30" rx="2" fill="#8e2a1f"/>
+        <rect x="92" y="28" width="10" height="14" rx="1" fill="#f1d58a" opacity=".85"/>
+        <path d="M428 14 H468 V56 H428 Z" fill="url(#ca)"/>
+        <g stroke="#4a4540" stroke-opacity=".5"><path d="M436 16v38"/><path d="M447 15v40"/><path d="M458 17v36"/></g>
+        <rect x="466" y="15" width="12" height="40" rx="5" fill="url(#ce)" id="ember"/>
+      </svg>
+      <div class="hint" id="hint">Deslizá para encender</div>
     </div>
   </section>
-
-  <div class="franja" aria-label="Cómo comprar">
-    <div class="wrap">
-      <div class="fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2.2l2.3 11h10.8l2-8H6.3"/></svg>
-        <div><b>Comprá online</b><span>Armá el carrito desde el celu o la compu</span></div></div>
-      <div class="fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
-        <div><b>Retirá en el local</b><span>Rawson 2015, Martínez</span></div></div>
-      <div class="fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v9H2z"/><path d="M13 10h4l3 3v3h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
-        <div><b>Envíos</b><span>Coordinamos la entrega por WhatsApp</span></div></div>
-      <div class="fr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/><path d="M9 11h6M9 14h4"/></svg>
-        <div><b>Te asesoramos</b><span>Atención 1 a 1, en el local o por chat</span></div></div>
-    </div>
-  </div>
 
   <section class="block" id="productos">
     <div class="wrap">
@@ -558,17 +534,17 @@
     <div class="wrap hist">
       <div>
         <div class="eyebrow">Nuestra historia</div>
-        <h2>Una tabaquería <em>de barrio</em>, con oficio</h2>
-        <!-- TEXTO PROVISORIO: reemplazar con la historia real del local -->
-        <p>En Amero elegimos cada habano, cada whisky y cada pipa como si fuera para nosotros. Te asesoramos para encontrar el tabaco justo, el regalo indicado o la botella para una ocasión especial.</p>
-        <p>Vení a conocernos en Martínez o armá tu pedido online.</p>
+        <h2>Desde 1963 <em>en Martínez</em></h2>
+        <!-- El año de fundación sale de la descripción del canal de YouTube. El resto del texto es provisorio. -->
+        <p>Tabaquería Amero abrió en 1963 en Rawson 2015, Martínez. Desde entonces elegimos cada habano, cada whisky y cada pipa como si fuera para nosotros.</p>
+        <p>Te asesoramos para encontrar el tabaco justo, el regalo indicado o la botella para una ocasión especial. Vení a conocernos o armá tu pedido online.</p>
       </div>
       <div>
         <div id="histMedia"><img class="hist-foto" src="fotos/portada-habanos.jpg" alt="Habanos" loading="lazy"></div>
         <div class="facts">
+          <div class="fact"><b>1963</b><span>abrimos en Martínez</span></div>
           <div class="fact"><b>Habanos</b><span>y tabacos para pipa y para armar</span></div>
           <div class="fact"><b>Whisky</b><span>licores y destilados</span></div>
-          <div class="fact"><b>1 a 1</b><span>asesoramiento en el local</span></div>
         </div>
         <div id="histYt"></div>
       </div>
@@ -579,9 +555,9 @@
     <div class="wrap">
       <div class="ig-top">
         <div>
-          <div class="eyebrow">En Instagram</div>
+          <div class="eyebrow">YouTube e Instagram</div>
           <h2>Mirá los videos <em>de la casa</em></h2>
-          <p class="lead">Subimos videos mostrando habanos, whiskies, novedades y lo que va llegando al local. Seguinos para no perderte nada.</p>
+          <p class="lead">En el canal explicamos habanos, pipas y tabacos, y hacemos catas de whisky. En Instagram mostramos lo que va llegando al local.</p>
         </div>
         <div class="ctas" id="socialBtns"></div>
       </div>
@@ -770,7 +746,7 @@
 
   /* ---------- instagram y youtube ---------- */
   // sacan el código del video de un link pegado tal cual desde YouTube o Instagram
-  const ytId = u => { const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? m[1] : ''; };
+  const ytId = u => { if (/^[\w-]{11}$/.test(String(u || ''))) return u; const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? m[1] : ''; };
   const igPath = u => { const m = String(u || '').match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|reels|tv)\/([\w-]+)/); return m ? (m[1] === 'reels' ? 'reel' : m[1]) + '/' + m[2] : ''; };
   const ytThumb = id => `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">`;
   const ytFrame = id => `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Video de YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
@@ -780,6 +756,7 @@
     const b = e.target.closest('[data-yt]'); if (!b) return;
     b.outerHTML = `<div class="vid">${ytFrame(b.dataset.yt)}</div>`;
   });
+  const ytTitle = id => ((D.videos || {}).youtube || []).find(v => v.id === id)?.titulo || 'Video de Amero';
   function renderHistMedia(){
     const n = D.negocio, v = D.videos || {}, id = ytId(v.destacado);
     if (id) $('#histMedia').innerHTML = `<button class="vid" data-yt="${id}" aria-label="Reproducir video">${ytThumb(id)}<span class="yplay">${ICON.play}</span>${v.destacadoTitulo ? `<span class="vcap">${esc(v.destacadoTitulo)}</span>` : ''}</button>`;
@@ -802,6 +779,12 @@
     if (reels.length) {
       $('#reels').innerHTML = reels.map(r => `<div class="reel emb">${igFrame(r)}</div>`).join('') +
         `<a class="reel more" href="${esc(ig || '#')}" target="_blank" rel="noopener"><div>${ICON.ig}Ver todos los videos<small>@${esc(n.instagram || 'amero')}</small></div></a>`;
+      return;
+    }
+    const yts = ((D.videos || {}).youtube || []).filter(v => v.id !== (D.videos || {}).destacado).slice(0, 4);
+    if (yts.length) {
+      $('#reels').className = 'ytgrid';
+      $('#reels').innerHTML = yts.map(v => `<button class="vid" data-yt="${esc(v.id)}" aria-label="Reproducir: ${esc(v.titulo)}">${ytThumb(v.id)}<span class="yplay">${ICON.play}</span><span class="vcap">${esc(v.titulo)}</span></button>`).join('');
       return;
     }
     $('#reels').innerHTML = tiles.map(([src, pos, txt]) => `<a class="reel" href="${esc(ig || '#')}" target="_blank" rel="noopener">
@@ -913,7 +896,7 @@
         <div class="price">${precio(p)}</div>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ''}
         ${rows ? `<dl>${rows}</dl>` : ''}
-        <div class="act" data-act="${p.id}">${actHtml(p)}</div></div>`;
+        <div class="act" data-act="${p.id}">${actHtml(p)}</div>${fichaVideos(p)}</div>`;
     $('#closeFicha').onclick = closeFicha;
     if ($('#fVid')) $('#fVid').onclick = () => {
       const y = ytId(p.video);
@@ -921,6 +904,19 @@
       $('#fFoto').innerHTML = y ? ytFrame(y) : igFrame(igPath(p.video));
     };
   }
+  // videos del canal que hablan de este producto o de su categoría
+  function fichaVideos(p){
+    const own = ytId(p.video), cat = (D.categorias.find(c => c.id === p.categoria) || {}).videos || [];
+    const ids = [...new Set([own, ...cat].filter(Boolean))].slice(0, 3);
+    if (!ids.length) return '';
+    return `<div class="fvids"><h4>Videos de Amero</h4>${ids.map(id => `<button class="fvid" data-fv="${esc(id)}"><span class="th"><img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy">${ICON.play}</span>
+      <span><b>${esc(ytTitle(id))}</b><small>${id === own ? 'Sobre este producto' : 'Sobre ' + esc(catName(p.categoria).toLowerCase())} · YouTube</small></span></button>`).join('')}</div>`;
+  }
+  $('#ficha').addEventListener('click', e => {
+    const b = e.target.closest('[data-fv]'); if (!b) return;
+    $('#fFoto').classList.remove('dib'); $('#fFoto').innerHTML = ytFrame(b.dataset.fv);
+    $('#ficha').scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'});
+  });
   function openFicha(id){
     if (!byId(id)) return;
     lastFocus = document.activeElement; fichaId = id; renderFicha();
@@ -1048,123 +1044,137 @@
   let tt;
   function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
 
-  /* ---------- portada: productos destacados en círculo alrededor de la pipa ---------- */
-  const stage = $('#stage'), visual = $('#visual'), pipeEl = $('#pipe'), ember = $('#ember');
-  // ángulos de cada producto en el círculo (0 = derecha, -90 = arriba). Aparecen en este orden.
-  const ANGS = [-55, -125, 5, 175, 60, 120];
-  let stars = [];
+  /* ---------- portada: el habano humea y los destacados salen del humo y rodean el logo ---------- */
+  const stage = $('#stage'), cv = $('#smoke'), sctx = cv.getContext('2d'), logoEl = $('#hlogo'), cigarEl = $('#cigar');
+  let stars = [], G = null, dpr = 1;
   function renderStars(){
-    const list = D.productos.filter(p => p.estrella).slice(0, ANGS.length);
-    $('#stars').innerHTML = list.map((p, i) => `<button class="estrella" data-ver="${p.id}" style="--d:${(-i * 1.1).toFixed(1)}s" aria-label="Ver ${esc(p.nombre)}">
-      <div class="flo"><div class="disc">${art(p)}</div><span class="lbl">${esc(p.nombre)}<i>${precio(p)}</i></span></div></button>`).join('');
+    const list = D.productos.filter(p => p.estrella).slice(0, 6);
+    $('#stars').innerHTML = list.map(p => `<button class="estrella" data-ver="${p.id}" aria-label="Ver ${esc(p.nombre)}">
+      <div class="disc">${art(p)}</div><span class="lbl">${esc(p.nombre)}<i>${precio(p)}</i></span></button>`).join('');
     stars = $$('.estrella');
+    layout();
   }
-
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const ease = t => 1 - Math.pow(1 - t, 3);
   const mobile = () => matchMedia('(max-width:820px)').matches;
-  let t0 = performance.now();
-
-  // cuánto avanzó la portada: en compu con el scroll, en celular con el tiempo
-  function progress(now){
+  function progress(){
     if (reduce) return 1;
-    if (mobile()) return clamp((now - t0 - 500) / 4200);
-    const r = $('#pipa').getBoundingClientRect();
-    return clamp(-r.top / Math.max(1, r.height - innerHeight) * 1.15);
+    // recorrido en que la portada queda fija; las burbujas terminan de salir al 80% y quedan quietas el resto
+    const r = $('#pipa').getBoundingClientRect(), head = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--head')) || 0;
+    return clamp(-r.top / Math.max(1, r.height - stage.offsetHeight - head) * 1.25);
   }
 
-  let geo = null;
-  function measure(){
-    const s = stage.getBoundingClientRect(), v = visual.getBoundingClientRect(), pr = pipeEl.getBoundingClientRect();
-    const m = parseFloat(getComputedStyle(stage).getPropertyValue('--m')) || 108, mob = mobile();
-    const cx = pr.left - s.left + pr.width / 2, cy = pr.top - s.top + pr.height * .5;
-    // radio: lo más grande posible sin salirse de la zona de la pipa (dejando lugar para el nombre)
-    const rx = Math.min(v.width / 2 - m / 2 - (mob ? 16 : 10), (mob ? 1.9 : 1.75) * pr.width / 2 + m * .2);
-    const lbl = mob ? 60 : 52; // lugar para el nombre y el precio debajo de cada círculo
-    const ry = Math.min((v.height - m - lbl) / 2 - 8, rx * (mob ? .95 : .9));
-    geo = {
-      w: s.width, h: s.height, cx, cy: v.top - s.top + (v.height - lbl) / 2 + 4, rx, ry, m,
-      bowlX: pr.left - s.left + pr.width * (311 / 420),
-      bowlY: pr.top - s.top + pr.height * (52 / 250)
-    };
-    const ring = $('#ring');
-    ring.style.left = (geo.cx - (v.left - s.left) - rx) + 'px'; ring.style.top = (geo.cy - (v.top - s.top) - ry) + 'px';
-    ring.style.width = rx * 2 + 'px'; ring.style.height = ry * 2 + 'px';
+  /* Busca el logo y las burbujas más grandes que entran en la pantalla sin pisarse:
+     ni las burbujas (con su nombre) sobre el logo, ni sobre los textos, ni sobre el habano. */
+  function layout(){
+    if (!stars.length) return;
+    const mob = mobile(), W = stage.clientWidth, sr = stage.getBoundingClientRect();
+    const rel = el => { const r = el.getBoundingClientRect(); return {l:r.left - sr.left, t:r.top - sr.top, r:r.right - sr.left, b:r.bottom - sr.top}; };
+    const ang = mob ? [-145, -90, -35, 35, 90, 145] : [-90, -30, 30, 90, 150, 210];
+    // de menos a más sacrificio: textos a los costados, textos abajo, textos sin párrafo, sin textos
+    const modes = mob ? [['', 0], ['tight', 60], ['mini', 260]]
+      : (W >= 1100 ? [['', 0], ['low', 15], ['low tight', 70], ['mini', 260]] : [['low', 0], ['low tight', 60], ['mini', 260]]);
+    // tamaño real del nombre más grande debajo de las burbujas
+    const lbs = stars.map(el => el.querySelector('.lbl'));
+    const lab = Math.max(...lbs.map(l => l.offsetWidth)) + 8, L = Math.max(...lbs.map(l => l.offsetHeight)) + (mob ? 6 : 10), top = 10;
+    let best = null;
+    for (const [mode, penalty] of modes) {
+      stage.className = 'stage ' + mode;
+      const c = rel(cigarEl), sl = rel($('#sideL')), sr2 = rel($('#sideR'));
+      const lowSides = mob || mode.includes('low'), mini = mode === 'mini';
+      const bottom = (lowSides && !mini ? Math.min(c.t, sl.t, sr2.t) : c.t) - 10, avail = bottom - top;
+      const lx = W / 2, xLim = lowSides || mini ? W / 2 - 6 : Math.min(lx - sl.r, sr2.l - lx) - 12;
+      for (let lw = mob ? Math.min(200, W * .55) : 420; lw >= (mob ? 90 : (mode === 'mini' ? 160 : 280)); lw -= 10) {
+        for (let m = mob ? 70 : 112; m >= (mob ? 40 : 56); m -= 2) {
+          const w = Math.max(m, lab), lh = lw * .32 + (mob ? 16 : 21);
+          let rxMin, rxMax, ryMin;
+          if (mob) {   // arco arriba y abajo del logo
+            const s = Math.sin(35 * Math.PI / 180), co = Math.cos(35 * Math.PI / 180);
+            ryMin = (lh / 2 + m / 2 + L + 6) / s; rxMin = (w + 6) / co; rxMax = (xLim - w / 2) / co;
+          } else {     // círculo completo
+            ryMin = lh / 2 + m / 2 + L + 12; rxMin = (lw / 2 + w / 2 + 14) / .866; rxMax = (xLim - w / 2) / .866;
+          }
+          const ryMax = (avail - m - L) / 2;
+          if (ryMin > ryMax || rxMin > rxMax) continue;
+          const score = lw + (mob ? 4 : 3) * m - penalty;
+          if (!best || score > best.score) {
+            const ry = Math.min(ryMax, (ryMin + ryMax) / 2), rx = Math.min(rxMax, Math.max(rxMin, ry * 1.25));
+            best = {score, mode, m, lw, lx, rx, ry, ly: top + (avail - (2 * ry + m + L)) / 2 + ry + m / 2};
+          }
+          break;   // para este logo ya encontramos la burbuja más grande que entra
+        }
+      }
+    }
+    if (!best) best = {mode: 'mini', m: 40, lw: 90, lx: W / 2, rx: W * .32, ry: stage.clientHeight * .28, ly: stage.clientHeight * .4};
+    stage.className = 'stage ' + best.mode;
+    stage.style.setProperty('--m', best.m + 'px');
+    logoEl.style.width = best.lw + 'px'; logoEl.style.top = best.ly + 'px';
+    const c = rel(cigarEl);
+    G = { w: W, h: stage.clientHeight, ang, mob, m: best.m, lx: best.lx, ly: best.ly, rx: best.rx, ry: best.ry,
+      ex: c.l + (c.r - c.l) * (472 / 520), ey: c.t + (c.b - c.t) * .5 };
+    dpr = Math.min(devicePixelRatio || 1, 1.5);
+    cv.width = Math.round(G.w * dpr); cv.height = Math.round(G.h * dpr);
+    $('#orbit').setAttribute('viewBox', `0 0 ${G.w} ${G.h}`);
+    const e = $('#oe'); e.setAttribute('cx', G.lx); e.setAttribute('cy', G.ly); e.setAttribute('rx', G.rx); e.setAttribute('ry', G.ry);
+    const len = Math.PI * (3 * (G.rx + G.ry) - Math.sqrt((3 * G.rx + G.ry) * (G.rx + 3 * G.ry)));
+    e.style.strokeDasharray = len; e.dataset.len = len;
   }
 
-  function placeStars(p){
-    $('#ring').style.opacity = clamp((p - .2) * 2).toFixed(2);
-    stars.forEach((el, i) => {
-      const a = ANGS[i] * Math.PI / 180;
-      const k = ease(clamp((p - .1 - i * .11) / .26));
-      const tx = geo.cx + Math.cos(a) * geo.rx, ty = geo.cy + Math.sin(a) * geo.ry;
-      const x = geo.bowlX + (tx - geo.bowlX) * k - geo.m / 2;
-      const y = geo.bowlY + (ty - geo.bowlY) * k - geo.m / 2;
-      el.style.opacity = clamp(k * 1.6).toFixed(3);
-      el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.35 + .65 * k).toFixed(3)})`;
-      el.style.filter = k < 1 ? `blur(${((1 - k) * 6).toFixed(1)}px)` : '';
-      el.style.pointerEvents = k > .9 ? 'auto' : 'none';
-    });
-  }
-
-  /* humo: partículas suaves que suben de la cazoleta */
   function startSmoke(){
-    const cv = $('#smoke'), ctx = cv.getContext('2d');
     const sprite = document.createElement('canvas'); sprite.width = sprite.height = 128;
     const sg = sprite.getContext('2d'), g = sg.createRadialGradient(64, 64, 0, 64, 64, 64);
     g.addColorStop(0, 'rgba(236,228,215,.5)'); g.addColorStop(.4, 'rgba(236,228,215,.2)'); g.addColorStop(1, 'rgba(236,228,215,0)');
     sg.fillStyle = g; sg.fillRect(0, 0, 128, 128);
-
-    let dpr = 1, parts = [], last = performance.now(), acc = 0, visible = true, raf = 0;
+    let parts = [], last = performance.now(), acc = 0, visible = true, raf = 0;
     const rnd = (a, b) => a + Math.random() * (b - a);
-    function size(){
-      dpr = Math.min(devicePixelRatio || 1, 1.5);
-      measure();
-      cv.width = Math.round(geo.w * dpr); cv.height = Math.round(geo.h * dpr);
-    }
-    size();
-    addEventListener('resize', () => { size(); if (reduce) frame(performance.now()); });
-    new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible && !raf && !reduce) raf = requestAnimationFrame(frame); }).observe(stage);
-
-    function spawn(heat, mob){
-      const up = mob ? rnd(38, 56) : rnd(48, 70);
-      parts.push({ x: geo.bowlX + rnd(-10, 10), y: geo.bowlY - 2, vx: rnd(-5, 5), vy: -up,
-        r: rnd(7, 13), g: rnd(18, 36) * (mob ? .75 : 1), life: 0, max: rnd(4, 6.5), a: rnd(.22, .45) * (.5 + .5 * heat), s: rnd(0, 6.28) });
-    }
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layout(); if (!raf) raf = requestAnimationFrame(frame); }, 120); });
+    if (document.fonts) document.fonts.ready.then(layout);
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }).observe(stage);
 
     function frame(now){
       raf = 0;
       const dt = Math.min(.05, (now - last) / 1000); last = now;
-      const p = progress(now), heat = .25 + .75 * p, mob = mobile();
-      if (!geo) measure();
-      placeStars(p);
-      ember.style.opacity = (.35 + .65 * heat * (.85 + .15 * Math.sin(now / 380))).toFixed(3);
-      $('#hint').style.opacity = mob ? 0 : (1 - clamp(p * 4)).toFixed(2);
-
+      if (!G) layout(); if (!G) return;
+      const p = progress(), heat = .3 + .7 * p;
+      document.body.classList.toggle('past', $('#pipa').getBoundingClientRect().bottom < innerHeight * .6);
+      $('#ember').style.opacity = (.55 + .45 * heat * (.85 + .15 * Math.sin(now / 380))).toFixed(3);
+      $('#glow').style.opacity = (.3 + .7 * heat).toFixed(2);
+      $('#hint').style.opacity = (1 - clamp(p * 4)).toFixed(2);
+      const e = $('#oe'); e.style.strokeDashoffset = (+e.dataset.len * (1 - ease(clamp((p - .05) / .7)))).toFixed(1);
+      stars.forEach((el, i) => {
+        const a = G.ang[i] * Math.PI / 180, k = ease(clamp((p - .08 - i * .1) / .28));
+        const tx = G.lx + Math.cos(a) * G.rx, ty = G.ly + Math.sin(a) * G.ry;
+        const x = G.ex + (tx - G.ex) * k - G.m / 2, y = G.ey + (ty - G.ey) * k - G.m / 2;
+        el.style.opacity = clamp(k * 1.5).toFixed(3);
+        el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.3 + .7 * k).toFixed(3)})`;
+        el.style.filter = k < 1 ? `blur(${((1 - k) * 6).toFixed(1)}px)` : '';
+        el.style.pointerEvents = k > .9 ? 'auto' : 'none';
+      });
       if (!reduce) {
         acc += dt * (9 + 22 * heat);
-        while (acc > 1 && parts.length < 280) { spawn(heat, mob); acc--; }
+        while (acc > 1 && parts.length < 300) {
+          parts.push({ x: G.ex + rnd(-4, 6), y: G.ey - 6, vx: rnd(-6, 4), vy: -(G.mob ? rnd(40, 58) : rnd(50, 74)),
+            r: rnd(6, 12), g: rnd(18, 34) * (G.mob ? .7 : 1), life: 0, max: rnd(4.5, 7), a: rnd(.22, .45) * (.5 + .5 * heat), s: rnd(0, 6.28) });
+          acc--;
+        }
         if (acc > 1) acc = 0;
       }
-      const wind = Math.sin(now / 5200) * 10, t = now / 1000;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, geo.w, geo.h);
+      const t = now / 1000, pull = (G.lx - G.ex) * .16;   // el humo se corre hacia el centro
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0); sctx.clearRect(0, 0, G.w, G.h);
       for (let i = parts.length - 1; i >= 0; i--) {
-        const q = parts[i];
-        q.life += dt; const k = q.life / q.max;
+        const q = parts[i]; q.life += dt; const k = q.life / q.max;
         if (k >= 1) { parts.splice(i, 1); continue; }
-        q.vy -= 5 * dt;
-        q.y += q.vy * dt;
-        q.x += (q.vx + wind + Math.sin(t * .8 + q.s + q.y * .011) * 42 * (.3 + k)) * dt;
+        q.vy -= 5 * dt; q.y += q.vy * dt;
+        q.x += (q.vx + pull + Math.sin(t * .8 + q.s + q.y * .011) * 40 * (.3 + k)) * dt;
         q.r += q.g * dt;
-        ctx.globalAlpha = Math.sin(Math.PI * Math.min(1, k * 1.15)) * q.a;
-        ctx.drawImage(sprite, q.x - q.r, q.y - q.r, q.r * 2, q.r * 2);
+        sctx.globalAlpha = Math.sin(Math.PI * Math.min(1, k * 1.15)) * q.a;
+        sctx.drawImage(sprite, q.x - q.r, q.y - q.r, q.r * 2, q.r * 2);
       }
-      ctx.globalAlpha = 1;
-      if (visible && !reduce) raf = requestAnimationFrame(frame);
+      sctx.globalAlpha = 1;
+      if (visible) raf = requestAnimationFrame(frame);
     }
     raf = requestAnimationFrame(frame);
-    if (!reduce) addEventListener('scroll', () => { if (visible && !raf) raf = requestAnimationFrame(frame); }, {passive:true});
+    addEventListener('scroll', () => { if (visible && !raf) raf = requestAnimationFrame(frame); }, {passive:true});
   }
 })();
 </script>

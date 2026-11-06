@@ -1,13 +1,29 @@
 {
   "negocio": {"nombre": "Amero", "bajada": "Tabaquería", "direccion": "Rawson 2015, Martínez", "mapa": "https://goo.gl/maps/tmrPE3364oyp4G8f6", "telefono": "4792-9634", "email": "info@ameroshop.com.ar", "whatsapp": "", "instagram": "tabaqueria.amero", "horario": "", "aviso": "", "youtube": "https://www.youtube.com/@amerotabaqueria", "retiro": {"desde": "10:00", "hasta": "20:00"}},
-  "videos": {"destacado": "", "destacadoTitulo": "", "instagram": []},
+  "videos": {
+    "destacado": "7BG0bJGDKjg", "destacadoTitulo": "Habanos, parte 1: marcas y estilos cubanos, explicados en el local",
+    "youtube": [
+      {"id": "7BG0bJGDKjg", "titulo": "Habanos, parte 1: marcas y estilos cubanos"},
+      {"id": "pSx0VHn883I", "titulo": "Habanos, parte 2"},
+      {"id": "W_sb3XXqrJM", "titulo": "Habanos, puros y cigarros: cada variedad explicada"},
+      {"id": "IFqXjfLMHT8", "titulo": "Cata: Jameson Black Barrel"},
+      {"id": "rhPCUYilEBE", "titulo": "Cata: Ballantine's 7 años, para acompañar habanos y pipa"},
+      {"id": "NLsgUs3LLck", "titulo": "Pipas, parte 1: variedades y clases"},
+      {"id": "HPlX7ajZPUY", "titulo": "Tabacos de pipa: estilos y clasificación"},
+      {"id": "eaAUZpKAVW0", "titulo": "Tabacos para armar cigarrillos"},
+      {"id": "Q1QdTNIX3HU", "titulo": "Ron Bumbu"},
+      {"id": "3XvxPXyox-0", "titulo": "Amarula: oferta de Navidad"},
+      {"id": "6pGWAMks9g0", "titulo": "Descuento para suscriptores del canal"}
+    ],
+    "instagram": []
+  },
   "categorias": [
-    {"id": "habanos", "nombre": "Habanos", "tipo": "habano"},
-    {"id": "whisky", "nombre": "Whisky", "tipo": "botella"},
-    {"id": "pipas", "nombre": "Pipas", "tipo": "pipa"},
-    {"id": "tabacos", "nombre": "Tabacos", "tipo": "lata"},
-    {"id": "licores", "nombre": "Licores y destilados", "tipo": "botella"},
-    {"id": "accesorios", "nombre": "Accesorios", "tipo": "encendedor"}
+    {"id": "habanos", "nombre": "Habanos", "tipo": "habano", "videos": ["7BG0bJGDKjg", "pSx0VHn883I", "W_sb3XXqrJM"]},
+    {"id": "whisky", "nombre": "Whisky", "tipo": "botella", "videos": ["IFqXjfLMHT8", "rhPCUYilEBE"]},
+    {"id": "pipas", "nombre": "Pipas", "tipo": "pipa", "videos": ["NLsgUs3LLck", "HPlX7ajZPUY"]},
+    {"id": "tabacos", "nombre": "Tabacos", "tipo": "lata", "videos": ["HPlX7ajZPUY", "eaAUZpKAVW0"]},
+    {"id": "licores", "nombre": "Licores y destilados", "tipo": "botella", "videos": ["3XvxPXyox-0", "Q1QdTNIX3HU"]},
+    {"id": "accesorios", "nombre": "Accesorios", "tipo": "encendedor", "videos": ["NLsgUs3LLck"]}
   ],
   "productos": [
     {"id": "cohiba-siglo-vi", "nombre": "Cohiba Siglo VI", "categoria": "habanos", "detalle": "Caja x 25", "precio": 2150000, "estrella": true, "foto": "fotos/cohiba-siglo-vi.jpg", "descripcion": "Siglo VI de Cohiba es un habano elaborado con las más selectas hojas de tabaco cosechado en Vuelta Abajo. Para su confección se destinan los mejores torcedores. Delicado aroma y sabor exquisito.", "ficha": [["Origen", "Cuba · Vuelta Abajo"], ["Vitola", "Cañonazo"], ["Medidas", "150 mm · cepo 52"], ["Fortaleza", "Media a fuerte"], ["Fumada", "Unos 50 minutos"]]},
@@ -21,17 +37,20 @@
     {"id": "talisker-10", "nombre": "Talisker 10 años", "categoria": "whisky", "detalle": "750 ml", "precio": 98000, "estrella": true, "foto": "fotos/talisker-10.jpg", "descripcion": "Talisker 10 es un whisky completo y rico en matices: una gran elección para empezar en el mundo de los ahumados y de los whiskies más salinos.", "ficha": [["Origen", "Escocia · Isla de Skye"], ["Tipo", "Single malt"], ["Edad", "10 años"], ["Graduación", "45,8%"]]},
     {"id": "caol-ila-12", "nombre": "Caol Ila 12 años", "categoria": "whisky", "detalle": "750 ml", "precio": 112000, "stock": 4, "foto": "fotos/caol-ila-12.jpg", "descripcion": "De aroma turboso con notas florales. Suave a yodo y algas, ligeramente medicinal, salado y dulce, con un final seco de pimienta. Con cuerpo y bien equilibrado.", "ficha": [["Origen", "Escocia · Islay"], ["Tipo", "Single malt"], ["Edad", "12 años"], ["Graduación", "43%"]]},
     {"id": "jw-platinum", "nombre": "Johnnie Walker Platinum Label", "categoria": "whisky", "detalle": "750 ml", "precio": 189000, "foto": "fotos/jw-platinum.jpg", "descripcion": "Mezcla de barriles elegidos uno por uno y madurados al menos 18 años. Intensa, suave y sutilmente ahumada, con compota de frutas, vainilla cremosa, almendras y mandarina.", "ficha": [["Origen", "Escocia"], ["Tipo", "Blended"], ["Edad", "18 años"], ["Graduación", "40%"]]},
-    {"id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 62000, "stock": 3, "foto": "fotos/jameson-black-barrel.jpg", "descripcion": "Whiskey irlandés madurado en barricas de bourbon con doble tostado intenso, que le dan más color y un sabor más suave. Caramelo, miel, vainilla y frutos secos.", "ficha": [["Origen", "Irlanda"], ["Tipo", "Blended · triple destilado"], ["Graduación", "40%"]]},
+    {"id": "jameson-black-barrel", "nombre": "Jameson Black Barrel", "categoria": "whisky", "detalle": "750 ml", "precio": 62000, "stock": 3, "foto": "fotos/jameson-black-barrel.jpg", "video": "IFqXjfLMHT8", "descripcion": "Whiskey irlandés madurado en barricas de bourbon con doble tostado intenso, que le dan más color y un sabor más suave. Caramelo, miel, vainilla y frutos secos.", "ficha": [["Origen", "Irlanda"], ["Tipo", "Blended · triple destilado"], ["Graduación", "40%"]]},
     {"id": "monkey-shoulder", "nombre": "Monkey Shoulder", "categoria": "whisky", "detalle": "700 ml", "precio": 74000, "foto": "fotos/monkey-shoulder.jpg", "descripcion": "Mezcla de tres single malts de Speyside. Notas de mermelada, crema catalana, malta, vainilla y especias, con un toque de cacao. Cremoso en boca.", "ficha": [["Origen", "Escocia · Speyside"], ["Tipo", "Blended malt"], ["Graduación", "40%"]]},
+    {"id": "ballantines-7", "nombre": "Ballantine's 7 años", "categoria": "whisky", "detalle": "700 ml", "precio": 42000, "foto": "", "video": "rhPCUYilEBE", "descripcion": "Blended escocés de 7 años terminado en barricas de bourbon: suave, con vainilla y fruta. En el canal lo catamos para combinarlo con habanos y tabaco de pipa.", "ficha": [["Origen", "Escocia"], ["Tipo", "Blended · terminado en barrica de bourbon"], ["Edad", "7 años"], ["Graduación", "40%"]]},
 
-    {"id": "pipa-billiard-brezo", "nombre": "Pipa Billiard de brezo", "categoria": "pipas", "detalle": "Curva, filtro 9 mm", "precio": 85000, "estrella": true, "foto": "", "descripcion": "Pipa clásica de forma Billiard en raíz de brezo, curva, cómoda para fumar sin sostenerla con la mano.", "ficha": [["Material", "Brezo"], ["Forma", "Billiard curva"], ["Filtro", "9 mm"]]},
-    {"id": "pipa-dublin", "nombre": "Pipa Dublin", "categoria": "pipas", "detalle": "Recta, terminación arenada", "precio": 72000, "foto": "", "descripcion": "Pipa Dublin recta con terminación arenada: cazoleta cónica que concentra el aroma del tabaco.", "ficha": [["Material", "Brezo"], ["Forma", "Dublin recta"], ["Terminación", "Arenada"]]},
+    {"id": "pipa-billiard-brezo", "nombre": "Pipa Billiard de brezo", "categoria": "pipas", "detalle": "Curva, filtro 9 mm", "precio": 85000, "estrella": true, "foto": "", "video": "NLsgUs3LLck", "descripcion": "Pipa clásica de forma Billiard en raíz de brezo, curva, cómoda para fumar sin sostenerla con la mano.", "ficha": [["Material", "Brezo"], ["Forma", "Billiard curva"], ["Filtro", "9 mm"]]},
+    {"id": "pipa-dublin", "nombre": "Pipa Dublin", "categoria": "pipas", "detalle": "Recta, terminación arenada", "precio": 72000, "foto": "", "video": "NLsgUs3LLck", "descripcion": "Pipa Dublin recta con terminación arenada: cazoleta cónica que concentra el aroma del tabaco.", "ficha": [["Material", "Brezo"], ["Forma", "Dublin recta"], ["Terminación", "Arenada"]]},
 
-    {"id": "tabaco-pipa-aromatico", "nombre": "Tabaco para pipa aromático", "categoria": "tabacos", "detalle": "Lata 50 g", "precio": 28000, "estrella": true, "foto": "", "descripcion": "Mezcla aromática para pipa, suave y dulce, ideal para empezar.", "ficha": [["Uso", "Pipa"], ["Presentación", "Lata 50 g"]]},
-    {"id": "tabaco-armar-virginia", "nombre": "Tabaco para armar Virginia", "categoria": "tabacos", "detalle": "Pouch 30 g", "precio": 9500, "foto": "", "descripcion": "Tabaco Virginia para armar, de corte fino y sabor natural.", "ficha": [["Uso", "Para armar"], ["Presentación", "Pouch 30 g"]]},
+    {"id": "tabaco-pipa-aromatico", "nombre": "Tabaco para pipa aromático", "categoria": "tabacos", "detalle": "Lata 50 g", "precio": 28000, "estrella": true, "foto": "", "video": "HPlX7ajZPUY", "descripcion": "Mezcla aromática para pipa, suave y dulce, ideal para empezar.", "ficha": [["Uso", "Pipa"], ["Presentación", "Lata 50 g"]]},
+    {"id": "tabaco-armar-virginia", "nombre": "Tabaco para armar Virginia", "categoria": "tabacos", "detalle": "Pouch 30 g", "precio": 9500, "foto": "", "video": "eaAUZpKAVW0", "descripcion": "Tabaco Virginia para armar, de corte fino y sabor natural.", "ficha": [["Uso", "Para armar"], ["Presentación", "Pouch 30 g"]]},
 
     {"id": "jagermeister-cold", "nombre": "Jägermeister Cold Macerated", "categoria": "licores", "detalle": "100 ml", "precio": 9800, "stock": 8, "foto": "fotos/jagermeister-cold.jpg", "descripcion": "Licor de hierbas alemán con 56 hierbas y especias. Se toma bien frío.", "ficha": [["Origen", "Alemania"], ["Tipo", "Licor de hierbas"], ["Graduación", "35%"]]},
     {"id": "licor-cafe", "nombre": "Licor de café", "categoria": "licores", "detalle": "700 ml", "precio": 21000, "foto": "", "descripcion": "Licor de café para después de comer, solo o con hielo.", "ficha": [["Tipo", "Licor"], ["Presentación", "700 ml"]]},
+    {"id": "amarula", "nombre": "Amarula", "categoria": "licores", "detalle": "750 ml", "precio": 32000, "foto": "fotos/amarula.jpg", "video": "3XvxPXyox-0", "descripcion": "Crema de licor sudafricana hecha con el fruto de la marula. Suave y dulce, con notas de caramelo. Se toma con hielo o en postres.", "ficha": [["Origen", "Sudáfrica"], ["Tipo", "Crema de licor"], ["Graduación", "17%"]]},
+    {"id": "ron-bumbu", "nombre": "Ron Bumbu", "categoria": "licores", "detalle": "700 ml", "precio": 68000, "foto": "", "video": "Q1QdTNIX3HU", "descripcion": "Ron de Barbados con especias, de perfil dulce: vainilla, banana y canela. Para tomar solo o con hielo.", "ficha": [["Origen", "Barbados"], ["Tipo", "Ron especiado"], ["Graduación", "35%"]]},
 
     {"id": "encendedor-jet", "nombre": "Encendedor jet para habanos", "categoria": "accesorios", "detalle": "Llama doble", "precio": 34000, "estrella": true, "foto": "", "descripcion": "Encendedor de llama doble tipo jet, resistente al viento, ideal para habanos.", "ficha": [["Llama", "Doble jet"], ["Carga", "Gas butano"]]},
     {"id": "cortapuros", "nombre": "Cortapuros doble hoja", "categoria": "accesorios", "detalle": "Acero inoxidable", "precio": 19500, "foto": "", "descripcion": "Cortapuros de doble hoja en acero inoxidable para un corte limpio.", "ficha": [["Material", "Acero inoxidable"], ["Hojas", "Doble"]]},
