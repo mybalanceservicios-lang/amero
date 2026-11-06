@@ -192,9 +192,10 @@
   .vid{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#000;padding:0;margin-bottom:14px}
   .vid img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .2s,transform .5s}
   .vid:hover img{opacity:1;transform:scale(1.03)}
-  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
   .vid .yplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:52px;border-radius:14px;background:#ff0033;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.5)}
   .vid .yplay svg{width:24px;height:24px;margin-left:3px}
+  .vid .vgo{position:absolute;right:12px;top:12px;z-index:2;background:rgba(0,0,0,.72);color:#fff;font-weight:800;font-size:12px;border-radius:99px;padding:6px 11px}
+  .vid:hover .vgo{background:#ff0033}
   .vid .vcap{position:absolute;left:0;right:0;bottom:0;padding:30px 16px 12px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;font-weight:700;font-size:14px;text-align:left}
   .ytcard{display:flex;align-items:center;gap:14px;margin-top:14px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);text-decoration:none}
   .ytcard:hover{border-color:#ff0033}
@@ -203,18 +204,8 @@
   .ytcard b{display:block;font-size:15px}
   .ytcard span{display:block;font-size:13px;color:var(--ink-3)}
   .ytcard i{margin-left:auto;font-style:normal;font-weight:800;color:var(--am-2);font-size:14px;white-space:nowrap}
-  .reel.emb{background:#fff}
-  .reel.emb::after{display:none}
-  .reel.emb iframe{width:100%;height:100%;border:0}
-  .ficha .foto .vbtn{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;align-items:center;gap:8px;border:0;border-radius:99px;background:#170f08;color:var(--ink);font-weight:800;font-size:13.5px;padding:9px 14px}
+  .ficha .foto .vbtn{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;text-decoration:none;align-items:center;gap:8px;border:0;border-radius:99px;background:#170f08;color:var(--ink);font-weight:800;font-size:13.5px;padding:9px 14px}
   .ficha .foto .vbtn svg{width:14px;height:14px}
-  .ytout{position:absolute;right:12px;bottom:12px;z-index:3;background:rgba(0,0,0,.78);color:#fff;font-weight:800;font-size:12.5px;border-radius:99px;padding:7px 12px;text-decoration:none}
-  .ytout:hover{background:#ff0033}
-  .ficha .foto.playing{background:#000;display:flex;flex-direction:column;align-items:stretch}
-  .ficha .foto.playing iframe{flex:1;min-height:320px}
-  .ficha .foto.playing .ytout{position:static;border-radius:0 0 0 21px;background:#000;padding:13px 16px;text-align:center;border-top:1px solid #222}
-  .ficha .foto.playing .ytout::before{content:"¿No se ve? ";font-weight:600;color:#bbb}
-  .ficha .foto iframe{width:100%;height:100%;min-height:380px;border:0;border-radius:21px 0 0 21px;background:#000}
 
   .ytgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px}
   .ytgrid .vid{margin:0;aspect-ratio:16/10}
@@ -222,7 +213,7 @@
   .vid{background:radial-gradient(70% 70% at 50% 40%,#2a1f17,#0d0a08)}
   .fvids{margin-top:20px}
   .fvids h4{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
-  .fvid{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:6px 10px 6px 6px;margin-top:8px}
+  .fvid{text-decoration:none;color:inherit;display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:6px 10px 6px 6px;margin-top:8px}
   .fvid:hover{border-color:#ff0033}
   .fvid .th{position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#000}
   .fvid .th img{width:100%;height:100%;object-fit:cover}
@@ -754,20 +745,16 @@
   // sacan el código del video de un link pegado tal cual desde YouTube o Instagram
   const ytId = u => { if (/^[\w-]{11}$/.test(String(u || ''))) return u; const m = String(u || '').match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? m[1] : ''; };
   const igPath = u => { const m = String(u || '').match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|reels|tv)\/([\w-]+)/); return m ? (m[1] === 'reels' ? 'reel' : m[1]) + '/' + m[2] : ''; };
-  const ytThumb = id => `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">`;
-  // si el navegador bloquea el video, queda el botón para verlo en YouTube
-  const ytFrame = id => `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Video de YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
-    <a class="ytout" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">Abrir en YouTube ↗</a>`;
-  const igFrame = path => `<iframe src="https://www.instagram.com/${path}/embed" title="Video de Instagram" loading="lazy" scrolling="no" allowtransparency="true"></iframe>`;
-  // el video de YouTube se carga recién cuando lo tocan (más liviano)
-  document.addEventListener('click', e => {
-    const b = e.target.closest('[data-yt]'); if (!b) return;
-    b.outerHTML = `<div class="vid">${ytFrame(b.dataset.yt)}</div>`;
-  });
+  // si la miniatura no carga, queda el fondo oscuro con el botón de play
+  const ytThumb = (id, q = 'hqdefault') => `<img src="https://i.ytimg.com/vi/${id}/${q}.jpg" alt="" loading="lazy" onerror="this.remove()">`;
+  const ytUrl = id => 'https://www.youtube.com/watch?v=' + id;
+  const igUrl = path => 'https://www.instagram.com/' + path + '/';
+  const NEW = 'target="_blank" rel="noopener"';
+  // los videos no se reproducen dentro de la web: cada uno es un link que abre YouTube o Instagram
   const ytTitle = id => ((D.videos || {}).youtube || []).find(v => v.id === id)?.titulo || 'Video de Amero';
   function renderHistMedia(){
     const n = D.negocio, v = D.videos || {}, id = ytId(v.destacado);
-    if (id) $('#histMedia').innerHTML = `<button class="vid" data-yt="${id}" aria-label="Reproducir video">${ytThumb(id)}<span class="yplay">${ICON.play}</span>${v.destacadoTitulo ? `<span class="vcap">${esc(v.destacadoTitulo)}</span>` : ''}</button>`;
+    if (id) $('#histMedia').innerHTML = `<a class="vid" href="${ytUrl(id)}" ${NEW}>${ytThumb(id)}<span class="yplay">${ICON.play}</span><span class="vgo">Ver en YouTube ↗</span>${v.destacadoTitulo ? `<span class="vcap">${esc(v.destacadoTitulo)}</span>` : ''}</a>`;
     $('#histYt').innerHTML = n.youtube ? `<a class="ytcard" href="${esc(n.youtube)}" target="_blank" rel="noopener"><span class="yi">${ICON.yt}</span>
       <span><b>Amero en YouTube</b><span>Recorridos, catas y novedades del local</span></span><i>Ver canal →</i></a>` : '';
   }
@@ -785,14 +772,14 @@
     ];
     const reels = ((D.videos || {}).instagram || []).map(igPath).filter(Boolean).slice(0, 3);
     if (reels.length) {
-      $('#reels').innerHTML = reels.map(r => `<div class="reel emb">${igFrame(r)}</div>`).join('') +
+      $('#reels').innerHTML = reels.map(r => `<a class="reel more" href="${igUrl(r)}" ${NEW}><div>${ICON.play.replace('#fff', 'currentColor')}Ver reel<small>en Instagram ↗</small></div></a>`).join('') +
         `<a class="reel more" href="${esc(ig || '#')}" target="_blank" rel="noopener"><div>${ICON.ig}Ver todos los videos<small>@${esc(n.instagram || 'amero')}</small></div></a>`;
       return;
     }
     const yts = ((D.videos || {}).youtube || []).filter(v => v.id !== (D.videos || {}).destacado).slice(0, 4);
     if (yts.length) {
       $('#reels').className = 'ytgrid';
-      $('#reels').innerHTML = yts.map(v => `<button class="vid" data-yt="${esc(v.id)}" aria-label="Reproducir: ${esc(v.titulo)}">${ytThumb(v.id)}<span class="yplay">${ICON.play}</span><span class="vcap">${esc(v.titulo)}</span></button>`).join('');
+      $('#reels').innerHTML = yts.map(v => `<a class="vid" href="${ytUrl(v.id)}" ${NEW}>${ytThumb(v.id)}<span class="yplay">${ICON.play}</span><span class="vgo">YouTube ↗</span><span class="vcap">${esc(v.titulo)}</span></a>`).join('');
       return;
     }
     $('#reels').innerHTML = tiles.map(([src, pos, txt]) => `<a class="reel" href="${esc(ig || '#')}" target="_blank" rel="noopener">
@@ -898,7 +885,7 @@
     const rows = (p.ficha || []).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
     $('#ficha').innerHTML = `<button class="x" id="closeFicha" aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="foto${p.foto ? '' : ' dib'}" id="fFoto">${p.foto ? `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}">` : art(p)}${badge(p)}
-        ${ytId(p.video) || igPath(p.video) ? `<button class="vbtn" id="fVid">${ICON.play}Ver video</button>` : ''}</div>
+        ${ytId(p.video) ? `<a class="vbtn" href="${ytUrl(ytId(p.video))}" ${NEW}>${ICON.play}Ver video en YouTube ↗</a>` : igPath(p.video) ? `<a class="vbtn" href="${igUrl(igPath(p.video))}" ${NEW}>${ICON.play}Ver video en Instagram ↗</a>` : ''}</div>
       <div class="inf"><div class="eyebrow">${esc(catName(p.categoria))}</div><h3 id="fNom">${esc(p.nombre)}</h3>
         ${p.detalle ? `<div class="det">${esc(p.detalle)}</div>` : ''}
         <div class="price">${precio(p)}</div>
@@ -906,25 +893,15 @@
         ${rows ? `<dl>${rows}</dl>` : ''}
         <div class="act" data-act="${p.id}">${actHtml(p)}</div>${fichaVideos(p)}</div>`;
     $('#closeFicha').onclick = closeFicha;
-    if ($('#fVid')) $('#fVid').onclick = () => {
-      const y = ytId(p.video);
-      $('#fFoto').classList.remove('dib'); $('#fFoto').classList.add('playing');
-      $('#fFoto').innerHTML = y ? ytFrame(y) : igFrame(igPath(p.video));
-    };
   }
   // videos del canal que hablan de este producto o de su categoría
   function fichaVideos(p){
     const own = ytId(p.video), cat = (D.categorias.find(c => c.id === p.categoria) || {}).videos || [];
     const ids = [...new Set([own, ...cat].filter(Boolean))].slice(0, 3);
     if (!ids.length) return '';
-    return `<div class="fvids"><h4>Videos de Amero</h4>${ids.map(id => `<button class="fvid" data-fv="${esc(id)}"><span class="th"><img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy">${ICON.play}</span>
-      <span><b>${esc(ytTitle(id))}</b><small>${id === own ? 'Sobre este producto' : 'Sobre ' + esc(catName(p.categoria).toLowerCase())} · YouTube</small></span></button>`).join('')}</div>`;
+    return `<div class="fvids"><h4>Videos de Amero</h4>${ids.map(id => `<a class="fvid" href="${ytUrl(id)}" ${NEW}><span class="th">${ytThumb(esc(id), 'mqdefault')}${ICON.play}</span>
+      <span><b>${esc(ytTitle(id))}</b><small>${id === own ? 'Sobre este producto' : 'Sobre ' + esc(catName(p.categoria).toLowerCase())} · Ver en YouTube ↗</small></span></a>`).join('')}</div>`;
   }
-  $('#ficha').addEventListener('click', e => {
-    const b = e.target.closest('[data-fv]'); if (!b) return;
-    $('#fFoto').classList.remove('dib'); $('#fFoto').classList.add('playing'); $('#fFoto').innerHTML = ytFrame(b.dataset.fv);
-    $('#ficha').scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'});
-  });
   function openFicha(id){
     if (!byId(id)) return;
     lastFocus = document.activeElement; fichaId = id; renderFicha();
