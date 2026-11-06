@@ -320,15 +320,15 @@
   /* ---------- ficha del producto ---------- */
   .fwrap{position:fixed;inset:0;z-index:62;display:grid;place-items:center;padding:24px;pointer-events:none;visibility:hidden;transition:visibility 0s .3s}
   body.ficha-open .fwrap{visibility:visible;transition:none}
-  .ficha{pointer-events:auto;width:min(900px,100%);max-height:calc(100svh - 48px);overflow:auto;background:var(--bg-2);border:1px solid var(--line-2);border-radius:22px;
+  .ficha{pointer-events:auto;width:min(900px,100%);height:min(640px,calc(100svh - 48px));overflow:hidden;grid-template-rows:minmax(0,1fr);background:var(--bg-2);border:1px solid var(--line-2);border-radius:22px;
     display:grid;grid-template-columns:1fr 1fr;position:relative;opacity:0;transform:translateY(20px) scale(.98);transition:opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
   body.ficha-open .ficha{opacity:1;transform:none}
-  .ficha .x{position:absolute;right:14px;top:14px;z-index:2;background:rgba(13,10,8,.7)}
-  .ficha .foto{background:#fff;display:grid;place-items:center;min-height:380px;border-radius:21px 0 0 21px;position:relative}
-  .ficha .foto img{width:100%;height:100%;max-height:520px;object-fit:contain;padding:8%}
+  .ficha .x{position:absolute;right:14px;top:14px;z-index:3;background:var(--bg-2)}
+  .ficha .foto{background:#fff;display:grid;place-items:center;min-height:0;border-radius:21px 0 0 21px;position:relative;overflow:hidden}
+  .ficha .foto img{width:100%;height:100%;object-fit:contain;padding:8%}
   .ficha .foto.dib{background:radial-gradient(65% 65% at 50% 42%,#2b2018,#15100c 80%)}
   .ficha .foto svg{width:60%}
-  .ficha .inf{padding:34px 30px 28px;display:flex;flex-direction:column}
+  .ficha .inf{padding:34px 30px 28px;display:flex;flex-direction:column;min-height:0;overflow-y:auto;overscroll-behavior:contain}
   .ficha h3{font:400 46px/.95 var(--serif);margin:10px 0 0}
   .ficha .det{color:var(--ink-3);font-size:14px;margin-top:6px}
   .ficha .price{font-size:30px;padding-top:14px;margin-top:0}
@@ -405,9 +405,9 @@
     .ytgrid::-webkit-scrollbar{display:none}
     .ytgrid .vid{flex:0 0 78%;scroll-snap-align:start}
     .fwrap{padding:0;place-items:end stretch}
-    .ficha{grid-template-columns:1fr;border-radius:22px 22px 0 0;max-height:92svh;width:100%;transform:translateY(40px)}
-    .ficha .foto{min-height:0;height:min(42svh,340px);border-radius:21px 21px 0 0}
-    .ficha .inf{padding:20px 20px calc(22px + env(safe-area-inset-bottom))}
+    .ficha{display:flex;flex-direction:column;height:auto;max-height:92svh;border-radius:22px 22px 0 0;width:100%;transform:translateY(40px)}
+    .ficha .foto{flex:none;height:min(38svh,300px);border-radius:21px 21px 0 0}
+    .ficha .inf{flex:1 1 auto;padding:20px 20px calc(22px + env(safe-area-inset-bottom))}
     .ficha h3{font-size:38px}
     .ficha .price{font-size:26px}
     .bar{gap:10px;padding:9px 9px 9px 10px}
@@ -905,7 +905,7 @@
   function openFicha(id){
     if (!byId(id)) return;
     lastFocus = document.activeElement; fichaId = id; renderFicha();
-    document.body.classList.add('ficha-open', 'lock'); $('#ficha').setAttribute('aria-hidden', 'false'); $('#ficha').scrollTop = 0;
+    document.body.classList.add('ficha-open', 'lock'); $('#ficha').setAttribute('aria-hidden', 'false'); $('#ficha .inf').scrollTop = 0;
     renderBar(); setTimeout(() => $('#closeFicha') && $('#closeFicha').focus(), 50);
   }
   function closeFicha(){
@@ -950,7 +950,7 @@
   function renderBar(){
     if (!D) return;
     const t = totals(), open = document.body.classList.contains('cart-open') || document.body.classList.contains('ficha-open');
-    $('#bar').classList.toggle('show', t.units > 0 && !open);
+    $('#bar').classList.toggle('show', t.units > 0 && !open && document.body.classList.contains('past'));
     const ids = t.ids.slice().reverse(), shown = ids.slice(0, 4);
     $('#barThumbs').innerHTML = shown.map(id => `<i>${art(byId(id))}</i>`).join('') + (ids.length > 4 ? `<i class="mas">+${ids.length - 4}</i>` : '');
     $('#barCount').textContent = `${t.units} ${t.units === 1 ? 'producto' : 'productos'} en el carrito`;
@@ -1055,10 +1055,10 @@
     if (!stars.length) return;
     const mob = mobile(), W = stage.clientWidth, sr = stage.getBoundingClientRect();
     const rel = el => { const r = el.getBoundingClientRect(); return {l:r.left - sr.left, t:r.top - sr.top, r:r.right - sr.left, b:r.bottom - sr.top}; };
-    const ang = mob ? [-145, -90, -35, 35, 90, 145] : [-90, -30, 30, 90, 150, 210];
+    const ANGS = { arc: [-145, -90, -35, 35, 90, 145], ring: [-90, -30, 30, 90, 150, 210], sides: [-145, 180, 145, -35, 0, 35] };
     // de menos a más sacrificio: textos a los costados, textos abajo, textos sin párrafo, sin textos
     const modes = mob ? [['', 0], ['tight', 60], ['mini', 260]]
-      : (W >= 1100 ? [['', 0], ['low', 15], ['low tight', 70], ['mini', 260]] : [['low', 0], ['low tight', 60], ['mini', 260]]);
+      : (W >= 1300 ? [['', 0], ['low', 15], ['low tight', 70]] : W >= 1100 ? [['', 0], ['low', 15], ['low tight', 70], ['mini', 260]] : [['low', 0], ['low tight', 60], ['mini', 260]]);
     // tamaño real del nombre más grande debajo de las burbujas
     const lbs = stars.map(el => el.querySelector('.lbl'));
     const lab = Math.max(...lbs.map(l => l.offsetWidth)) + 8, L = Math.max(...lbs.map(l => l.offsetHeight)) + (mob ? 6 : 10), top = 10;
@@ -1067,35 +1067,46 @@
       stage.className = 'stage ' + mode;
       const c = rel(cigarEl), sl = rel($('#sideL')), sr2 = rel($('#sideR'));
       const lowSides = mob || mode.includes('low'), mini = mode === 'mini';
+      // textos abajo solo si entran a los lados del habano sin tocarlo
+      if (!mob && mode.includes('low') && (sl.r > c.l - 8 || sr2.l < c.r + 8)) continue;
       const bottom = (lowSides && !mini ? Math.min(c.t, sl.t, sr2.t) : c.t) - 10, avail = bottom - top;
       const lx = W / 2, xLim = lowSides || mini ? W / 2 - 6 : Math.min(lx - sl.r, sr2.l - lx) - 12;
-      for (let lw = mob ? Math.min(200, W * .55) : 420; lw >= (mob ? 90 : (mode === 'mini' ? 160 : 280)); lw -= 10) {
-        for (let m = mob ? 70 : 112; m >= (mob ? 40 : 56); m -= 2) {
-          const w = Math.max(m, lab), lh = lw * .32 + (mob ? 16 : 21);
-          let rxMin, rxMax, ryMin;
-          if (mob) {   // arco arriba y abajo del logo
-            const s = Math.sin(35 * Math.PI / 180), co = Math.cos(35 * Math.PI / 180);
-            ryMin = (lh / 2 + m / 2 + L + 6) / s; rxMin = (w + 6) / co; rxMax = (xLim - w / 2) / co;
-          } else {     // círculo completo
-            ryMin = lh / 2 + m / 2 + L + 12; rxMin = (lw / 2 + w / 2 + 14) / .866; rxMax = (xLim - w / 2) / .866;
+      for (let lw = mob ? Math.min(200, W * .55) : 420; lw >= (mob ? 90 : (mode === 'mini' || W >= 1300 ? 150 : 280)); lw -= 10) {
+        // en compu se prueban dos acomodos: círculo completo, o tres burbujas a cada lado (necesita menos alto)
+        for (const arr of mob ? ['arc'] : ['ring', 'sides']) {
+          for (let m = mob ? 70 : 112; m >= (mob ? 40 : 56); m -= 2) {
+            const w = Math.max(m, lab), lh = lw * .32 + (mob ? 16 : 21);
+            const s35 = Math.sin(35 * Math.PI / 180), c35 = Math.cos(35 * Math.PI / 180);
+            let rxMin, rxMax, ryMin, ryMax, ext;   // ext: alto que ocupa todo, de la burbuja de arriba al nombre de la de abajo
+            if (arr === 'arc') {          // celular: arco arriba y abajo del logo
+              ryMin = (lh / 2 + m / 2 + L + 6) / s35; rxMin = (w + 6) / c35; rxMax = (xLim - w / 2) / c35;
+              ryMax = (avail - m - L) / 2; ext = ry => 2 * ry + m + L;
+            } else if (arr === 'ring') {  // círculo completo
+              ryMin = lh / 2 + m / 2 + L + 12; rxMin = (lw / 2 + w / 2 + 14) / .866; rxMax = (xLim - w / 2) / .866;
+              ryMax = (avail - m - L) / 2; ext = ry => 2 * ry + m + L;
+            } else {                      // tres a cada lado
+              ryMin = (m + L + 8) / s35; rxMin = (lw / 2 + w / 2 + 14) / c35; rxMax = xLim - w / 2;
+              ryMax = (avail - m - L) / (2 * s35); ext = ry => 2 * ry * s35 + m + L;
+            }
+            if (ryMin > ryMax || rxMin > rxMax || lh > avail) continue;
+            const score = lw + (mob ? 4 : 3) * m - penalty - (arr === 'sides' ? 12 : 0);
+            if (!best || score > best.score) {
+              const ry = Math.min(ryMax, (ryMin + ryMax) / 2);
+              const rx = arr === 'sides' ? Math.min(rxMax, rxMin + 24) : Math.min(rxMax, Math.max(rxMin, ry * 1.25));
+              const e = ext(ry);
+              best = {score, mode, arr, m, lw, lx, rx, ry, ly: top + (avail - e) / 2 + (e - m - L) / 2 + m / 2};
+            }
+            break;   // para este logo y este acomodo ya encontramos la burbuja más grande que entra
           }
-          const ryMax = (avail - m - L) / 2;
-          if (ryMin > ryMax || rxMin > rxMax) continue;
-          const score = lw + (mob ? 4 : 3) * m - penalty;
-          if (!best || score > best.score) {
-            const ry = Math.min(ryMax, (ryMin + ryMax) / 2), rx = Math.min(rxMax, Math.max(rxMin, ry * 1.25));
-            best = {score, mode, m, lw, lx, rx, ry, ly: top + (avail - (2 * ry + m + L)) / 2 + ry + m / 2};
-          }
-          break;   // para este logo ya encontramos la burbuja más grande que entra
         }
       }
     }
-    if (!best) best = {mode: 'mini', m: 40, lw: 90, lx: W / 2, rx: W * .32, ry: stage.clientHeight * .28, ly: stage.clientHeight * .4};
+    if (!best) best = {mode: 'mini', arr: mob ? 'arc' : 'ring', m: 40, lw: 90, lx: W / 2, rx: W * .32, ry: stage.clientHeight * .28, ly: stage.clientHeight * .4};
     stage.className = 'stage ' + best.mode;
     stage.style.setProperty('--m', best.m + 'px');
     logoEl.style.width = best.lw + 'px'; logoEl.style.top = best.ly + 'px';
     const c = rel(cigarEl);
-    G = { w: W, h: stage.clientHeight, ang, mob, m: best.m, lx: best.lx, ly: best.ly, rx: best.rx, ry: best.ry,
+    G = { w: W, h: stage.clientHeight, ang: ANGS[best.arr], mob, m: best.m, lx: best.lx, ly: best.ly, rx: best.rx, ry: best.ry,
       ex: c.l + (c.r - c.l) * (472 / 520), ey: c.t + (c.b - c.t) * .5 };
     dpr = Math.min(devicePixelRatio || 1, 1.5);
     cv.width = Math.round(G.w * dpr); cv.height = Math.round(G.h * dpr);
@@ -1105,7 +1116,15 @@
     e.style.strokeDasharray = len; e.dataset.len = len;
   }
 
+  // ya pasó la portada: aparece el logo chico arriba y la barra del carrito abajo
+  function checkPast(){
+    const past = $('#pipa').getBoundingClientRect().bottom < innerHeight * .6;
+    if (past !== document.body.classList.contains('past')) { document.body.classList.toggle('past', past); renderBar(); }
+  }
+  addEventListener('scroll', checkPast, {passive:true});
+  addEventListener('resize', checkPast);
   function startSmoke(){
+    checkPast();
     const sprite = document.createElement('canvas'); sprite.width = sprite.height = 128;
     const sg = sprite.getContext('2d'), g = sg.createRadialGradient(64, 64, 0, 64, 64, 64);
     g.addColorStop(0, 'rgba(236,228,215,.5)'); g.addColorStop(.4, 'rgba(236,228,215,.2)'); g.addColorStop(1, 'rgba(236,228,215,0)');
@@ -1121,7 +1140,6 @@
       const dt = Math.min(.05, (now - last) / 1000); last = now;
       if (!G) layout(); if (!G) return;
       const p = progress(), heat = .3 + .7 * p;
-      document.body.classList.toggle('past', $('#pipa').getBoundingClientRect().bottom < innerHeight * .6);
       $('#ember').style.opacity = (.55 + .45 * heat * (.85 + .15 * Math.sin(now / 380))).toFixed(3);
       $('#glow').style.opacity = (.3 + .7 * heat).toFixed(2);
       $('#hint').style.opacity = (1 - clamp(p * 4)).toFixed(2);
