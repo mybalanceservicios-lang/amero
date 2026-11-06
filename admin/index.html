@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Amero · Panel</title>
+<style>
+:root{
+  --bg:#f5f2ec;--panel:#fff;--ink:#1e1b17;--muted:#6d665c;--line:#e3ddd2;--soft:#f0ebe2;
+  --accent:#8a4b1f;--accent-ink:#fff;--ok:#2f7d4f;--warn:#a96b12;--bad:#b3261e;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141210;--panel:#1d1a17;--ink:#eee8df;--muted:#a1998d;--line:#332e28;--soft:#26221e;
+  --accent:#d38d55;--accent-ink:#1a120c;--ok:#62c08a;--warn:#e2aa4c;--bad:#f06d64;--shadow:none}}
+:root[data-theme="dark"]{
+  --bg:#141210;--panel:#1d1a17;--ink:#eee8df;--muted:#a1998d;--line:#332e28;--soft:#26221e;
+  --accent:#d38d55;--accent-ink:#1a120c;--ok:#62c08a;--warn:#e2aa4c;--bad:#f06d64;--shadow:none}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);padding:18px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.brand{font-weight:700;font-size:17px;padding:4px 10px 14px;display:flex;align-items:center;gap:8px}
+.brand small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--ink);text-decoration:none;cursor:pointer}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--accent);color:var(--accent-ink)}
+.nav .ico{width:18px;text-align:center}
+.side .foot{margin-top:auto;color:var(--muted);font-size:12px;padding:10px}
+main{padding:24px clamp(16px,3vw,36px) 60px;max-width:1300px;width:100%}
+.head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.head h1{margin:0;font-size:24px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 12px;font-size:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.kpi .l{color:var(--muted);font-size:13px}
+.kpi .v{font-size:24px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .s{color:var(--muted);font-size:12px;margin-top:2px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{border:1px solid var(--line);background:var(--panel);padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.warn{border-color:var(--warn);color:var(--warn)}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn.big{padding:14px;font-size:17px;width:100%}
+input,select,textarea{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+input.big{font-size:17px;padding:12px 14px;width:100%}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+.filters input[type=search],.filters #pq{flex:1;min-width:200px}
+.chk{display:inline-flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+td.n,th.n{text-align:right}
+tr:last-child td{border-bottom:0}
+.row-actions{display:flex;gap:4px;justify-content:flex-end}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;background:var(--soft);color:var(--muted)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+.low{color:var(--bad);font-weight:600}
+.muted{color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:24px}
+/* POS */
+.pos{display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chip{border:1px solid var(--line);background:var(--panel);padding:5px 11px;border-radius:99px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:62vh;overflow:auto;padding:2px}
+.prod{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:10px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:92px}
+.prod:hover{border-color:var(--accent)}
+.prod .nm{font-weight:600;font-size:14px;line-height:1.25}
+.prod .pr{margin-top:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.prod .st{font-size:12px;color:var(--muted)}
+.prod.out{opacity:.5}
+.pos-right{position:sticky;top:16px}
+.line{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.line .nm{font-size:14px}
+.line .nm small{display:block;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:4px}
+.qty button{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);background:var(--panel);cursor:pointer}
+.qty span{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.tot{display:flex;justify-content:space-between;padding:4px 0;font-variant-numeric:tabular-nums}
+.tot.big{font-size:22px;font-weight:700;padding:10px 0}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:13px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.form-grid .full{grid-column:1/-1}
+.age{display:flex;gap:8px;align-items:center;padding:10px;border-radius:8px;background:color-mix(in srgb,var(--warn) 12%,transparent);margin:8px 0;font-size:14px;cursor:pointer}
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:6px;height:180px;padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;min-width:0}
+.bar i{display:block;width:100%;max-width:42px;background:var(--accent);border-radius:5px 5px 0 0;min-height:2px}
+.bar span{font-size:11px;color:var(--muted);white-space:nowrap}
+.hbar{display:grid;grid-template-columns:130px 1fr 110px;gap:8px;align-items:center;margin:6px 0;font-size:14px}
+.hbar .t{height:10px;background:var(--soft);border-radius:5px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--accent)}
+.hbar .n{text-align:right;font-variant-numeric:tabular-nums}
+/* dialog */
+dialog{border:1px solid var(--line);border-radius:14px;padding:0;background:var(--panel);color:var(--ink);width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 40px)}
+dialog.wide{width:min(820px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+dialog header h3{margin:0;font-size:17px}
+dialog .x{border:0;background:none;font-size:22px;cursor:pointer;color:var(--muted)}
+dialog .dbody{padding:16px 18px;overflow:auto;max-height:calc(100vh - 180px)}
+dialog footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line)}
+.cline{display:grid;grid-template-columns:1fr 90px 120px 32px;gap:8px;margin-bottom:8px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:99;width:max-content;max-width:calc(100vw - 32px)}
+.t-msg{background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.2);font-size:14px}
+.t-msg.ok{background:var(--ok);color:#fff}.t-msg.bad{background:var(--bad);color:#fff}
+@media (max-width:980px){.pos{grid-template-columns:1fr}.pos-right{position:static}.cols{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;height:auto;flex-direction:row;overflow-x:auto;padding:8px;z-index:5;border-right:0;border-bottom:1px solid var(--line)}
+  .brand,.side .foot{display:none}
+  .nav{display:flex;gap:4px}
+  .nav a{white-space:nowrap;padding:8px 10px}
+  .form-grid{grid-template-columns:1fr}
+  .hbar{grid-template-columns:90px 1fr 90px}
+  .cline{grid-template-columns:1fr 70px 90px 32px}
+}
+@media print{.side,.head .actions{display:none}}
+.nav .badge{margin-left:auto;background:var(--bad);color:#fff;border-radius:99px;font-size:12px;font-weight:700;padding:1px 8px;min-width:22px;text-align:center}
+.nav .badge:empty{display:none}
+.nav a.on .badge{background:var(--accent-ink);color:var(--accent)}
+.side .foot .btn{margin-top:8px;width:100%}
+.screen[hidden],.app[hidden]{display:none}
+.screen{min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:var(--bg)}
+.screen .card{width:min(420px,100%)}
+.screen h1{margin:0 0 4px;font-size:24px}
+.screen .muted{margin:0 0 16px}
+.screen .field input{width:100%}
+.linkbtn{background:none;border:0;color:var(--accent);cursor:pointer;padding:0;text-decoration:underline;font-size:14px}
+.tabsx{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tabsx button{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:7px 14px;cursor:pointer;font-weight:600}
+.tabsx button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.col h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px}
+.col .zone{background:var(--soft);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;box-shadow:var(--shadow)}
+.pcard.nuevo{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+.pcard .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pcard .top b{font-size:16px}
+.pcard .who{margin:4px 0 8px;font-size:14px}
+.pcard .its{font-size:14px;line-height:1.5;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);padding:8px 0}
+.pcard .bot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pcard .bot .row-actions{flex-wrap:wrap}
+.warnbox{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn);border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px}
+.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--soft);display:block}
+.fotoprev{width:120px;height:120px;border-radius:10px;object-fit:cover;background:var(--soft);display:block;margin-bottom:8px}
+.switch{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.loading{color:var(--muted);padding:30px;text-align:center}
+@media (max-width:860px){.board{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="screen" class="screen"><div class="card"><p class="loading">Cargando…</p></div></div>
+<div class="app" id="app" hidden>
+  <nav class="side">
+    <div class="brand"><span>🍂</span><div><span id="bname">Amero</span><small>Panel de gestión</small></div></div>
+    <div class="nav" id="nav">
+      <a data-v="inicio"><span class="ico">◎</span>Inicio</a>
+      <a data-v="pedidos"><span class="ico">✉</span>Pedidos <span class="badge" id="bPed"></span></a>
+      <a data-v="venta"><span class="ico">＋</span>Vender</a>
+      <a data-v="productos"><span class="ico">▦</span>Productos</a>
+      <a data-v="compras"><span class="ico">⇣</span>Ingresos</a>
+      <a data-v="proveedores"><span class="ico">⚑</span>Proveedores</a>
+      <a data-v="caja"><span class="ico">$</span>Caja</a>
+      <a data-v="historial"><span class="ico">≡</span>Historial</a>
+      <a data-v="reportes"><span class="ico">▤</span>Reportes</a>
+      <a data-v="web"><span class="ico">◐</span>Web</a>
+      <a data-v="ajustes"><span class="ico">⚙</span>Ajustes</a>
+    </div>
+    <div class="foot"><span id="quien"></span><button class="btn sm" id="salir">Cerrar sesión</button></div>
+  </nav>
+  <main id="main"></main>
+</div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="../config.js"></script>
+<script>
+'use strict';
+const CFG = window.AMERO_SUPABASE || {};
+const TIPOS = [['botella','Botella'],['habano','Habano'],['pipa','Pipa'],['lata','Lata de tabaco'],['encendedor','Accesorio / encendedor']];
+let sb = null, D = null, current = 'inicio', ultimoVisto = 0, timer = null;
+
+/* ---------- utilidades ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = new Intl.NumberFormat('es-AR', {style:'currency', currency:'ARS', minimumFractionDigits:0, maximumFractionDigits:2});
+const money = n => fmt.format(Math.round((+n || 0) * 100) / 100);
+const numIn = v => { const n = parseFloat(String(v ?? '').replace(',', '.')); return isFinite(n) ? n : 0; };
+const ms = t => typeof t === 'number' ? t : Date.parse(t);
+const fDT = t => new Date(ms(t)).toLocaleString('es-AR', {dateStyle:'short', timeStyle:'short'});
+const fD = t => new Date(ms(t)).toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit'});
+const hace = t => { const m = Math.round((Date.now() - ms(t)) / 60000); return m < 1 ? 'recién' : m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.round(m/60)} h` : fDT(t); };
+const dayStart = (t = Date.now()) => { const d = new Date(t); d.setHours(0,0,0,0); return d.getTime(); };
+const isoDay = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+const parseDay = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d).getTime(); };
+const iso = t => new Date(t).toISOString();
+const sum = (a, f) => a.reduce((s, x) => s + f(x), 0);
+const prod = id => D.productos.find(p => p.id === id);
+const catName = id => (D.categorias.find(c => c.id === id) || {}).nombre || 'Sin categoría';
+const provName = id => (D.proveedores.find(p => p.id === id) || {}).nombre || '';
+const opts = (arr, sel) => arr.map(o => { const [v, l] = Array.isArray(o) ? o : [o, o]; return `<option value="${esc(v)}" ${String(v) === String(sel ?? '') ? 'selected' : ''}>${esc(l)}</option>`; }).join('');
+const catOpts = sel => opts([['', '— Sin categoría —'], ...D.categorias.map(c => [c.id, c.nombre])], sel);
+const provOpts = (sel, vacio = '— Sin proveedor —') => opts([['', vacio], ...D.proveedores.map(x => [x.id, x.nombre])], sel);
+const render = h => { $('#main').innerHTML = h; };
+const costoVenta = v => sum(v.items, i => (+i.costo || 0) * i.cant);
+const pagos = () => (D.ajustes.pagos && D.ajustes.pagos.length) ? D.ajustes.pagos : ['Efectivo'];
+
+function toast(msg, kind = ''){ const el = document.createElement('div'); el.className = 't-msg ' + kind; el.textContent = msg; $('#toast').appendChild(el); setTimeout(() => el.remove(), 3800); }
+function download(name, content, type){ const b = new Blob([content], {type}); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+function beep(){ try { const c = new (window.AudioContext || window.webkitAudioContext)(); [0, .18].forEach(d => { const o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(.15, c.currentTime + d); g.gain.exponentialRampToValueAtTime(.001, c.currentTime + d + .15); o.connect(g).connect(c.destination); o.start(c.currentTime + d); o.stop(c.currentTime + d + .16); }); } catch(e){} }
+
+/* ---------- base de datos ---------- */
+function traducir(e){
+  const m = (e && e.message) || String(e);
+  if (/Failed to fetch|NetworkError|Load failed|fetch/i.test(m)) return 'Sin conexión. Revisá internet y probá de nuevo.';
+  if (/JWT|jwt expired|invalid claim/i.test(m)) return 'La sesión venció. Volvé a entrar.';
+  return m;
+}
+async function rpc(fn, args){ const {data, error} = await sb.rpc(fn, args || {}); if (error) throw new Error(traducir(error)); return data; }
+async function recargar(){ D = await rpc('admin_datos'); $('#bname').textContent = (D.negocio && D.negocio.nombre) || 'Amero'; badge(D.pendientes); ultimoVisto = Math.max(ultimoVisto, D.ultimo_pedido || 0); }
+// Ejecuta una acción mostrando el error si falla. Devuelve undefined si falló.
+async function hacer(fn, ok){ try { const r = await fn(); if (ok) toast(ok, 'ok'); return r ?? true; } catch(e){ toast(e.message, 'bad'); } }
+
+/* ---------- pantallas de acceso ---------- */
+function pantalla(html){ $('#app').hidden = true; $('#screen').hidden = false; $('#screen').innerHTML = `<div class="card">${html}</div>`; }
+function pantallaConfig(){ pantalla(`<h1>Falta conectar la base</h1><p class="muted">Completá la dirección y la clave de Supabase en el archivo <b>config.js</b> (en la raíz del sitio).</p>`); }
+function pantallaLogin(msg){
+  pantalla(`<h1>Amero · Panel</h1><p class="muted">Entrá con tu email y contraseña.</p>
+    <form id="lf"><div class="field"><label>Email</label><input name="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label>Contraseña</label><input name="pass" type="password" autocomplete="current-password" required></div>
+    <button class="btn primary big">Entrar</button></form>
+    <p style="margin:14px 0 0;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><button class="linkbtn" id="primera">Primera vez: crear contraseña</button><button class="linkbtn" id="olvide">Olvidé mi contraseña</button></p>
+    ${msg ? `<p class="warnbox">${esc(msg)}</p>` : ''}`);
+  const f = $('#lf'), redirect = location.origin + location.pathname;
+  f.email.focus();
+  f.onsubmit = async e => {
+    e.preventDefault(); const b = f.querySelector('button'); b.disabled = true;
+    const {error} = await sb.auth.signInWithPassword({email: f.email.value.trim(), password: f.pass.value});
+    b.disabled = false;
+    if (error) return toast(/invalid/i.test(error.message) ? 'Email o contraseña incorrectos' : /confirm/i.test(error.message) ? 'Primero confirmá tu email con el link que te llegó' : traducir(error), 'bad');
+    entrar();
+  };
+  $('#olvide').onclick = async () => {
+    const email = f.email.value.trim(); if (!email) { toast('Escribí tu email arriba', 'bad'); return f.email.focus(); }
+    const {error} = await sb.auth.resetPasswordForEmail(email, {redirectTo: redirect});
+    error ? toast(traducir(error), 'bad') : toast('Te mandamos un mail para elegir una contraseña nueva', 'ok');
+  };
+  $('#primera').onclick = async () => {
+    const email = f.email.value.trim(), pass = f.pass.value;
+    if (!email || pass.length < 8) { toast('Escribí tu email y una contraseña de 8 caracteres o más', 'bad'); return; }
+    const {data, error} = await sb.auth.signUp({email, password: pass, options: {emailRedirectTo: redirect}});
+    if (error) return toast(/registered|exists/i.test(error.message) ? 'Ese email ya tiene cuenta. Usá "Olvidé mi contraseña".' : traducir(error), 'bad');
+    if (data.session) return entrar();
+    toast('Listo. Te llegó un mail para confirmar; tocá el link y volvé a entrar.', 'ok');
+  };
+}
+async function entrar(tipo){
+  pantalla('<p class="loading">Cargando…</p>');
+  try { await recargar(); }
+  catch(e){
+    const {data} = await sb.auth.getUser();
+    if (/permiso/i.test(e.message)) {
+      pantalla(`<h1>Sin acceso</h1><p class="muted">${esc(data.user && data.user.email || 'Este usuario')} no está habilitado como administrador. Pedile a quien maneja el panel que te agregue en Ajustes.</p><button class="btn" id="out">Salir</button>`);
+      $('#out').onclick = salir; return;
+    }
+    pantalla(`<h1>No se pudo cargar</h1><p class="muted">${esc(e.message)}</p><button class="btn primary" id="re">Reintentar</button>`); $('#re').onclick = () => entrar(); return;
+  }
+  $('#screen').hidden = true; $('#app').hidden = false;
+  $('#quien').textContent = D.email || '';
+  let v = 'inicio'; try { v = localStorage.getItem('ameroPanelVista') || 'inicio'; } catch(e){}
+  go(v);
+  clearInterval(timer); timer = setInterval(vigilar, 20000);
+  if (tipo) cambiarClave(true);
+}
+function cambiarClave(primera){
+  modal(primera ? 'Elegí tu contraseña' : 'Cambiar contraseña', `<div class="field"><label>Contraseña nueva (8 caracteres o más)</label><input name="p1" type="password" autocomplete="new-password"></div>
+    <div class="field"><label>Repetila</label><input name="p2" type="password" autocomplete="new-password"></div>`, {onSubmit: async d => {
+      if (d.p1.length < 8) { toast('Tiene que tener al menos 8 caracteres', 'bad'); return false; }
+      if (d.p1 !== d.p2) { toast('Las contraseñas no coinciden', 'bad'); return false; }
+      const {error} = await sb.auth.updateUser({password: d.p1}); if (error) throw new Error(traducir(error));
+      toast('Contraseña guardada', 'ok');
+    }});
+}
+async function salir(){ clearInterval(timer); await sb.auth.signOut(); D = null; pantallaLogin(); }
+
+/* ---------- pedidos nuevos (se revisa cada 20 segundos) ---------- */
+function badge(n){ $('#bPed').textContent = n > 0 ? n : ''; document.title = (n > 0 ? `(${n}) ` : '') + 'Amero · Panel'; }
+async function vigilar(){
+  if (document.hidden && Math.random() < .5) return;
+  let r; try { r = await rpc('admin_resumen'); } catch(e){ return; }
+  badge(r.pendientes);
+  if (r.ultimo_pedido > ultimoVisto) {
+    const nuevos = r.ultimo_pedido - ultimoVisto; ultimoVisto = r.ultimo_pedido;
+    beep(); toast(nuevos === 1 ? `Entró el pedido #${r.ultimo_pedido}` : `Entraron ${nuevos} pedidos nuevos`, 'ok');
+    if (current === 'pedidos' && pz === 'activos' && !$('#dlg').open) pedidos();
+  }
+}
+
+/* ---------- navegación ---------- */
+const views = {inicio, pedidos, venta, productos, compras, proveedores, caja, historial, reportes, web, ajustes};
+function go(v){
+  if (!views[v]) v = 'inicio';
+  current = v;
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.v === v));
+  render('<p class="loading">Cargando…</p>');
+  Promise.resolve(views[v]()).catch(e => render(`<div class="card"><p>No se pudo cargar: ${esc(traducir(e))}</p><button class="btn" onclick="go(current)">Reintentar</button></div>`));
+  try { localStorage.setItem('ameroPanelVista', v); } catch(e){}
+  window.scrollTo(0, 0);
+}
+$('#nav').addEventListener('click', e => { const a = e.target.closest('a[data-v]'); if (a) go(a.dataset.v); });
+$('#salir').onclick = salir;
+
+/* ---------- ventana emergente ---------- */
+function modal(title, body, {onSubmit, submitLabel = 'Guardar', wide = false, extra = ''} = {}){
+  const d = $('#dlg'); d.className = wide ? 'wide' : '';
+  d.innerHTML = `<form novalidate><header><h3>${esc(title)}</h3><button type="button" class="x" data-close aria-label="Cerrar">×</button></header>
+  <div class="dbody">${body}</div>
+  <footer>${extra}<button type="button" class="btn" data-close>${onSubmit ? 'Cancelar' : 'Cerrar'}</button>${onSubmit ? `<button class="btn primary" type="submit">${esc(submitLabel)}</button>` : ''}</footer></form>`;
+  d.querySelectorAll('[data-close]').forEach(b => b.onclick = () => d.close());
+  d.querySelector('form').onsubmit = async e => {
+    e.preventDefault(); if (!onSubmit) { d.close(); return; }
+    const f = e.target, data = Object.fromEntries(new FormData(f));
+    f.querySelectorAll('input[type=checkbox][name]').forEach(c => data[c.name] = c.checked);
+    const btn = f.querySelector('[type=submit]'); btn.disabled = true;
+    try { if (await onSubmit(data, f) !== false) d.close(); }
+    catch(err){ toast(err.message, 'bad'); }
+    finally { btn.disabled = false; }
+  };
+  if (!d.open) d.showModal();
+  const first = d.querySelector('.dbody input:not([type=checkbox]):not([type=file]),.dbody select'); first && first.focus();
+  return d;
+}
+
+/* ---------- INICIO ---------- */
+async function inicio(){
+  const hoy = dayStart();
+  const vs7 = (await rpc('admin_ventas', {p_desde: iso(dayStart(Date.now() - 6*864e5)), p_hasta: iso(hoy + 864e5)})).filter(v => !v.anulada);
+  const vs = vs7.filter(v => ms(v.fecha) >= hoy);
+  const tot = sum(vs, v => +v.total), gan = sum(vs, v => v.total - costoVenta(v));
+  const bajos = D.productos.filter(p => p.stock <= p.stock_min).sort((a, b) => a.stock - b.stock);
+  const days = []; for (let i = 6; i >= 0; i--) { const s = dayStart(Date.now() - i*864e5), e = s + 864e5; days.push({label: i === 0 ? 'Hoy' : new Date(s).toLocaleDateString('es-AR', {weekday:'short'}), value: sum(vs7.filter(v => ms(v.fecha) >= s && ms(v.fecha) < e), v => +v.total)}); }
+  const c = D.caja;
+  render(`<div class="head"><h1>Hola 👋</h1><div class="actions"><button class="btn" data-go="pedidos">Ver pedidos</button><button class="btn primary" data-go="venta">+ Nueva venta</button></div></div>
+  <div class="kpis">
+    <div class="card kpi" data-go="pedidos" style="cursor:pointer"><div class="l">Pedidos nuevos</div><div class="v">${D.pendientes ? `<span class="low">${D.pendientes}</span>` : '0'}</div><div class="s">${D.pendientes ? 'esperando que los cobres' : 'todo al día'}</div></div>
+    <div class="card kpi"><div class="l">Ventas de hoy</div><div class="v">${money(tot)}</div><div class="s">${vs.length} ticket${vs.length === 1 ? '' : 's'}</div></div>
+    <div class="card kpi"><div class="l">Ganancia bruta hoy</div><div class="v">${money(gan)}</div><div class="s">${tot ? Math.round(gan/tot*100) : 0}% sobre ventas</div></div>
+    <div class="card kpi"><div class="l">Caja</div><div class="v">${c ? '<span class="pill ok">Abierta</span>' : '<span class="pill bad">Cerrada</span>'}</div><div class="s">${c ? 'desde ' + fDT(c.apertura) : 'Abrila para vender'}</div></div>
+    <div class="card kpi"><div class="l">Inventario (a costo)</div><div class="v">${money(sum(D.productos, p => Math.max(0, p.stock) * p.costo))}</div><div class="s">${D.productos.length} productos</div></div>
+  </div>
+  <div class="cols">
+    <div class="card"><h2>Últimos 7 días</h2>${bars(days)}</div>
+    <div class="card"><h2>Stock bajo ${bajos.length ? `<span class="pill bad">${bajos.length}</span>` : ''}</h2>
+      ${bajos.length ? `<div class="tablewrap"><table><tr><th>Producto</th><th class="n">Stock</th><th class="n">Mínimo</th></tr>${bajos.slice(0, 8).map(p => `<tr><td>${esc(p.nombre)}</td><td class="n low">${p.stock}</td><td class="n">${p.stock_min}</td></tr>`).join('')}</table></div>
+      ${bajos.length > 8 ? `<p class="muted">y ${bajos.length - 8} más…</p>` : ''}<p><button class="btn sm" data-go="compras">Cargar ingreso de mercadería</button></p>` : '<p class="empty">Todo el stock está por encima del mínimo ✓</p>'}
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><h2>Últimas ventas</h2>${tablaVentas(vs7.slice().reverse().slice(0, 6))}</div>`);
+  bindGo(); bindVentaRows();
+}
+function bindGo(){ document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go)); }
+function bars(data){ const m = Math.max(1, ...data.map(d => d.value)); return `<div class="bars">${data.map(d => `<div class="bar" title="${esc(d.label)}: ${money(d.value)}"><span>${d.value ? money(d.value) : ''}</span><i style="height:${Math.max(1, d.value/m*100)}%"></i><span>${esc(d.label)}</span></div>`).join('')}</div>`; }
+function hbars(rows){ const m = Math.max(1, ...rows.map(r => r.value)); return rows.length ? rows.map(r => `<div class="hbar"><span title="${esc(r.label)}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.label)}</span><div class="t"><i style="width:${r.value/m*100}%"></i></div><span class="n">${r.fmt ? r.fmt(r.value) : money(r.value)}</span></div>`).join('') : '<p class="empty">Sin datos en el período</p>'; }
+
+/* ---------- PEDIDOS ---------- */
+let pz = 'activos';
+const ESTADO = {pendiente: ['Nuevo', 'warn'], pagado: ['Pagado', 'ok'], entregado: ['Entregado', 'ok'], cancelado: ['Cancelado', 'bad']};
+async function pedidos(){
+  const list = await rpc('admin_pedidos', {p_zona: pz});
+  const head = `<div class="head"><h1>Pedidos</h1><div class="actions"><button class="btn" id="refP">Actualizar</button><button class="btn primary" id="nuevoP">+ Cargar pedido</button></div></div>
+    <div class="tabsx"><button data-z="activos" class="${pz === 'activos' ? 'on' : ''}">En curso</button><button data-z="completados" class="${pz === 'completados' ? 'on' : ''}">Completados</button></div>`;
+  if (pz === 'activos') {
+    const pend = list.filter(p => p.estado === 'pendiente'), pag = list.filter(p => p.estado === 'pagado');
+    badge(pend.length); ultimoVisto = Math.max(ultimoVisto, ...list.map(p => +p.nro));
+    render(head + `<p class="muted" style="margin-top:-4px">Los pedidos de la web aparecen solos acá. Cuando lo cobrás pasa a <b>Pagados</b> (y se descuenta el stock); cuando lo entregás pasa a <b>Completados</b>.</p>
+      <div class="board" id="board">
+        <div class="col"><h2>Nuevos · por cobrar <span class="pill warn">${pend.length}</span></h2><div class="zone">${pend.map(cardPedido).join('') || '<p class="empty">No hay pedidos nuevos</p>'}</div></div>
+        <div class="col"><h2>Pagados · por entregar <span class="pill ok">${pag.length}</span></h2><div class="zone">${pag.map(cardPedido).join('') || '<p class="empty">Nada para entregar</p>'}</div></div>
+      </div>`);
+  } else {
+    render(head + `<div class="card"><div class="tablewrap"><table id="board"><tr><th>#</th><th>Cliente</th><th>Productos</th><th class="n">Total</th><th>Estado</th><th></th></tr>
+      ${list.length ? list.map(p => `<tr><td>${p.nro}</td><td>${esc(p.cliente || '—')}<br><small class="muted">${fDT(p.entregado_en || p.cancelado_en || p.fecha)}</small></td><td class="muted">${p.items.map(i => `${i.cant}× ${esc(i.nombre)}`).join(', ')}</td><td class="n">${money(p.total)}</td><td><span class="pill ${ESTADO[p.estado][1]}">${ESTADO[p.estado][0]}</span></td>
+        <td><div class="row-actions"><button class="btn sm" data-a="ver" data-id="${p.id}">Ver</button><button class="btn sm" data-a="reabrir" data-id="${p.id}">Reabrir</button></div></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Todavía no hay pedidos completados</td></tr>'}</table></div></div>`);
+  }
+  document.querySelectorAll('[data-z]').forEach(b => b.onclick = () => { pz = b.dataset.z; pedidos(); });
+  $('#refP').onclick = () => pedidos();
+  $('#nuevoP').onclick = () => pedidoForm();
+  $('#board').onclick = e => { const b = e.target.closest('[data-a]'); if (b) accionPedido(b.dataset.a, list.find(p => p.id === b.dataset.id)); };
+}
+function cardPedido(p){
+  const sinPrecio = p.items.some(i => !(+i.precio > 0));
+  const reciente = p.estado === 'pendiente' && Date.now() - ms(p.fecha) < 30*60000;
+  return `<div class="pcard ${reciente ? 'nuevo' : ''}">
+    <div class="top"><b>#${p.nro}</b><span class="muted" style="font-size:13px">${hace(p.fecha)} · ${p.origen === 'web' ? 'Web' : esc(p.origen)}</span></div>
+    <div class="who">${esc(p.cliente || 'Sin nombre')}${p.telefono ? ` · <a href="https://wa.me/${esc(p.telefono.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(p.telefono)}</a>` : ''}<br><small class="muted">${esc(p.entrega || '')}${p.estado === 'pagado' ? ` · Pagó con ${esc(p.pago)} ${hace(p.pagado_en)}` : ''}</small></div>
+    <div class="its">${p.items.map(i => `${i.cant}× ${esc(i.nombre)}${i.detalle ? ` <small class="muted">(${esc(i.detalle)})</small>` : ''} <span class="muted">· ${+i.precio > 0 ? money(i.precio * i.cant) : 'sin precio'}</span>`).join('<br>')}</div>
+    ${p.nota ? `<p class="muted" style="font-size:13px;margin:8px 0 0">📝 ${esc(p.nota)}</p>` : ''}
+    ${sinPrecio && p.estado === 'pendiente' ? '<div class="warnbox">Hay productos sin precio. Tocá Editar y cargalos antes de cobrar.</div>' : ''}
+    <div class="bot"><b>${money(p.total)}</b><div class="row-actions">
+      ${p.estado === 'pendiente'
+        ? `<button class="btn sm" data-a="editar" data-id="${p.id}">Editar</button><button class="btn sm danger" data-a="cancelar" data-id="${p.id}">Cancelar</button><button class="btn sm primary" data-a="pagar" data-id="${p.id}">Cobrado →</button>`
+        : `<button class="btn sm" data-a="volver" data-id="${p.id}">↩ No pagó</button><button class="btn sm danger" data-a="cancelar" data-id="${p.id}">Cancelar</button><button class="btn sm primary" data-a="entregar" data-id="${p.id}">Entregado ✓</button>`}
+    </div></div></div>`;
+}
+async function cambiarEstado(p, estado, pago, ok){
+  const r = await hacer(() => rpc('pedido_estado', {p_id: p.id, p_estado: estado, p_pago: pago || null}), ok);
+  if (r) { await hacer(recargar); pedidos(); }
+  return r;
+}
+function accionPedido(a, p){
+  if (!p) return;
+  if (a === 'ver') return verPedido(p);
+  if (a === 'editar') return pedidoForm(p);
+  if (a === 'entregar') return cambiarEstado(p, 'entregado', null, `Pedido #${p.nro} entregado. Pasó a Completados.`);
+  if (a === 'volver' && confirm(`¿Volver el pedido #${p.nro} a "por cobrar"? Se anula el cobro y el stock vuelve.`)) return cambiarEstado(p, 'pendiente', null, `Pedido #${p.nro} volvió a Nuevos`);
+  if (a === 'cancelar' && confirm(`¿Cancelar el pedido #${p.nro}?${p.estado === 'pagado' ? ' Se anula el cobro y el stock vuelve.' : ''}`)) return cambiarEstado(p, 'cancelado', null, `Pedido #${p.nro} cancelado`);
+  if (a === 'reabrir') return cambiarEstado(p, p.estado === 'entregado' ? 'pagado' : 'pendiente', null, `Pedido #${p.nro} volvió a En curso`);
+  if (a === 'pagar') {
+    if (p.items.some(i => !(+i.precio > 0))) { toast('Primero cargá los precios que faltan', 'bad'); return pedidoForm(p); }
+    modal(`Cobrar pedido #${p.nro}`, `<div class="tot big"><span>Total</span><span>${money(p.total)}</span></div>
+      <div class="field"><label>¿Cómo pagó?</label><select name="pago">${opts(pagos(), 'Transferencia')}</select></div>
+      <label class="chk" style="display:flex"><input type="checkbox" name="entregado"> Ya se lo entregué también</label>
+      <p class="muted" style="font-size:13px">Al cobrarlo se registra la venta${D.caja ? ' en la caja abierta' : ''} y se descuenta el stock.</p>`,
+      {submitLabel: 'Marcar como pagado', onSubmit: async d => {
+        await rpc('pedido_estado', {p_id: p.id, p_estado: d.entregado ? 'entregado' : 'pagado', p_pago: d.pago});
+        toast(d.entregado ? `Pedido #${p.nro} cobrado y entregado` : `Pedido #${p.nro} pagado`, 'ok');
+        await hacer(recargar); pedidos();
+      }});
+  }
+}
+function verPedido(p){
+  modal(`Pedido #${p.nro}`, `<p><span class="pill ${ESTADO[p.estado][1]}">${ESTADO[p.estado][0]}</span> <span class="muted">${p.origen === 'web' ? 'Desde la web' : 'Cargado a mano'} · ${fDT(p.fecha)}</span></p>
+    <p>${esc(p.cliente || 'Sin nombre')} ${p.telefono ? '· ' + esc(p.telefono) : ''}<br><span class="muted">${esc(p.entrega)}</span></p>
+    <table><tr><th>Producto</th><th class="n">Cant.</th><th class="n">Precio</th></tr>${p.items.map(i => `<tr><td>${esc(i.nombre)}</td><td class="n">${i.cant}</td><td class="n">${money(i.precio * i.cant)}</td></tr>`).join('')}</table>
+    <div class="tot big"><span>Total</span><span>${money(p.total)}</span></div>
+    ${p.nota ? `<p>📝 ${esc(p.nota)}</p>` : ''}
+    <p class="muted" style="font-size:13px">${p.pagado_en ? `Pagado: ${fDT(p.pagado_en)} (${esc(p.pago)})<br>` : ''}${p.entregado_en ? `Entregado: ${fDT(p.entregado_en)}<br>` : ''}${p.cancelado_en ? `Cancelado: ${fDT(p.cancelado_en)}` : ''}</p>`);
+}
+function pedidoForm(p){
+  const nuevo = !p; p = p || {cliente:'', telefono:'', entrega:'Retiro en el local', nota:'', items:[]};
+  const pOpts = sel => opts(D.productos.slice().sort((a, b) => a.nombre.localeCompare(b.nombre)).map(x => [x.id, x.nombre + (x.detalle ? ` (${x.detalle})` : '')]), sel);
+  const line = i => `<div class="cline"><select class="lp">${pOpts(i && i.id)}</select><input class="lc" inputmode="numeric" placeholder="Cant." value="${i ? i.cant : 1}"><input class="lk" inputmode="decimal" placeholder="Precio unit." value="${i ? i.precio : ''}"><button type="button" class="btn sm danger lx" aria-label="Quitar">✕</button></div>`;
+  modal(nuevo ? 'Cargar pedido' : `Editar pedido #${p.nro}`, `<div class="form-grid">
+      <div class="field"><label>Cliente</label><input name="cliente" value="${esc(p.cliente)}"></div>
+      <div class="field"><label>Teléfono / WhatsApp</label><input name="telefono" value="${esc(p.telefono)}"></div>
+      <div class="field"><label>Entrega</label><select name="entrega">${opts(['Retiro en el local', 'Envío (a coordinar)'], p.entrega)}</select></div>
+      <div class="field"><label>Nota</label><input name="nota" value="${esc(p.nota)}" placeholder="Dirección, horario…"></div></div>
+    <div class="cline muted" style="font-size:12px"><span>Producto</span><span>Cantidad</span><span>Precio unitario</span><span></span></div>
+    <div id="lines">${(p.items.length ? p.items : [null]).map(line).join('')}</div>
+    <button type="button" class="btn sm" id="addl">+ Agregar producto</button>
+    <div class="tot big"><span>Total</span><span id="ptot"></span></div>`, {wide: true, submitLabel: nuevo ? 'Crear pedido' : 'Guardar cambios', onSubmit: async d => {
+      const items = [...document.querySelectorAll('#lines .cline')].map(r => ({id: r.querySelector('.lp').value, cant: parseInt(r.querySelector('.lc').value) || 0, precio: numIn(r.querySelector('.lk').value)})).filter(i => i.id && i.cant > 0);
+      if (!items.length) { toast('Agregá al menos un producto', 'bad'); return false; }
+      await rpc('admin_guardar_pedido', {p: {id: p.id || null, origen: 'whatsapp', cliente: d.cliente, telefono: d.telefono, entrega: d.entrega, nota: d.nota, items}});
+      toast(nuevo ? 'Pedido cargado' : 'Pedido actualizado', 'ok'); pz = 'activos'; if (current === 'pedidos') pedidos(); else go('pedidos');
+    }});
+  const L = $('#lines');
+  const tot = () => { $('#ptot').textContent = money(sum([...L.querySelectorAll('.cline')], r => (parseInt(r.querySelector('.lc').value) || 0) * numIn(r.querySelector('.lk').value))); };
+  const fill = r => { const x = prod(r.querySelector('.lp').value), k = r.querySelector('.lk'); if (x && !k.value) k.value = x.precio || ''; };
+  L.querySelectorAll('.cline').forEach(fill); tot();
+  $('#addl').onclick = () => { L.insertAdjacentHTML('beforeend', line(null)); fill(L.lastElementChild); tot(); };
+  L.onchange = e => { if (e.target.classList.contains('lp')) { const k = e.target.closest('.cline').querySelector('.lk'); const x = prod(e.target.value); k.value = x ? (x.precio || '') : ''; } tot(); };
+  L.oninput = tot;
+  L.onclick = e => { if (e.target.classList.contains('lx') && L.children.length > 1) { e.target.closest('.cline').remove(); tot(); } };
+}
+
+/* ---------- VENDER ---------- */
+let pos = {cart: [], desc: '', pago: 'Efectivo', recibido: '', edad: false, cat: 'Todas', q: ''};
+function venta(){
+  render(`<div class="head"><h1>Nueva venta</h1><div class="actions">${D.caja ? '<span class="pill ok">Caja abierta</span>' : '<button class="btn warn" id="abrirCaja">Caja cerrada · Abrir caja</button>'}</div></div>
+  <div class="pos">
+    <section class="card"><input id="q" class="big" type="search" placeholder="Escaneá el código o buscá un producto (Enter agrega)" autocomplete="off" value="${esc(pos.q)}">
+      <div class="chips" id="chips"></div><div class="grid" id="grid"></div></section>
+    <aside class="card pos-right" id="cart"></aside>
+  </div>`);
+  const ab = $('#abrirCaja'); if (ab) ab.onclick = () => abrirCajaModal(venta);
+  const q = $('#q');
+  q.oninput = () => { pos.q = q.value; drawGrid(); };
+  q.onkeydown = e => {
+    if (e.key === 'Enter' && e.ctrlKey) { e.preventDefault(); return cobrar(); }
+    if (e.key === 'Enter') { e.preventDefault(); const t = q.value.trim(); if (!t) return;
+      const exact = D.productos.find(p => p.codigo && p.codigo === t), list = filtrados(), p = exact || (list.length === 1 ? list[0] : null);
+      if (p) { addCart(p.id); q.value = ''; pos.q = ''; drawGrid(); } else toast(list.length ? 'Hay varios resultados, elegí uno' : 'No se encontró el producto', 'bad'); }
+  };
+  drawChips(); drawGrid(); drawCart(); q.focus();
+}
+function filtrados(){ const t = pos.q.trim().toLowerCase(); return D.productos.filter(p => (pos.cat === 'Todas' || p.categoria === pos.cat) && (!t || p.nombre.toLowerCase().includes(t) || (p.detalle || '').toLowerCase().includes(t) || (p.codigo || '').includes(t))); }
+function drawChips(){ $('#chips').innerHTML = [['Todas', 'Todas'], ...D.categorias.map(c => [c.id, c.nombre])].map(([id, n]) => `<button class="chip ${id === pos.cat ? 'on' : ''}" data-c="${esc(id)}">${esc(n)}</button>`).join('');
+  $('#chips').onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; pos.cat = b.dataset.c; drawChips(); drawGrid(); }; }
+function drawGrid(){ const l = filtrados(); $('#grid').innerHTML = l.length ? l.map(p => `<button class="prod ${p.stock <= 0 ? 'out' : ''}" data-id="${esc(p.id)}"><span class="nm">${esc(p.nombre)}${p.detalle ? ` <small class="muted">${esc(p.detalle)}</small>` : ''}</span><span class="st ${p.stock <= p.stock_min ? 'low' : ''}">Stock: ${p.stock}</span><span class="pr">${+p.precio > 0 ? money(p.precio) : 'Sin precio'}</span></button>`).join('') : '<p class="empty">Sin productos</p>';
+  $('#grid').onclick = e => { const b = e.target.closest('[data-id]'); if (b) { addCart(b.dataset.id); $('#q').focus(); } }; }
+function addCart(pid, d = 1){
+  const p = prod(pid); if (!p) return;
+  if (d > 0 && !(+p.precio > 0)) { toast(`${p.nombre} no tiene precio. Cargalo en Productos.`, 'bad'); return; }
+  const l = pos.cart.find(x => x.pid === pid), nueva = (l ? l.cant : 0) + d;
+  if (d > 0 && !D.ajustes.stockNegativo && nueva > p.stock) { toast(`Sin stock suficiente de ${p.nombre} (quedan ${p.stock})`, 'bad'); return; }
+  if (l) { l.cant = nueva; if (l.cant <= 0) pos.cart = pos.cart.filter(x => x !== l); } else if (d > 0) pos.cart.push({pid, cant: d});
+  drawCart();
+}
+function totales(){ const sub = sum(pos.cart, l => { const p = prod(l.pid); return p ? p.precio * l.cant : 0; }); const pct = Math.min(100, Math.max(0, numIn(pos.desc))); const descM = Math.round(sub * pct) / 100; return {sub, descM, total: sub - descM}; }
+function necesitaEdad(){ return D.ajustes.verificarEdad !== false && pos.cart.some(l => { const p = prod(l.pid); const c = p && D.categorias.find(c => c.id === p.categoria); return c && c.restringida; }); }
+function drawCart(){
+  const el = $('#cart'); if (!el) return;
+  pos.cart = pos.cart.filter(l => prod(l.pid));
+  const lines = pos.cart.map(l => { const p = prod(l.pid); return `<div class="line"><div class="nm">${esc(p.nombre)}<small>${money(p.precio)} c/u</small></div>
+    <div class="qty"><button data-d="-1" data-id="${esc(p.id)}" aria-label="Quitar uno">−</button><span>${l.cant}</span><button data-d="1" data-id="${esc(p.id)}" aria-label="Agregar uno">+</button></div><b>${money(p.precio * l.cant)}</b></div>`; }).join('');
+  if (!pagos().includes(pos.pago)) pos.pago = pagos()[0];
+  el.innerHTML = `<h2>Carrito ${pos.cart.length ? '<button class="btn sm" id="vaciar" style="float:right">Vaciar</button>' : ''}</h2>
+  ${lines || '<p class="empty">Agregá productos tocándolos o escaneando el código</p>'}
+  <div style="margin-top:12px">
+    <div class="tot"><span>Subtotal</span><span id="tSub"></span></div>
+    <div class="tot"><span>Descuento %</span><input id="desc" inputmode="decimal" style="width:80px;text-align:right" value="${esc(pos.desc)}" placeholder="0"></div>
+    <div class="tot big"><span>Total</span><span id="tTot"></span></div>
+    <div class="field"><label for="pago">Medio de pago</label><select id="pago">${opts(pagos(), pos.pago)}</select></div>
+    <div id="efe" ${pos.pago === 'Efectivo' ? '' : 'hidden'}><div class="form-grid"><div class="field"><label for="rec">Recibido</label><input id="rec" inputmode="decimal" value="${esc(pos.recibido)}" placeholder="$"></div><div class="field"><label>Vuelto</label><div id="vuelto" class="tot" style="font-weight:700"></div></div></div></div>
+    ${necesitaEdad() ? `<label class="age"><input type="checkbox" id="edad" ${pos.edad ? 'checked' : ''}> Verifiqué que el cliente es mayor de 18 años</label>` : ''}
+    <button class="btn primary big" id="cobrar">Cobrar</button>
+    <p class="muted" style="font-size:12px;margin:8px 0 0">Atajo: Ctrl + Enter para cobrar</p>
+  </div>`;
+  const upd = () => { const t = totales(); $('#tSub').textContent = money(t.sub); $('#tTot').textContent = money(t.total);
+    const v = $('#vuelto'); if (v) { const r = numIn(pos.recibido); v.textContent = pos.recibido === '' ? '—' : (r >= t.total ? money(r - t.total) : 'Falta ' + money(t.total - r)); } };
+  upd();
+  el.querySelectorAll('.qty button').forEach(b => b.onclick = () => addCart(b.dataset.id, +b.dataset.d));
+  const vz = $('#vaciar'); if (vz) vz.onclick = () => { pos.cart = []; pos.edad = false; drawCart(); };
+  $('#desc').oninput = e => { pos.desc = e.target.value; upd(); };
+  $('#pago').onchange = e => { pos.pago = e.target.value; $('#efe').hidden = pos.pago !== 'Efectivo'; };
+  $('#rec').oninput = e => { pos.recibido = e.target.value; upd(); };
+  const ed = $('#edad'); if (ed) ed.onchange = () => pos.edad = ed.checked;
+  $('#cobrar').onclick = cobrar;
+  el.onkeydown = e => { if (e.key === 'Enter' && e.ctrlKey) { e.preventDefault(); cobrar(); } };
+}
+let cobrando = false;
+async function cobrar(){
+  if (cobrando) return;
+  if (!pos.cart.length) return toast('El carrito está vacío', 'bad');
+  if (!D.caja) { toast('Abrí la caja antes de vender', 'bad'); return abrirCajaModal(venta); }
+  if (necesitaEdad() && !pos.edad) return toast('Confirmá que el cliente es mayor de 18 años', 'bad');
+  const t = totales();
+  if (pos.pago === 'Efectivo' && pos.recibido !== '' && numIn(pos.recibido) < t.total) return toast('El monto recibido no alcanza', 'bad');
+  cobrando = true; $('#cobrar').disabled = true;
+  const v = await hacer(() => rpc('registrar_venta', {p_items: pos.cart.map(l => ({id: l.pid, cant: l.cant})), p_descuento: numIn(pos.desc), p_pago: pos.pago,
+    p_recibido: pos.pago === 'Efectivo' && pos.recibido !== '' ? numIn(pos.recibido) : null}));
+  cobrando = false;
+  if (!v) { const b = $('#cobrar'); if (b) b.disabled = false; return; }
+  pos = {cart: [], desc: '', pago: pagos()[0], recibido: '', edad: false, cat: pos.cat, q: ''};
+  await hacer(recargar);
+  venta();
+  const bajos = v.items.map(i => prod(i.id)).filter(p => p && p.stock <= p.stock_min);
+  modal(`Venta #${v.nro} registrada`, `<div class="tot big"><span>Total</span><span>${money(v.total)}</span></div>
+    <div class="tot"><span>Medio de pago</span><span>${esc(v.pago)}</span></div>
+    ${v.recibido != null ? `<div class="tot big"><span>Vuelto</span><span>${money(v.recibido - v.total)}</span></div>` : ''}
+    ${bajos.length ? `<p class="pill bad" style="margin-top:10px">Stock bajo: ${bajos.map(p => esc(p.nombre)).join(', ')}</p>` : ''}`,
+    {extra: '<button type="button" class="btn" id="imp">Imprimir ticket</button>'});
+  $('#imp').onclick = () => imprimirTicket(v);
+}
+
+/* ---------- PRODUCTOS ---------- */
+let pf = {q: '', cat: 'Todas', bajo: false};
+function productos(){
+  render(`<div class="head"><h1>Productos</h1><div class="actions"><button class="btn" id="bulk">Actualizar precios %</button><button class="btn primary" id="nuevo">+ Nuevo producto</button></div></div>
+  <div class="filters"><input id="pq" type="search" placeholder="Buscar por nombre o código" value="${esc(pf.q)}"><select id="pc">${opts([['Todas', 'Todas las categorías'], ...D.categorias.map(c => [c.id, c.nombre])], pf.cat)}</select><label class="chk"><input type="checkbox" id="pb" ${pf.bajo ? 'checked' : ''}> Solo stock bajo</label></div>
+  <div class="card"><div class="tablewrap"><table id="pt"></table></div></div>`);
+  const draw = () => { const t = pf.q.trim().toLowerCase();
+    const l = D.productos.filter(p => (pf.cat === 'Todas' || p.categoria === pf.cat) && (!pf.bajo || p.stock <= p.stock_min) && (!t || p.nombre.toLowerCase().includes(t) || (p.codigo || '').includes(t))).sort((a, b) => catName(a.categoria).localeCompare(catName(b.categoria)) || a.nombre.localeCompare(b.nombre));
+    $('#pt').innerHTML = `<tr><th></th><th>Producto</th><th>Categoría</th><th class="n">Costo</th><th class="n">Precio</th><th class="n">Margen</th><th class="n">Stock</th><th>Web</th><th></th></tr>` +
+      (l.length ? l.map(p => `<tr><td>${p.foto ? `<img class="thumb" src="${esc(p.foto)}" alt="">` : '<span class="thumb"></span>'}</td><td>${esc(p.nombre)}<br><small class="muted">${esc([p.detalle, p.codigo, provName(p.proveedor_id)].filter(Boolean).join(' · '))}</small></td><td>${esc(catName(p.categoria))}</td><td class="n">${money(p.costo)}</td><td class="n"><b>${+p.precio > 0 ? money(p.precio) : '<span class="low">Sin precio</span>'}</b></td><td class="n">${p.precio > 0 ? Math.round((p.precio - p.costo) / p.precio * 100) + '%' : '—'}</td><td class="n ${p.stock <= p.stock_min ? 'low' : ''}">${p.stock}<small class="muted"> / ${p.stock_min}</small></td>
+      <td>${p.en_web ? `<span class="pill ok">Sí</span>${p.estrella ? ' ★' : ''}` : '<span class="pill">No</span>'}</td>
+      <td><div class="row-actions"><button class="btn sm" data-a="stock" data-id="${esc(p.id)}">Stock</button><button class="btn sm" data-a="edit" data-id="${esc(p.id)}">Editar</button><button class="btn sm danger" data-a="del" data-id="${esc(p.id)}" aria-label="Borrar">✕</button></div></td></tr>`).join('') : '<tr><td colspan="9" class="empty">No hay productos con ese filtro</td></tr>'); };
+  draw();
+  $('#pq').oninput = e => { pf.q = e.target.value; draw(); }; $('#pc').onchange = e => { pf.cat = e.target.value; draw(); }; $('#pb').onchange = e => { pf.bajo = e.target.checked; draw(); };
+  $('#nuevo').onclick = () => productoForm(); $('#bulk').onclick = bulkPrecios;
+  $('#pt').onclick = async e => { const b = e.target.closest('[data-a]'); if (!b) return; const p = prod(b.dataset.id);
+    if (b.dataset.a === 'edit') productoForm(p);
+    if (b.dataset.a === 'stock') ajusteStock(p);
+    if (b.dataset.a === 'del' && confirm(`¿Borrar "${p.nombre}"? Desaparece también de la web. Las ventas pasadas se conservan.`)) {
+      if (await hacer(() => rpc('borrar_producto', {p_id: p.id}), 'Producto borrado')) { await hacer(recargar); productos(); } } };
+}
+async function achicar(file, max = 1000){
+  let img; try { img = await createImageBitmap(file); } catch(e){ return file; }  // si no se puede achicar, se sube como está
+  const k = Math.min(1, max / Math.max(img.width, img.height));
+  const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return new Promise(r => c.toBlob(r, 'image/jpeg', .85));
+}
+async function subirFoto(file, base){
+  if (!/^image\//.test(file.type)) throw new Error('El archivo tiene que ser una imagen (JPG o PNG)');
+  const blob = await achicar(file), tipo = blob.type || 'image/jpeg', ext = tipo.split('/')[1].replace('jpeg', 'jpg');
+  const path = `productos/${(base || 'producto').replace(/[^a-z0-9-]/gi, '')}-${Date.now()}.${ext}`;
+  const {error} = await sb.storage.from('fotos').upload(path, blob, {contentType: tipo, upsert: true});
+  if (error) throw new Error('No se pudo subir la foto: ' + traducir(error));
+  return sb.storage.from('fotos').getPublicUrl(path).data.publicUrl;
+}
+function productoForm(p){
+  const n = !p; p = p || {codigo:'', nombre:'', detalle:'', categoria: (D.categorias[0] || {}).id || '', proveedor_id:'', costo:'', precio:'', stock:0, stock_min:2, en_web:true, estrella:false, solo_consulta:false, foto:''};
+  let foto = p.foto;
+  modal(n ? 'Nuevo producto' : 'Editar producto', `<div class="form-grid">
+    <div class="field full"><label>Nombre *</label><input name="nombre" value="${esc(p.nombre)}"></div>
+    <div class="field"><label>Presentación (sale en la web)</label><input name="detalle" value="${esc(p.detalle)}" placeholder="Ej: 700 ml, Caja x 10"></div>
+    <div class="field"><label>Código de barras</label><input name="codigo" value="${esc(p.codigo || '')}" placeholder="Escaneá o escribí"></div>
+    <div class="field"><label>Categoría</label><select name="categoria">${catOpts(p.categoria)}</select></div>
+    <div class="field"><label>Proveedor</label><select name="proveedor_id">${provOpts(p.proveedor_id)}</select></div>
+    <div class="field"><label>Costo</label><input name="costo" inputmode="decimal" value="${p.costo}"></div>
+    <div class="field"><label>Precio de venta (0 = "a confirmar" en la web)</label><input name="precio" inputmode="decimal" value="${p.precio}"></div>
+    <div class="field"><label>Stock actual</label><input name="stock" inputmode="numeric" value="${p.stock}" ${n ? '' : 'disabled title="Usá el botón Stock para ajustarlo"'}></div>
+    <div class="field"><label>Stock mínimo (alerta)</label><input name="stock_min" inputmode="numeric" value="${p.stock_min}"></div>
+    <p class="muted full" id="mg"></p>
+    <div class="full card" style="box-shadow:none;background:var(--soft)"><h2 style="font-size:14px">En la web</h2>
+      <label class="chk" style="display:flex;margin-bottom:6px"><input type="checkbox" name="en_web" ${p.en_web ? 'checked' : ''}> Mostrar en la web</label>
+      <label class="chk" style="display:flex;margin-bottom:6px"><input type="checkbox" name="estrella" ${p.estrella ? 'checked' : ''}> Destacado (sale en el humo de la portada)</label>
+      <label class="chk" style="display:flex;margin-bottom:10px"><input type="checkbox" name="solo_consulta" ${p.solo_consulta ? 'checked' : ''}> Solo consulta (en la web no se puede agregar al pedido)</label>
+      <div id="fprev">${foto ? `<img class="fotoprev" src="${esc(foto)}" alt="">` : '<p class="muted" style="font-size:13px">Sin foto: la web muestra un dibujo.</p>'}</div>
+      <div class="actions"><label class="btn sm">Elegir foto<input type="file" accept="image/*" id="ffile" hidden></label>${foto ? '<button type="button" class="btn sm danger" id="fdel">Quitar foto</button>' : ''}</div>
+    </div></div>`, {wide: true, onSubmit: async d => {
+      if (!d.nombre.trim()) { toast('El nombre es obligatorio', 'bad'); return false; }
+      const file = $('#ffile').files[0];
+      if (file) { toast('Subiendo foto…'); foto = await subirFoto(file, p.id || d.nombre); }
+      await rpc('guardar_producto', {p: {id: p.id || null, nombre: d.nombre, detalle: d.detalle, codigo: d.codigo, categoria: d.categoria, proveedor_id: d.proveedor_id,
+        costo: numIn(d.costo), precio: numIn(d.precio), stock: n ? parseInt(d.stock) || 0 : undefined, stock_min: Math.max(0, parseInt(d.stock_min) || 0),
+        en_web: d.en_web, estrella: d.estrella, solo_consulta: d.solo_consulta, foto, orden: p.orden || 0}});
+      toast(n ? 'Producto creado' : 'Cambios guardados', 'ok'); await hacer(recargar); go(current);
+    }});
+  const f = $('#dlg form'), mg = $('#mg');
+  const upd = () => { const c = numIn(f.costo.value), pr = numIn(f.precio.value); mg.textContent = pr ? `Ganancia por unidad: ${money(pr - c)} · margen ${Math.round((pr - c) / pr * 100)}%${c ? ` · markup ${Math.round((pr - c) / c * 100)}%` : ''}` : ''; };
+  f.costo.oninput = f.precio.oninput = upd; upd();
+  $('#ffile').onchange = e => { const file = e.target.files[0]; if (file) $('#fprev').innerHTML = `<img class="fotoprev" src="${URL.createObjectURL(file)}" alt="">`; };
+  const fd = $('#fdel'); if (fd) fd.onclick = () => { foto = ''; $('#fprev').innerHTML = '<p class="muted" style="font-size:13px">Se va a quitar la foto al guardar.</p>'; fd.remove(); };
+}
+function ajusteStock(p){
+  modal(`Ajustar stock · ${p.nombre}`, `<p>Stock actual: <b>${p.stock}</b></p>
+    <div class="form-grid"><div class="field"><label>Tipo</label><select name="tipo">${opts([['sumar', 'Sumar'], ['restar', 'Restar (rotura, vencido, etc.)'], ['fijar', 'Fijar valor (conteo)']])}</select></div>
+    <div class="field"><label>Cantidad</label><input name="cant" inputmode="numeric"></div>
+    <div class="field full"><label>Motivo</label><input name="motivo" placeholder="Ej: conteo semanal, rotura"></div></div>`, {onSubmit: async d => {
+      const c = parseInt(d.cant); if (isNaN(c) || c < 0) { toast('Cantidad inválida', 'bad'); return false; }
+      const r = await rpc('ajustar_stock', {p_id: p.id, p_tipo: d.tipo, p_cant: c, p_motivo: d.motivo});
+      toast(`Stock de ${p.nombre}: ${p.stock} → ${r.stock}`, 'ok'); await hacer(recargar); go(current);
+    }});
+}
+function bulkPrecios(){
+  modal('Actualizar precios en bloque', `<p class="muted">Para cuando llegan las listas de aumento. Se aplica sobre el precio de venta actual (los productos sin precio no se tocan).</p>
+    <div class="form-grid"><div class="field"><label>Categoría</label><select name="cat">${opts([['', 'Todas'], ...D.categorias.map(c => [c.id, c.nombre])])}</select></div>
+    <div class="field"><label>Proveedor</label><select name="prov">${provOpts('', 'Todos')}</select></div>
+    <div class="field"><label>Porcentaje (%)</label><input name="pct" inputmode="decimal" placeholder="Ej: 8 o -5"></div>
+    <div class="field"><label>Redondear a</label><select name="red">${opts([['1', '$1'], ['10', '$10'], ['50', '$50'], ['100', '$100']], '100')}</select></div>
+    <label class="chk full"><input type="checkbox" name="costo"> Aplicar también al costo</label></div>`, {submitLabel: 'Aplicar', onSubmit: async d => {
+      const pct = numIn(d.pct); if (!pct) { toast('Ingresá un porcentaje', 'bad'); return false; }
+      if (!confirm(`¿Cambiar los precios un ${pct}%?`)) return false;
+      const n = await rpc('actualizar_precios', {p_categoria: d.cat || null, p_proveedor: d.prov || null, p_pct: pct, p_redondeo: +d.red, p_costo: d.costo});
+      toast(`${n} precios actualizados`, 'ok'); await hacer(recargar); productos();
+    }});
+}
+
+/* ---------- INGRESOS ---------- */
+async function compras(){
+  const l = await rpc('admin_compras');
+  render(`<div class="head"><h1>Ingresos de mercadería</h1><div class="actions"><button class="btn primary" id="nuevo">+ Nuevo ingreso</button></div></div>
+  <div class="card"><div class="tablewrap"><table><tr><th>Fecha</th><th>Proveedor</th><th>Comprobante</th><th>Detalle</th><th class="n">Total</th></tr>
+  ${l.length ? l.map(c => `<tr><td>${fDT(c.fecha)}</td><td>${esc(c.proveedor || '—')}</td><td>${esc(c.comprobante || '—')}</td><td class="muted">${c.items.map(i => `${i.cant}× ${esc(i.nombre)}`).join(', ')}</td><td class="n">${money(c.total)}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">Todavía no cargaste ingresos. Cada ingreso suma stock automáticamente (y se ve en la web).</td></tr>'}
+  </table></div></div>`);
+  $('#nuevo').onclick = nuevoIngreso;
+}
+function nuevoIngreso(){
+  if (!D.productos.length) return toast('Primero cargá productos', 'bad');
+  const pOpts = opts(D.productos.slice().sort((a, b) => a.nombre.localeCompare(b.nombre)).map(p => [p.id, p.nombre + (p.detalle ? ` (${p.detalle})` : '')]));
+  const lineHTML = () => `<div class="cline"><select class="lp">${pOpts}</select><input class="lc" inputmode="numeric" placeholder="Cant." value="1"><input class="lk" inputmode="decimal" placeholder="Costo unit."><button type="button" class="btn sm danger lx" aria-label="Quitar">✕</button></div>`;
+  modal('Nuevo ingreso de mercadería', `<div class="form-grid"><div class="field"><label>Proveedor</label><select name="prov">${provOpts('')}</select></div>
+    <div class="field"><label>Factura / remito</label><input name="comp" placeholder="Opcional"></div></div>
+    <div class="cline muted" style="font-size:12px"><span>Producto</span><span>Cantidad</span><span>Costo unitario</span><span></span></div>
+    <div id="lines">${lineHTML()}</div>
+    <button type="button" class="btn sm" id="addl">+ Agregar línea</button>
+    <label class="chk" style="display:flex;margin-top:12px"><input type="checkbox" name="act" checked> Actualizar el costo de los productos</label>
+    <div class="tot big"><span>Total</span><span id="ctot">$ 0</span></div>`, {wide: true, submitLabel: 'Registrar ingreso', onSubmit: async d => {
+      const items = [...document.querySelectorAll('#lines .cline')].map(r => ({id: r.querySelector('.lp').value, cant: parseInt(r.querySelector('.lc').value) || 0, costo: numIn(r.querySelector('.lk').value)})).filter(i => i.cant > 0);
+      if (!items.length) { toast('Agregá al menos un producto con cantidad', 'bad'); return false; }
+      await rpc('registrar_compra', {p_proveedor: d.prov || null, p_comprobante: d.comp, p_items: items, p_actualizar_costo: d.act});
+      toast(`Ingreso registrado: ${sum(items, i => i.cant)} unidades`, 'ok'); await hacer(recargar); compras();
+    }});
+  const L = $('#lines');
+  const fill = r => { const p = prod(r.querySelector('.lp').value), k = r.querySelector('.lk'); if (p && !k.dataset.touched) k.value = +p.costo || ''; };
+  const tot = () => { $('#ctot').textContent = money(sum([...L.querySelectorAll('.cline')], r => (parseInt(r.querySelector('.lc').value) || 0) * numIn(r.querySelector('.lk').value))); };
+  fill(L.firstElementChild); tot();
+  $('#addl').onclick = () => { L.insertAdjacentHTML('beforeend', lineHTML()); fill(L.lastElementChild); tot(); };
+  L.onchange = e => { if (e.target.classList.contains('lp')) fill(e.target.closest('.cline')); tot(); };
+  L.oninput = e => { if (e.target.classList.contains('lk')) e.target.dataset.touched = 1; tot(); };
+  L.onclick = e => { if (e.target.classList.contains('lx') && L.children.length > 1) { e.target.closest('.cline').remove(); tot(); } };
+}
+
+/* ---------- PROVEEDORES ---------- */
+async function proveedores(){
+  const cs = await rpc('admin_compras');
+  render(`<div class="head"><h1>Proveedores</h1><div class="actions"><button class="btn primary" id="nuevo">+ Nuevo proveedor</button></div></div>
+  <div class="card"><div class="tablewrap"><table id="tp"><tr><th>Nombre</th><th>Contacto</th><th>Teléfono</th><th class="n">Productos</th><th class="n">Comprado</th><th>Notas</th><th></th></tr>
+  ${D.proveedores.length ? D.proveedores.map(p => `<tr><td><b>${esc(p.nombre)}</b></td><td>${esc(p.contacto || '—')}${p.email ? `<br><small class="muted">${esc(p.email)}</small>` : ''}</td><td>${p.telefono ? `<a href="https://wa.me/${esc(p.telefono.replace(/\D/g, ''))}" target="_blank" rel="noopener">${esc(p.telefono)}</a>` : '—'}</td>
+    <td class="n">${D.productos.filter(x => x.proveedor_id === p.id).length}</td><td class="n">${money(sum(cs.filter(c => c.proveedor_id === p.id), c => +c.total))}</td><td class="muted">${esc(p.notas || '')}</td>
+    <td><div class="row-actions"><button class="btn sm" data-a="edit" data-id="${p.id}">Editar</button><button class="btn sm danger" data-a="del" data-id="${p.id}" aria-label="Borrar">✕</button></div></td></tr>`).join('') : '<tr><td colspan="7" class="empty">Sin proveedores</td></tr>'}
+  </table></div></div>`);
+  $('#nuevo').onclick = () => proveedorForm();
+  $('#tp').onclick = async e => { const b = e.target.closest('[data-a]'); if (!b) return; const p = D.proveedores.find(x => x.id === b.dataset.id);
+    if (b.dataset.a === 'edit') proveedorForm(p);
+    if (b.dataset.a === 'del' && confirm(`¿Borrar el proveedor "${p.nombre}"?`)) { if (await hacer(() => rpc('borrar_proveedor', {p_id: p.id}))) { await hacer(recargar); proveedores(); } } };
+}
+function proveedorForm(p){
+  const n = !p; p = p || {nombre:'', contacto:'', telefono:'', email:'', notas:''};
+  modal(n ? 'Nuevo proveedor' : 'Editar proveedor', `<div class="form-grid"><div class="field full"><label>Nombre *</label><input name="nombre" value="${esc(p.nombre)}"></div>
+    <div class="field"><label>Contacto</label><input name="contacto" value="${esc(p.contacto)}"></div><div class="field"><label>Teléfono / WhatsApp</label><input name="telefono" value="${esc(p.telefono)}"></div>
+    <div class="field full"><label>Email</label><input name="email" type="email" value="${esc(p.email)}"></div>
+    <div class="field full"><label>Notas</label><textarea name="notas" rows="3">${esc(p.notas)}</textarea></div></div>`, {onSubmit: async d => {
+      if (!d.nombre.trim()) { toast('El nombre es obligatorio', 'bad'); return false; }
+      await rpc('guardar_proveedor', {p: {...d, id: p.id || null}}); toast('Proveedor guardado', 'ok'); await hacer(recargar); proveedores();
+    }});
+}
+
+/* ---------- CAJA ---------- */
+function abrirCajaModal(after){
+  modal('Abrir caja', `<div class="field"><label>Efectivo inicial en caja</label><input name="ini" inputmode="decimal" placeholder="$"></div>`, {submitLabel: 'Abrir caja', onSubmit: async d => {
+    await rpc('abrir_caja', {p_inicial: numIn(d.ini)}); toast('Caja abierta', 'ok'); await recargar(); (after || caja)();
+  }});
+}
+async function caja(){
+  await recargar();
+  const cerradas = await rpc('admin_cajas'), c = D.caja;
+  const hist = `<div class="card" style="margin-top:16px"><h2>Cierres anteriores</h2><div class="tablewrap"><table><tr><th>Apertura</th><th>Cierre</th><th class="n">Ventas</th><th class="n">Efectivo esperado</th><th class="n">Contado</th><th class="n">Diferencia</th></tr>
+    ${cerradas.length ? cerradas.map(x => `<tr><td>${fDT(x.apertura)}</td><td>${fDT(x.cierre)}</td><td class="n">${money(x.total)}</td><td class="n">${money(x.esperado)}</td><td class="n">${money(x.contado)}</td><td class="n ${Math.abs(x.diferencia) > .009 ? 'low' : ''}">${money(x.diferencia)}</td></tr>`).join('') : '<tr><td colspan="6" class="empty">Sin cierres</td></tr>'}</table></div></div>`;
+  if (!c) { render(`<div class="head"><h1>Caja</h1><div class="actions"><button class="btn primary" id="abrir">Abrir caja</button></div></div><div class="card"><p class="empty">La caja está cerrada. Abrila al empezar el turno para poder vender en el local.</p></div>${hist}`); $('#abrir').onclick = () => abrirCajaModal(); return; }
+  const pp = {...Object.fromEntries(pagos().map(p => [p, 0])), ...c.por_pago};
+  render(`<div class="head"><h1>Caja <span class="pill ok">Abierta</span></h1><div class="actions"><button class="btn" data-m="ingreso">+ Ingreso</button><button class="btn" data-m="egreso">− Gasto / retiro</button><button class="btn primary" id="cerrar">Cerrar caja</button></div></div>
+  <div class="kpis">
+    <div class="card kpi"><div class="l">Abierta desde</div><div class="v" style="font-size:18px">${fDT(c.apertura)}</div><div class="s">Inicial: ${money(c.inicial)}</div></div>
+    <div class="card kpi"><div class="l">Vendido en el turno</div><div class="v">${money(c.total)}</div><div class="s">${c.tickets} tickets (incluye pedidos cobrados)</div></div>
+    <div class="card kpi"><div class="l">Efectivo que debería haber</div><div class="v">${money(c.efectivo)}</div><div class="s">inicial + efectivo + ingresos − gastos</div></div>
+  </div>
+  <div class="cols"><div class="card"><h2>Por medio de pago</h2><table>${Object.entries(pp).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="n">${money(v)}</td></tr>`).join('')}<tr><td><b>Total</b></td><td class="n"><b>${money(c.total)}</b></td></tr></table></div>
+  <div class="card"><h2>Movimientos manuales</h2>${c.movs.length ? `<table>${c.movs.map(m => `<tr><td>${fDT(m.fecha)}</td><td>${esc(m.desc || '—')}</td><td class="n ${m.tipo === 'egreso' ? 'low' : ''}">${m.tipo === 'egreso' ? '−' : '+'}${money(m.monto)}</td></tr>`).join('')}</table>` : '<p class="empty">Sin gastos ni ingresos manuales</p>'}</div></div>${hist}`);
+  document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { const tipo = b.dataset.m;
+    modal(tipo === 'ingreso' ? 'Ingreso de efectivo' : 'Gasto o retiro de efectivo', `<div class="field"><label>Monto</label><input name="monto" inputmode="decimal"></div><div class="field"><label>Descripción</label><input name="desc" placeholder="${tipo === 'ingreso' ? 'Ej: cambio' : 'Ej: pago a proveedor, retiro'}"></div>`, {onSubmit: async d => {
+      const m = numIn(d.monto); if (m <= 0) { toast('Monto inválido', 'bad'); return false; }
+      await rpc('movimiento_caja', {p_tipo: tipo, p_monto: m, p_desc: d.desc}); caja(); }}); });
+  $('#cerrar').onclick = () => {
+    modal('Cerrar caja', `<p>Efectivo esperado: <b>${money(c.efectivo)}</b></p><div class="field"><label>Efectivo contado</label><input name="cont" inputmode="decimal" placeholder="$"></div><p class="muted" id="dif"></p>`, {submitLabel: 'Cerrar caja', onSubmit: async d => {
+      if (d.cont === '') { toast('Ingresá el efectivo contado', 'bad'); return false; }
+      const r = await rpc('cerrar_caja', {p_contado: numIn(d.cont)}); const df = +r.diferencia;
+      toast(Math.abs(df) < .01 ? 'Caja cerrada sin diferencias ✓' : `Caja cerrada con diferencia de ${money(df)}`, Math.abs(df) < .01 ? 'ok' : 'bad'); caja(); }});
+    const ci = $('#dlg [name=cont]'); ci.oninput = () => { const df = numIn(ci.value) - c.efectivo; $('#dif').textContent = ci.value === '' ? '' : (Math.abs(df) < .01 ? 'Sin diferencia' : df > 0 ? `Sobran ${money(df)}` : `Faltan ${money(-df)}`); };
+  };
+}
+
+/* ---------- HISTORIAL ---------- */
+let hf = {desde: '', hasta: '', pago: '', anuladas: true};
+function tablaVentas(l){ return `<div class="tablewrap"><table class="tv"><tr><th>#</th><th>Fecha</th><th>Productos</th><th>Pago</th><th class="n">Total</th><th></th></tr>
+  ${l.length ? l.map(v => `<tr ${v.anulada ? 'style="opacity:.55"' : ''}><td>${v.nro}</td><td>${fDT(v.fecha)}</td><td class="muted">${v.pedido_id ? '<span class="pill">Pedido</span> ' : ''}${v.items.map(i => `${i.cant}× ${esc(i.nombre)}`).join(', ')}</td><td>${esc(v.pago)}</td><td class="n"><b>${money(v.total)}</b>${v.anulada ? ' <span class="pill bad">Anulada</span>' : ''}</td><td><button class="btn sm" data-v="${v.id}">Ver</button></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Sin ventas</td></tr>'}</table></div>`; }
+let ventasCache = [];
+function bindVentaRows(list){ document.querySelectorAll('table.tv').forEach(t => t.onclick = e => { const b = e.target.closest('[data-v]'); if (b) verVenta(ventasCache.find(v => v.id === b.dataset.v)); }); }
+async function historial(){
+  if (!hf.desde) { hf.desde = isoDay(Date.now() - 6*864e5); hf.hasta = isoDay(Date.now()); }
+  render(`<div class="head"><h1>Historial de ventas</h1><div class="actions"><button class="btn" id="csv">Exportar a Excel (CSV)</button></div></div>
+  <div class="filters"><label class="muted">Desde <input type="date" id="hd" value="${hf.desde}"></label><label class="muted">Hasta <input type="date" id="hh" value="${hf.hasta}"></label>
+    <select id="hp">${opts([['', 'Todos los pagos'], ...pagos()], hf.pago)}</select><label class="chk"><input type="checkbox" id="ha" ${hf.anuladas ? 'checked' : ''}> Mostrar anuladas</label></div>
+  <div class="kpis" id="hk"></div><div class="card" id="hl"><p class="loading">Cargando…</p></div>`);
+  let todas = [];
+  const lista = () => todas.filter(v => (!hf.pago || v.pago === hf.pago) && (hf.anuladas || !v.anulada)).slice().reverse();
+  const draw = () => { const l = lista(), ok = l.filter(v => !v.anulada), t = sum(ok, v => +v.total);
+    $('#hk').innerHTML = `<div class="card kpi"><div class="l">Total del período</div><div class="v">${money(t)}</div><div class="s">${ok.length} ventas</div></div><div class="card kpi"><div class="l">Ganancia bruta</div><div class="v">${money(t - sum(ok, costoVenta))}</div></div><div class="card kpi"><div class="l">Descuentos dados</div><div class="v">${money(sum(ok, v => +v.descuento))}</div></div>`;
+    ventasCache = l; $('#hl').innerHTML = tablaVentas(l); bindVentaRows(); };
+  const cargar = async () => { todas = await rpc('admin_ventas', {p_desde: iso(parseDay(hf.desde)), p_hasta: iso(parseDay(hf.hasta) + 864e5)}); draw(); };
+  await cargar();
+  $('#hd').onchange = e => { hf.desde = e.target.value || hf.desde; hacer(cargar); }; $('#hh').onchange = e => { hf.hasta = e.target.value || hf.hasta; hacer(cargar); };
+  $('#hp').onchange = e => { hf.pago = e.target.value; draw(); }; $('#ha').onchange = e => { hf.anuladas = e.target.checked; draw(); };
+  $('#csv').onclick = () => { const q = s => '"' + String(s).replace(/"/g, '""') + '"', n = x => String(Math.round(x * 100) / 100).replace('.', ',');
+    const rows = [['Nro', 'Fecha', 'Productos', 'Subtotal', 'Descuento', 'Total', 'Costo', 'Pago', 'Origen', 'Estado'].join(';'), ...lista().reverse().map(v => [v.nro, q(fDT(v.fecha)), q(v.items.map(i => `${i.cant}x ${i.nombre}`).join(' | ')), n(v.subtotal), n(v.descuento), n(v.total), n(costoVenta(v)), q(v.pago), v.pedido_id ? 'Pedido' : 'Local', v.anulada ? 'Anulada' : 'OK'].join(';'))];
+    download(`ventas_${hf.desde}_a_${hf.hasta}.csv`, '﻿' + rows.join('\r\n'), 'text/csv;charset=utf-8'); };
+}
+function verVenta(v){
+  if (!v) return;
+  modal(`Venta #${v.nro}${v.anulada ? ' (anulada)' : ''}`, `<p class="muted">${fDT(v.fecha)} · ${esc(v.pago)}${v.pedido_id ? ' · viene de un pedido' : ''}</p>
+    <table><tr><th>Producto</th><th class="n">Cant.</th><th class="n">Precio</th><th class="n">Subtotal</th></tr>${v.items.map(i => `<tr><td>${esc(i.nombre)}</td><td class="n">${i.cant}</td><td class="n">${money(i.precio)}</td><td class="n">${money(i.precio * i.cant)}</td></tr>`).join('')}</table>
+    <div style="margin-top:10px">${+v.descuento ? `<div class="tot"><span>Subtotal</span><span>${money(v.subtotal)}</span></div><div class="tot"><span>Descuento</span><span>−${money(v.descuento)}</span></div>` : ''}<div class="tot big"><span>Total</span><span>${money(v.total)}</span></div>
+    ${v.recibido != null ? `<div class="tot"><span>Recibido / vuelto</span><span>${money(v.recibido)} / ${money(v.recibido - v.total)}</span></div>` : ''}</div>`,
+    {wide: true, extra: `${v.anulada ? '' : '<button type="button" class="btn danger" id="anular">Anular venta</button>'}<button type="button" class="btn" id="imp">Imprimir ticket</button>`});
+  $('#imp').onclick = () => imprimirTicket(v);
+  const an = $('#anular'); if (an) an.onclick = async () => {
+    if (!confirm(`¿Anular la venta #${v.nro}? El stock vuelve a sumarse.${v.pedido_id ? ' El pedido vuelve a "por cobrar".' : ''}`)) return;
+    if (await hacer(() => rpc('anular_venta', {p_id: v.id}), `Venta #${v.nro} anulada`)) { $('#dlg').close(); await hacer(recargar); go(current); } };
+}
+function imprimirTicket(v){
+  const n = D.negocio || {}, f = document.createElement('iframe'); f.style.cssText = 'position:fixed;width:0;height:0;border:0;right:0;bottom:0'; document.body.appendChild(f);
+  const d = f.contentDocument; d.open(); d.write(`<!doctype html><html><head><meta charset="utf-8"><title>Ticket ${v.nro}</title><style>body{font:12px/1.4 monospace;width:58mm;margin:0 auto;padding:6px}h1{font-size:14px;text-align:center;margin:0}p{margin:2px 0;text-align:center}table{width:100%;border-collapse:collapse}td{padding:1px 0;vertical-align:top}td.n{text-align:right}hr{border:0;border-top:1px dashed #000}.t{font-size:15px;font-weight:bold}</style></head><body>
+   <h1>${esc(n.nombre || 'Amero')} ${esc(n.bajada || '')}</h1>${n.direccion ? `<p>${esc(n.direccion)}</p>` : ''}${n.telefono ? `<p>Tel. ${esc(n.telefono)}</p>` : ''}<p>Comprobante no válido como factura</p><hr>
+   <p>Venta #${v.nro} · ${fDT(v.fecha)}</p><hr><table>${v.items.map(i => `<tr><td>${i.cant} × ${esc(i.nombre)}</td><td class="n">${money(i.precio * i.cant)}</td></tr>`).join('')}</table><hr>
+   <table>${+v.descuento ? `<tr><td>Descuento</td><td class="n">−${money(v.descuento)}</td></tr>` : ''}<tr class="t"><td>TOTAL</td><td class="n">${money(v.total)}</td></tr><tr><td>${esc(v.pago)}</td><td class="n">${v.recibido != null ? money(v.recibido) : ''}</td></tr>${v.recibido != null ? `<tr><td>Vuelto</td><td class="n">${money(v.recibido - v.total)}</td></tr>` : ''}</table><hr><p>¡Gracias por su compra!</p></body></html>`); d.close();
+  setTimeout(() => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch(e){ toast('No se pudo imprimir', 'bad'); } setTimeout(() => f.remove(), 1500); }, 150);
+}
+
+/* ---------- REPORTES ---------- */
+let rp = '30';
+async function reportes(){
+  const ahora = Date.now(); let desde;
+  if (rp === 'mes') { const d = new Date(); desde = new Date(d.getFullYear(), d.getMonth(), 1).getTime(); } else desde = dayStart(ahora - (+rp - 1) * 864e5);
+  const vs = (await rpc('admin_ventas', {p_desde: iso(desde), p_hasta: iso(dayStart() + 864e5)})).filter(v => !v.anulada);
+  const tot = sum(vs, v => +v.total), gan = tot - sum(vs, costoVenta);
+  const dias = []; for (let s = dayStart(desde); s <= ahora; s += 864e5) { const e = s + 864e5; dias.push({label: fD(s), value: sum(vs.filter(v => ms(v.fecha) >= s && ms(v.fecha) < e), v => +v.total)}); }
+  const agg = key => { const m = {}; vs.forEach(v => { const f = +v.subtotal ? v.total / v.subtotal : 1; v.items.forEach(i => { const k = key(i); m[k] = m[k] || {label: k, value: 0, cant: 0, gan: 0}; const vt = i.precio * i.cant * f; m[k].value += vt; m[k].cant += i.cant; m[k].gan += vt - (+i.costo || 0) * i.cant; }); }); return Object.values(m).sort((a, b) => b.value - a.value); };
+  const cats = agg(i => catName(i.categoria)), tops = agg(i => i.nombre).slice(0, 10);
+  const pg = [...new Set(vs.map(v => v.pago))].map(p => ({label: p, value: sum(vs.filter(v => v.pago === p), v => +v.total)})).sort((a, b) => b.value - a.value);
+  const origen = [{label: 'En el local', value: sum(vs.filter(v => !v.pedido_id), v => +v.total)}, {label: 'Pedidos web / WhatsApp', value: sum(vs.filter(v => v.pedido_id), v => +v.total)}];
+  const horas = {}; vs.forEach(v => { const h = new Date(ms(v.fecha)).getHours(); horas[h] = (horas[h] || 0) + 1; }); const hs = Object.keys(horas).map(Number).sort((a, b) => a - b);
+  const sinMov = D.productos.filter(p => !vs.some(v => v.items.some(i => i.id === p.id)));
+  render(`<div class="head"><h1>Reportes</h1><div class="actions"><select id="rp">${opts([['7', 'Últimos 7 días'], ['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['mes', 'Este mes']], rp)}</select></div></div>
+  <div class="kpis"><div class="card kpi"><div class="l">Ventas</div><div class="v">${money(tot)}</div><div class="s">${vs.length} tickets</div></div>
+    <div class="card kpi"><div class="l">Ganancia bruta</div><div class="v">${money(gan)}</div><div class="s">margen ${tot ? Math.round(gan / tot * 100) : 0}%</div></div>
+    <div class="card kpi"><div class="l">Ticket promedio</div><div class="v">${money(vs.length ? tot / vs.length : 0)}</div></div>
+    <div class="card kpi"><div class="l">Promedio diario</div><div class="v">${money(dias.length ? tot / dias.length : 0)}</div></div></div>
+  <div class="card" style="margin-bottom:16px"><h2>Ventas por día</h2><div style="overflow-x:auto"><div style="min-width:${dias.length * 28}px">${bars(dias.map(d => ({...d, label: dias.length > 14 ? d.label.slice(0, 2) : d.label})))}</div></div></div>
+  <div class="cols"><div class="card"><h2>Por categoría</h2>${hbars(cats)}</div><div class="card"><h2>Medios de pago</h2>${hbars(pg)}<h2 style="margin-top:18px">Local vs. pedidos</h2>${hbars(origen.filter(o => o.value))}</div></div>
+  <div class="cols" style="margin-top:16px"><div class="card"><h2>Productos más vendidos</h2><div class="tablewrap"><table><tr><th>Producto</th><th class="n">Unid.</th><th class="n">Ventas</th><th class="n">Ganancia</th></tr>${tops.map(t => `<tr><td>${esc(t.label)}</td><td class="n">${t.cant}</td><td class="n">${money(t.value)}</td><td class="n">${money(t.gan)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Sin datos</td></tr>'}</table></div></div>
+    <div class="card"><h2>Horarios con más tickets</h2>${hbars(hs.map(h => ({label: `${String(h).padStart(2, '0')}:00 – ${String(h + 1).padStart(2, '0')}:00`, value: horas[h], fmt: x => x + ' tickets'})))}
+    ${sinMov.length ? `<h2 style="margin-top:18px">Sin ventas en el período (${sinMov.length})</h2><p class="muted">${sinMov.slice(0, 12).map(p => esc(p.nombre)).join(', ')}${sinMov.length > 12 ? '…' : ''}</p>` : ''}</div></div>`);
+  $('#rp').onchange = e => { rp = e.target.value; reportes(); };
+}
+
+/* ---------- WEB (edición de la página) ---------- */
+let wz = 'datos';
+function web(){
+  const n = D.negocio || {};
+  const tabs = `<div class="head"><h1>Edición de la web</h1><div class="actions"><a class="btn" href="../" target="_blank" rel="noopener">Ver la web ↗</a></div></div>
+    <div class="tabsx">${[['datos', 'Datos del local'], ['productos', 'Productos en la web'], ['categorias', 'Categorías']].map(([k, l]) => `<button data-w="${k}" class="${wz === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  if (wz === 'datos') {
+    render(tabs + `<form class="card" id="wf" style="max-width:760px"><div class="form-grid">
+      <div class="field"><label>Nombre</label><input name="nombre" value="${esc(n.nombre)}"></div>
+      <div class="field"><label>Bajada</label><input name="bajada" value="${esc(n.bajada)}"></div>
+      <div class="field"><label>WhatsApp (adonde llegan los pedidos)</label><input name="whatsapp" value="${esc(n.whatsapp)}" placeholder="5491112345678"><small class="muted">Con 549 + código de área sin 0 + número sin 15.</small></div>
+      <div class="field"><label>Teléfono fijo</label><input name="telefono" value="${esc(n.telefono)}"></div>
+      <div class="field"><label>Horario</label><input name="horario" value="${esc(n.horario)}" placeholder="Lun a Sáb 9 a 20 h"></div>
+      <div class="field"><label>Dirección</label><input name="direccion" value="${esc(n.direccion)}"></div>
+      <div class="field"><label>Link de Google Maps</label><input name="mapa" value="${esc(n.mapa)}"></div>
+      <div class="field"><label>Email</label><input name="email" value="${esc(n.email)}"></div>
+      <div class="field"><label>Instagram (sin @)</label><input name="instagram" value="${esc(n.instagram)}"></div>
+      <div class="field full"><label>Aviso destacado arriba de todo (dejalo vacío para no mostrar nada)</label><input name="aviso" value="${esc(n.aviso)}" placeholder="Ej: Este sábado cerramos a las 14 h"></div>
+      <div class="field full"><label>Texto de "Nuestra historia" (dejá una línea en blanco entre párrafos)</label><textarea name="historia" rows="7">${esc(n.historia)}</textarea></div>
+      </div><button class="btn primary">Guardar y publicar</button> <span class="muted" style="font-size:13px">Los cambios se ven en la web al recargarla.</span></form>`);
+    $('#wf').onsubmit = async e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); Object.keys(d).forEach(k => d[k] = d[k].trim());
+      if (d.whatsapp && !/^\d{10,15}$/.test(d.whatsapp.replace(/\D/g, ''))) return toast('El WhatsApp tiene que ser solo números, con código de país (ej: 5491112345678)', 'bad');
+      if (await hacer(() => rpc('guardar_negocio', {p: {...n, ...d}}), 'Web actualizada')) await hacer(recargar); };
+  }
+  if (wz === 'productos') {
+    const l = D.productos.slice().sort((a, b) => catName(a.categoria).localeCompare(catName(b.categoria)) || (a.orden - b.orden) || a.nombre.localeCompare(b.nombre));
+    const est = D.productos.filter(p => p.estrella && p.en_web).length;
+    render(tabs + `<p class="muted">Tildá qué se ve en la web. Los destacados salen en el humo de la portada (se muestran hasta 6; ahora hay <b>${est}</b>). El precio y el stock son los mismos que usás para vender.</p>
+      <div class="card"><div class="tablewrap"><table id="wt"><tr><th>Foto</th><th>Producto</th><th class="n">Precio</th><th class="n">Stock</th><th>Visible</th><th>Destacado</th><th>Solo consulta</th><th></th></tr>
+      ${l.map(p => `<tr><td>${p.foto ? `<img class="thumb" src="${esc(p.foto)}" alt="">` : '<span class="thumb"></span>'}</td><td>${esc(p.nombre)}<br><small class="muted">${esc(catName(p.categoria))}${p.detalle ? ' · ' + esc(p.detalle) : ''}</small></td>
+        <td class="n">${+p.precio > 0 ? money(p.precio) : '<span class="muted">A confirmar</span>'}</td><td class="n ${p.stock <= 0 ? 'low' : ''}">${p.stock}</td>
+        ${['en_web', 'estrella', 'solo_consulta'].map(k => `<td><input type="checkbox" data-t="${k}" data-id="${esc(p.id)}" ${p[k] ? 'checked' : ''} aria-label="${k}"></td>`).join('')}
+        <td><button class="btn sm" data-e="${esc(p.id)}">Editar / foto</button></td></tr>`).join('')}</table></div></div>`);
+    $('#wt').onchange = async e => { const c = e.target.closest('[data-t]'); if (!c) return; const p = prod(c.dataset.id); c.disabled = true;
+      const r = await hacer(() => rpc('guardar_producto', {p: {...p, [c.dataset.t]: c.checked}})); c.disabled = false;
+      if (r) { Object.assign(p, r); toast('Guardado', 'ok'); } else c.checked = !c.checked; };
+    $('#wt').onclick = e => { const b = e.target.closest('[data-e]'); if (b) productoForm(prod(b.dataset.e)); };
+  }
+  if (wz === 'categorias') {
+    render(tabs + `<div class="actions" style="margin-bottom:12px"><button class="btn primary" id="ncat">+ Nueva categoría</button></div>
+      <div class="card"><div class="tablewrap"><table id="ct"><tr><th>Orden</th><th>Nombre</th><th>Dibujo en la web</th><th>+18</th><th class="n">Productos</th><th></th></tr>
+      ${D.categorias.map(c => `<tr><td>${c.orden}</td><td><b>${esc(c.nombre)}</b></td><td>${esc((TIPOS.find(t => t[0] === c.tipo) || [0, c.tipo])[1])}</td><td>${c.restringida ? 'Sí' : 'No'}</td><td class="n">${D.productos.filter(p => p.categoria === c.id).length}</td>
+        <td><div class="row-actions"><button class="btn sm" data-a="edit" data-id="${esc(c.id)}">Editar</button><button class="btn sm danger" data-a="del" data-id="${esc(c.id)}" aria-label="Borrar">✕</button></div></td></tr>`).join('')}</table></div></div>
+      <p class="muted" style="font-size:13px">"+18" hace que al vender en el local te pida confirmar la edad. Las categorías sin productos visibles no aparecen en la web.</p>`);
+    $('#ncat').onclick = () => categoriaForm();
+    $('#ct').onclick = async e => { const b = e.target.closest('[data-a]'); if (!b) return; const c = D.categorias.find(x => x.id === b.dataset.id);
+      if (b.dataset.a === 'edit') categoriaForm(c);
+      if (b.dataset.a === 'del' && confirm(`¿Borrar la categoría "${c.nombre}"?`)) { if (await hacer(() => rpc('borrar_categoria', {p_id: c.id}), 'Categoría borrada')) { await hacer(recargar); web(); } } };
+  }
+  document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { wz = b.dataset.w; web(); });
+}
+function categoriaForm(c){
+  const n = !c; c = c || {nombre:'', tipo:'botella', orden: (D.categorias.length + 1) * 10, restringida: false};
+  modal(n ? 'Nueva categoría' : 'Editar categoría', `<div class="field"><label>Nombre</label><input name="nombre" value="${esc(c.nombre)}"></div>
+    <div class="form-grid"><div class="field"><label>Dibujo (si el producto no tiene foto)</label><select name="tipo">${opts(TIPOS, c.tipo)}</select></div>
+    <div class="field"><label>Orden (menor = primero)</label><input name="orden" inputmode="numeric" value="${c.orden}"></div></div>
+    <label class="chk" style="display:flex"><input type="checkbox" name="restringida" ${c.restringida ? 'checked' : ''}> Solo mayores de 18 (pide confirmar edad al vender)</label>`, {onSubmit: async d => {
+      if (!d.nombre.trim()) { toast('Poné un nombre', 'bad'); return false; }
+      await rpc('guardar_categoria', {p: {id: c.id || null, nombre: d.nombre, tipo: d.tipo, orden: parseInt(d.orden) || 0, restringida: d.restringida}});
+      toast('Categoría guardada', 'ok'); await hacer(recargar); web();
+    }});
+}
+
+/* ---------- AJUSTES ---------- */
+async function ajustes(){
+  const a = D.ajustes, users = await rpc('admin_usuarios');
+  render(`<div class="head"><h1>Ajustes</h1></div>
+  <div class="cols"><form class="card" id="af"><h2>Sistema</h2>
+    <div class="field"><label>Medios de pago (uno por línea)</label><textarea name="pagos" rows="6">${esc(pagos().join('\n'))}</textarea></div>
+    <label class="chk" style="display:flex;margin-bottom:8px"><input type="checkbox" name="verificarEdad" ${a.verificarEdad !== false ? 'checked' : ''}> Pedir confirmación de edad al vender categorías +18</label>
+    <label class="chk" style="display:flex;margin-bottom:14px"><input type="checkbox" name="stockNegativo" ${a.stockNegativo ? 'checked' : ''}> Permitir vender sin stock (queda en negativo)</label>
+    <button class="btn primary">Guardar</button></form>
+  <div><div class="card"><h2>Usuarios con acceso</h2>
+    <table id="ut">${users.map(u => `<tr><td>${esc(u)}${u === (D.email || '').toLowerCase() ? ' <span class="pill">vos</span>' : ''}</td><td class="n">${u === (D.email || '').toLowerCase() ? '' : `<button class="btn sm danger" data-u="${esc(u)}">Quitar</button>`}</td></tr>`).join('')}</table>
+    <form id="uf" class="filters" style="margin-top:12px"><input name="email" type="email" placeholder="email@ejemplo.com" style="flex:1"><button class="btn">Agregar</button></form>
+    <p class="muted" style="font-size:13px">La persona entra en esta misma página con "Primera vez: crear contraseña".</p>
+    <button class="btn sm" id="cpass">Cambiar mi contraseña</button></div>
+  <div class="card" style="margin-top:16px"><h2>Respaldo</h2><p class="muted">Los datos están guardados en la nube (Supabase). Igual podés bajar una copia completa cuando quieras.</p>
+    <button class="btn" id="exp">Descargar respaldo</button></div></div></div>`);
+  $('#af').onsubmit = async e => { e.preventDefault(); const f = e.target; const lp = f.pagos.value.split('\n').map(x => x.trim()).filter(Boolean);
+    if (!lp.length) return toast('Tiene que haber al menos un medio de pago', 'bad');
+    if (await hacer(() => rpc('guardar_ajustes', {p: {...a, pagos: lp, verificarEdad: f.verificarEdad.checked, stockNegativo: f.stockNegativo.checked}}), 'Ajustes guardados')) await hacer(recargar); };
+  $('#uf').onsubmit = async e => { e.preventDefault(); const em = e.target.email.value.trim(); if (!em) return;
+    if (await hacer(() => rpc('agregar_admin', {p_email: em}), 'Usuario agregado')) ajustes(); };
+  $('#ut').onclick = async e => { const b = e.target.closest('[data-u]'); if (b && confirm(`¿Quitarle el acceso a ${b.dataset.u}?`) && await hacer(() => rpc('quitar_admin', {p_email: b.dataset.u}), 'Acceso quitado')) ajustes(); };
+  $('#cpass').onclick = () => cambiarClave(false);
+  $('#exp').onclick = async () => { const r = await hacer(() => rpc('admin_respaldo')); if (r) download(`respaldo_amero_${isoDay(Date.now())}.json`, JSON.stringify(r, null, 1), 'application/json'); };
+}
+
+/* ---------- arranque ---------- */
+(async function boot(){
+  if (!CFG.url || !CFG.key) return pantallaConfig();
+  if (!window.supabase) return pantalla('<h1>No se pudo cargar</h1><p class="muted">Revisá la conexión a internet y recargá la página.</p>');
+  const tipo = (location.hash.match(/type=(invite|recovery|signup)/) || [])[1];
+  sb = window.supabase.createClient(CFG.url, CFG.key);
+  sb.auth.onAuthStateChange(ev => { if (ev === 'SIGNED_OUT' && D) { D = null; pantallaLogin(); } });
+  const {data: {session}} = await sb.auth.getSession();
+  if (!session) return pantallaLogin();
+  entrar(tipo === 'invite' || tipo === 'recovery' ? tipo : null);
+})();
+</script>
+</body>
+
+</html>

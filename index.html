@@ -30,6 +30,8 @@
   a{color:inherit}
   .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 20px}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .aviso{display:inline-block;margin:0 0 16px;padding:7px 14px;border-radius:99px;background:var(--am-soft);border:1px solid rgba(211,154,74,.35);color:var(--am-2);font-size:14px;font-weight:700}
+  .aviso[hidden]{display:none}
   :focus-visible{outline:2px solid var(--am-2);outline-offset:3px;border-radius:6px}
 
   /* ---------- cabecera ---------- */
@@ -279,6 +281,7 @@
     <div class="stage" id="stage">
       <canvas id="smoke" aria-hidden="true"></canvas>
       <div class="copy">
+        <div class="aviso" id="aviso" hidden></div>
         <div class="eyebrow">Tabaquería · Martínez</div>
         <h1>Lo mejor de la casa, <em>entre el humo.</em></h1>
         <p>Habanos, whiskies, pipas, tabacos y accesorios elegidos uno por uno. Armá tu pedido acá y lo coordinamos por WhatsApp.</p>
@@ -358,9 +361,10 @@
       <div>
         <div class="eyebrow">Nuestra historia</div>
         <h2>Una tabaquería <em>de barrio</em>, con oficio</h2>
-        <!-- TEXTO PROVISORIO: reemplazar con la historia real del local -->
+        <div id="histTxt">
         <p>En Amero elegimos cada habano, cada whisky y cada pipa como si fuera para nosotros. Te asesoramos para encontrar el tabaco justo, el regalo indicado o la botella para una ocasión especial.</p>
         <p>Vení a conocernos en Martínez o armá tu pedido online.</p>
+        </div>
       </div>
       <div class="facts">
         <div class="fact"><b>Habanos</b><span>y tabacos para pipa y para armar</span></div>
@@ -412,6 +416,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="config.js"></script>
 <script>
 (() => {
   const $ = s => document.querySelector(s);
@@ -482,12 +487,29 @@
   const catName = id => (D.categorias.find(c => c.id === id) || {}).nombre || '';
 
   /* ---------- datos ---------- */
-  fetch('catalogo.json', {cache:'no-store'}).then(r => r.json()).then(d => { D = d; init(); })
+  const SB = window.AMERO_SUPABASE && window.AMERO_SUPABASE.url ? window.AMERO_SUPABASE : null;
+  // Llama a una función pública de la base (catálogo y pedidos)
+  function api(fn, args){
+    const h = {'Content-Type':'application/json', apikey: SB.key};
+    if (SB.key.startsWith('eyJ')) h.Authorization = 'Bearer ' + SB.key;
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 8000);
+    return fetch(SB.url.replace(/\/$/, '') + '/rest/v1/rpc/' + fn, {method:'POST', headers:h, body:JSON.stringify(args || {}), signal:ctl.signal})
+      .then(async r => { clearTimeout(t); const j = await r.json().catch(() => null); if (!r.ok) throw new Error((j && j.message) || 'Error ' + r.status); return j; });
+  }
+  const local = () => fetch('catalogo.json', {cache:'no-store'}).then(r => r.json());
+  (SB ? api('catalogo_web').then(d => d && d.productos && d.productos.length ? d : local()).catch(local) : local())
+    .then(d => { D = d; init(); })
     .catch(() => { $('#grid').innerHTML = '<p class="empty">No se pudo cargar el catálogo. Probá recargar la página.</p>'; });
 
   function init(){
-    renderInfo(); renderCats(); renderTabs(); renderGrid(); renderCart(); renderStars(); startSmoke();
+    renderTextos(); renderInfo(); renderCats(); renderTabs(); renderGrid(); renderCart(); renderStars(); startSmoke();
     $('#yr').textContent = new Date().getFullYear();
+  }
+
+  function renderTextos(){
+    const n = D.negocio || {};
+    if (n.aviso) { $('#aviso').textContent = n.aviso; $('#aviso').hidden = false; }
+    if (n.historia) $('#histTxt').innerHTML = String(n.historia).split(/\n\s*\n/).map(t => t.trim()).filter(Boolean).map(t => '<p>' + esc(t).replace(/\n/g, '<br>') + '</p>').join('');
   }
 
   function renderInfo(){
@@ -585,13 +607,27 @@
     return true;
   }
   function ask(id){ const p = byId(id); openWa(`Hola Amero! Quería consultar por ${p.nombre}${p.detalle ? ' (' + p.detalle + ')' : ''}.`); }
-  $('#send').onclick = () => {
-    const ids = Object.keys(cart);
+  $('#send').onclick = async () => {
+    const ids = Object.keys(cart), btn = $('#send');
     if (!ids.length) { toast('Agregá al menos un producto'); return; }
+    const n = waNumber();
+    if (!n) { toast('Falta cargar el WhatsApp del local. Mientras tanto, llamanos al ' + D.negocio.telefono); return; }
+    const nombre = $('#nombre').value.trim(), entrega = $('#entrega').value;
+    // La ventana se abre ya (si no, el navegador la bloquea) y se le pone la dirección al final
+    const w = window.open('', '_blank');
+    if (w) { try { w.opener = null; w.document.body.innerHTML = '<p style="font:16px system-ui;padding:24px">Abriendo WhatsApp…</p>'; } catch(e){} }
+    btn.disabled = true;
+    let nro = null;
+    if (SB) {
+      try { const r = await api('crear_pedido', {p_items: ids.map(id => ({id, cant: cart[id]})), p_cliente: nombre, p_entrega: entrega}); nro = r && r.nro; }
+      catch(e) { /* si la base no responde, el pedido igual sale por WhatsApp */ }
+    }
     const lines = ids.map(id => { const p = byId(id); return `• ${cart[id]} x ${p.nombre}${p.detalle ? ' (' + p.detalle + ')' : ''}`; });
-    const nombre = $('#nombre').value.trim();
-    const txt = `Hola Amero! Quiero hacer este pedido:\n${lines.join('\n')}\n\nTotal: ${$('#total').textContent}\nEntrega: ${$('#entrega').value}${nombre ? '\nNombre: ' + nombre : ''}`;
-    openWa(txt);
+    const txt = `Hola Amero! Quiero hacer este pedido${nro ? ' (pedido #' + nro + ')' : ''}:\n${lines.join('\n')}\n\nTotal: ${$('#total').textContent}\nEntrega: ${entrega}${nombre ? '\nNombre: ' + nombre : ''}`;
+    const url = 'https://wa.me/' + n + '?text=' + encodeURIComponent(txt);
+    if (w && !w.closed) w.location.href = url; else location.href = url;
+    btn.disabled = false;
+    if (nro) { cart = {}; save(); renderCart(); openCart(false); toast('Pedido #' + nro + ' listo. Terminá de enviarlo en WhatsApp.'); }
   };
 
   let tt;
