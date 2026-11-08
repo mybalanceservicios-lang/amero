@@ -267,6 +267,11 @@
   .qty{display:flex;align-items:center;border:1px solid var(--line-2);border-radius:10px}
   .qty button{background:none;border:0;width:30px;height:32px;font-weight:800}
   .qty span{min-width:20px;text-align:center;font-weight:800;font-size:14px}
+  .qty button:disabled{opacity:.3;cursor:default}
+  .qcol{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .del{display:inline-flex;align-items:center;gap:5px;border:0;background:none;color:var(--ink-3);font-size:12.5px;font-weight:700;padding:2px 0}
+  .del:hover{color:#ff8a6a}
+  .del svg{width:14px;height:14px}
   .form{display:flex;flex-direction:column;gap:14px;margin-top:20px}
   .form[hidden]{display:none}
   .form h4{margin:6px 0 0;font:400 26px/1 var(--serif)}
@@ -326,6 +331,8 @@
   .toast{position:fixed;left:50%;top:calc(var(--head) + 12px);transform:translate(-50%,-10px);z-index:120;background:var(--ink);color:#170f08;font-weight:700;font-size:14px;
     padding:11px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100vw - 32px);text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
   .toast.on{opacity:1;transform:translate(-50%,0)}
+  .toast.act.on{pointer-events:auto;display:flex;align-items:center;gap:14px}
+  .toast button{border:0;background:#170f08;color:var(--am-2);font-weight:800;font-size:13px;border-radius:99px;padding:6px 12px}
 
   /* ---------- tablet y celular ---------- */
   @media (max-width:1000px){
@@ -670,7 +677,8 @@
     clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
     ig:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>',
     yt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15.1V8.9l5.8 3.1-5.8 3.1Z"/></svg>',
-    play:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>'
+    play:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg>',
+    trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg>'
   };
 
   function renderInfo(){
@@ -890,7 +898,21 @@
     if (a) add(a.dataset.add);
     if (m) setQty(m.dataset.m, (cart[m.dataset.m] || 0) - 1);
     if (p) setQty(p.dataset.p, (cart[p.dataset.p] || 0) + 1);
+    const d = e.target.closest('[data-del]');
+    if (d) removeItem(d.dataset.del);
   });
+  // saca el producto entero del carrito, con opción de deshacer
+  function removeItem(id){
+    const p = byId(id), n = cart[id]; if (!p || !n) return;
+    const before = Object.entries(cart);   // para devolverlo al mismo lugar si deshacen
+    delete cart[id]; save(); renderCart();
+    toast('Quitaste ' + p.nombre, 'Deshacer', () => {
+      const now = {...cart}; cart = {};
+      for (const [k, q] of before) if (k === id) cart[k] = n; else if (now[k]) cart[k] = now[k];
+      for (const k in now) if (!(k in cart)) cart[k] = now[k];
+      save(); renderCart();
+    });
+  }
 
   /* ---------- ficha ---------- */
   let fichaId = null, lastFocus = null;
@@ -953,7 +975,8 @@
     $('#cartN').textContent = t.units;
     $('#items').innerHTML = t.ids.length ? t.ids.map(id => { const p = byId(id); return `<div class="it"><div class="mini">${art(p)}</div>
       <div><b>${esc(p.nombre)}</b><small>${esc(p.detalle || '')}${p.precio > 0 ? ' · ' + money(p.precio) + ' c/u' : ''}</small><div class="sub">${p.precio > 0 ? money(p.precio * cart[id]) : 'A confirmar'}</div></div>
-      <div class="qty"><button data-m="${id}" aria-label="Quitar uno">−</button><span>${cart[id]}</span><button data-p="${id}" aria-label="Agregar uno">+</button></div></div>`; }).join('')
+      <div class="qcol"><div class="qty"><button data-m="${id}" aria-label="Quitar uno" ${cart[id] <= 1 ? 'disabled' : ''}>−</button><span>${cart[id]}</span><button data-p="${id}" aria-label="Agregar uno">+</button></div>
+        <button class="del" data-del="${id}" aria-label="Eliminar ${esc(p.nombre)} del carrito">${ICON.trash}Eliminar</button></div></div>`; }).join('')
       : '<p class="empty">Todavía no agregaste productos. Buscá arriba o mirá el catálogo.</p>';
     $('#form').hidden = !t.ids.length; $('#send').disabled = !t.ids.length;
     $('#total').textContent = !t.ids.length ? '—' : money(t.total) + (t.pend ? ' + a confirmar' : '');
@@ -1040,7 +1063,12 @@
   };
 
   let tt;
-  function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
+  function toast(msg, label, fn){
+    const t = $('#toast'); t.textContent = msg; t.classList.toggle('act', !!fn);
+    if (fn) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.onclick = () => { fn(); t.classList.remove('on'); clearTimeout(tt); }; t.append(b); }
+    t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), fn ? 5000 : 2600);
+  }
 
   /* ---------- portada: el habano humea y los destacados salen del humo y rodean el logo ---------- */
   const stage = $('#stage'), cv = $('#smoke'), sctx = cv.getContext('2d'), logoEl = $('#hlogo'), cigarEl = $('#cigar');
