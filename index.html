@@ -70,6 +70,13 @@
   .sug .pr{font-weight:800;font-size:14px}
   .sug .all{display:block;grid-template-columns:none;font-weight:800;font-size:13.5px;color:#8a5a1c;padding:11px 14px}
   .sug .none{padding:14px;font-size:14px;color:#7a6b56}
+  .sug{max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain}
+  .sug .sh{padding:10px 14px 4px;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#8a7b66}
+  .sug .chips{display:flex;flex-wrap:wrap;gap:6px;padding:6px 14px 12px;border-bottom:1px solid #e6dbc7}
+  .sug .chip{display:inline-block;width:auto;grid-template-columns:none;gap:0;border:1px solid #d8cbb3;border-radius:99px;padding:6px 12px;font-size:13.5px;font-weight:600;background:#fffaf0}
+  .sug .chip:hover,.sug .chip.on{background:#1d140d;color:#f6efe2;border-color:#1d140d}
+  .sug mark{background:none;color:#8a5a1c;font-weight:800}
+  .sug .chip mark{color:inherit}
 
   .links{grid-area:links;display:flex;align-items:center;gap:22px;height:100%;font-size:13.5px;font-weight:600;overflow-x:auto;scrollbar-width:none}
   .links::-webkit-scrollbar{display:none}
@@ -720,16 +727,107 @@
   }
 
   /* ---------- buscador ---------- */
-  const matches = q => { const k = norm(q); return D.productos.filter(p => norm(p.nombre + ' ' + (p.detalle || '') + ' ' + catName(p.categoria)).includes(k)); };
+  // palabras que la gente usa distinto a como están cargadas
+  const SINON = { puro:'habano', puros:'habanos', cigarro:'habano', cigarros:'habanos', cigar:'habano', whiskey:'whisky', wisky:'whisky', guisqui:'whisky',
+    escoces:'escocia', irlandes:'irlanda', cubano:'cuba', cubanos:'cuba', licores:'licor', encendedores:'encendedor', pipas:'pipa', tabacos:'tabaco' };
+  const words = s => norm(s).replace(/[^a-z0-9ñ]+/g, ' ').trim().split(' ').filter(Boolean);
+  const GENERIC = new Set(['the','pipa','tabaco','licor','encendedor','cortapuros','humidor','ron','de','para']);
+  // cuántas letras hay que cambiar para pasar de una palabra a otra (tolera errores de tipeo)
+  function dist(a, b){
+    if (Math.abs(a.length - b.length) > 2) return 9;
+    let prev = Array.from({length: b.length + 1}, (_, k) => k);
+    for (let x = 1; x <= a.length; x++) {
+      const cur = [x];
+      for (let y = 1; y <= b.length; y++) cur[y] = Math.min(prev[y] + 1, cur[y - 1] + 1, prev[y - 1] + (a[x - 1] === b[y - 1] ? 0 : 1));
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  let IDX = null;
+  function index(){
+    IDX = D.productos.map(p => ({ p, name: words(p.nombre),
+      rest: words([p.detalle, catName(p.categoria), ...(p.ficha || []).map(f => f[1]), p.descripcion].join(' ')) }));
+    // marcas: primera palabra del nombre que no sea genérica (Cohiba, Macallan, Jameson…)
+    const seen = new Map();
+    for (const p of D.productos) {
+      const w = p.nombre.replace(/^the\s+/i, '').split(/\s+/)[0];
+      if (!GENERIC.has(norm(w)) && !seen.has(norm(w))) seen.set(norm(w), w);
+    }
+    IDX.brands = [...seen.values()];
+  }
+  // cuánto se parece una palabra buscada a las palabras de un producto (0 = nada)
+  function wordScore(q, toks, weight){
+    let best = 0;
+    for (const t of toks) {
+      if (t === q) best = Math.max(best, weight * 1.2);
+      else if (t.startsWith(q)) best = Math.max(best, weight);
+      else if (q.length >= 4 && t.length >= 4 && dist(q, t.slice(0, q.length + 1)) <= (q.length >= 7 ? 2 : 1)) best = Math.max(best, weight * .6);
+    }
+    return best;
+  }
+  function search(q){
+    if (!IDX) index();
+    const qs = words(q).map(w => SINON[w] || w);
+    if (!qs.length) return [];
+    const out = [];
+    for (const it of IDX) {
+      let total = 0, ok = true;
+      for (const w of qs) {
+        const sc = Math.max(wordScore(w, it.name, 3), wordScore(w, it.rest, 1));
+        if (!sc) { ok = false; break; }
+        total += sc;
+      }
+      // primero los que coinciden con el nombre completo y los de la categoría buscada
+      const inCat = qs.some(w => words(catName(it.p.categoria)).some(t => t.startsWith(w)));
+      if (ok) out.push({ p: it.p, sc: total + (norm(it.p.nombre).startsWith(norm(q)) ? 2 : 0) + (inCat ? 3 : 0) });
+    }
+    return out.sort((a, b) => b.sc - a.sc).map(x => x.p);
+  }
+  // si no hay resultados: los productos con el nombre más parecido
+  function closest(q){
+    if (!IDX) index();
+    const qs = words(q); if (!qs.length) return [];
+    return IDX.map(it => ({ p: it.p, d: qs.reduce((s, w) => s + Math.min(...it.name.map(t => dist(w, t.slice(0, w.length + 1)))), 0) / qs.length }))
+      .filter(x => x.d <= 2.5).sort((a, b) => a.d - b.d).slice(0, 3).map(x => x.p);
+  }
+  // resalta en el nombre las letras que coinciden con lo buscado
+  function mark(name, q){
+    const qs = words(q); if (!qs.length) return esc(name);
+    return name.split(/(\s+)/).map(part => {
+      const n = norm(part), w = qs.find(w => n.startsWith(w));
+      return w ? `<mark>${esc(part.slice(0, w.length))}</mark>${esc(part.slice(w.length))}` : esc(part);
+    }).join('');
+  }
+  const prodRow = (p, q) => `<button type="button" data-opt data-ver="${p.id}" role="option">
+      <span class="th">${art(p)}</span><span><b>${mark(p.nombre, q)}</b><small>${esc(catName(p.categoria))}${p.detalle ? ' · ' + esc(p.detalle) : ''}</small></span><span class="pr">${precio(p)}</span></button>`;
+  const chip = (attr, val, txt) => `<button type="button" class="chip" data-opt ${attr}="${esc(val)}">${txt}</button>`;
   let sel = -1;
   function showSug(){
+    if (!D) return;
+    if (!IDX) index();
     const v = $('#q').value.trim();
-    if (!D || !v) { hideSug(); return; }
-    const list = matches(v).slice(0, 6);
-    $('#sug').innerHTML = (list.length ? list.map((p, i) => `<button type="button" data-ver="${p.id}" role="option"${i === sel ? ' class="on"' : ''}>
-        <span class="th">${art(p)}</span><span><b>${esc(p.nombre)}</b><small>${esc(catName(p.categoria))}${p.detalle ? ' · ' + esc(p.detalle) : ''}</small></span><span class="pr">${precio(p)}</span></button>`).join('')
-        + `<button type="button" class="all" data-all>Ver todos los resultados de “${esc(v)}” →</button>`
-      : `<div class="none">No encontramos “${esc(v)}”. Probá con otra palabra o escribinos por WhatsApp.</div>`);
+    let html = '';
+    if (!v) {
+      // buscador vacío: búsquedas sugeridas y destacados
+      html = `<div class="sh">Búsquedas sugeridas</div><div class="chips">${D.categorias.map(c => chip('data-cat', c.id, esc(c.nombre))).join('')}${IDX.brands.slice(0, 8).map(b => chip('data-term', b, esc(b))).join('')}</div>
+        <div class="sh">Destacados</div>${D.productos.filter(p => p.estrella).slice(0, 4).map(p => prodRow(p, '')).join('')}`;
+    } else {
+      const list = search(v), nv = norm(v), first = words(v)[0] || nv, syn = SINON[first] || first;
+      const cats = D.categorias.filter(c => words(c.nombre).some(t => t.startsWith(first) || t.startsWith(syn)));
+      const brands = IDX.brands.filter(b => norm(b).startsWith(nv) && norm(b) !== nv);
+      const terms = cats.map(c => chip('data-cat', c.id, `Ver todo en <b>${esc(c.nombre)}</b>`)).concat(brands.slice(0, 4).map(b => chip('data-term', b, mark(b, v))));
+      if (terms.length) html += `<div class="sh">Búsquedas</div><div class="chips">${terms.join('')}</div>`;
+      if (list.length) {
+        html += `<div class="sh">Productos</div>${list.slice(0, 6).map(p => prodRow(p, v)).join('')}
+          <button type="button" class="all" data-opt data-all>Ver ${list.length === 1 ? 'el resultado' : `los ${list.length} resultados`} de “${esc(v)}” →</button>`;
+      } else {
+        const near = closest(v);
+        html += near.length ? `<div class="sh">¿Quisiste decir…?</div>${near.map(p => prodRow(p, '')).join('')}`
+          : `<div class="none">No encontramos “${esc(v)}”. Probá con otra palabra o mirá las categorías.</div><div class="chips">${D.categorias.map(c => chip('data-cat', c.id, esc(c.nombre))).join('')}</div>`;
+      }
+    }
+    $('#sug').innerHTML = html;
+    $$('#sug [data-opt]').forEach((el, k) => el.classList.toggle('on', k === sel));
     $('#sug').hidden = false; $('#q').setAttribute('aria-expanded', 'true');
   }
   function hideSug(){ $('#sug').hidden = true; sel = -1; $('#q').setAttribute('aria-expanded', 'false'); }
@@ -738,30 +836,36 @@
     $('#qchip').hidden = !query; $('#qtxt').textContent = 'Resultados de “' + query + '”';
   }
   function clearQuery(){ $('#q').value = ''; query = ''; $('#qchip').hidden = true; }
+  // qué pasa al tocar una sugerencia
+  function pick(el){
+    if (!el) return;
+    hideSug(); $('#q').blur();
+    if (el.dataset.ver) openFicha(el.dataset.ver);
+    else if (el.dataset.cat) { clearQuery(); setCat(el.dataset.cat); toCatalog(); }
+    else if (el.dataset.term) { $('#q').value = el.dataset.term; applyQuery(); toCatalog(); }
+    else if ('all' in el.dataset) { applyQuery(); toCatalog(); }
+  }
   $('#q').addEventListener('input', () => { sel = -1; showSug(); });
   $('#q').addEventListener('focus', showSug);
   $('#q').addEventListener('keydown', e => {
-    const opts = $$('#sug [data-ver]');
+    const opts = $$('#sug [data-opt]');
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       if (!opts.length) return; e.preventDefault();
-      sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length; showSug();
-    } else if (e.key === 'Enter' && sel >= 0 && opts[sel]) { e.preventDefault(); const id = opts[sel].dataset.ver; hideSug(); openFicha(id); }
+      sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length;
+      opts.forEach((el, k) => el.classList.toggle('on', k === sel)); opts[sel].scrollIntoView({block: 'nearest'});
+    } else if (e.key === 'Enter' && sel >= 0 && opts[sel]) { e.preventDefault(); pick(opts[sel]); }
     else if (e.key === 'Escape') { hideSug(); $('#q').blur(); }
   });
   $('#sform').onsubmit = e => { e.preventDefault(); hideSug(); $('#q').blur(); applyQuery(); toCatalog(); };
   $('#sug').addEventListener('mousedown', e => e.preventDefault());
-  $('#sug').onclick = e => {
-    const v = e.target.closest('[data-ver]'), a = e.target.closest('[data-all]');
-    if (v) { hideSug(); $('#q').blur(); openFicha(v.dataset.ver); }
-    if (a) { hideSug(); $('#q').blur(); applyQuery(); toCatalog(); }
-  };
+  $('#sug').onclick = e => pick(e.target.closest('[data-opt]'));
   document.addEventListener('click', e => { if (!e.target.closest('#sbox')) hideSug(); });
   $('#qclear').onclick = () => { clearQuery(); renderGrid(); };
 
   /* ---------- productos ---------- */
   function renderGrid(){
-    const q = norm(query);
-    const list = D.productos.filter(p => (cat === 'todo' || p.categoria === cat) && (!q || norm(p.nombre + ' ' + (p.detalle || '') + ' ' + catName(p.categoria)).includes(q)));
+    const base = query ? search(query) : D.productos;
+    const list = base.filter(p => cat === 'todo' || p.categoria === cat);
     $('#grid').innerHTML = list.length ? list.map(card).join('') : '<p class="empty">No encontramos productos con esa búsqueda.</p>';
   }
   function badge(p){
